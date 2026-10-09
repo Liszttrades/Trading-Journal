@@ -900,3 +900,12 @@ tbody tr { border-bottom: 1px solid #353940; }
 .daily-trade { display: flex; justify-content: space-between; align-items: center; width: 100%; margin: 10px 0; padding: 14px; text-align: left; }
 .daily-trade small { display: block; color: #a7adb8; margin-top: 6px; }
 @media (max-width: 650px) { .calendar-panel { padding: 14px; } .calendar-nav { gap: 8px; } }
+.auth-screen { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: #181a1e; }
+.auth-card { width: min(100%, 460px); padding: 32px; border: 1px solid #3b3f47; border-radius: 16px; background: #24272d; color: #e7eaf0; }
+.auth-card h1 { font-size: 28px; }
+.auth-card p { color: #a7adb8; line-height: 1.6; }
+.auth-card label { display: block; margin: 18px 0; }
+.auth-card input { display: block; width: 100%; margin-top: 8px; padding: 12px; border-radius: 7px; border: 1px solid #474c56; background: #1b1e23; color: white; }
+.auth-card button { margin: 8px 8px 0 0; }
+#auth-message { overflow-wrap: anywhere; }
+#account-email { overflow-wrap: anywhere; }

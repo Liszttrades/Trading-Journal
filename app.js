@@ -1,8 +1,10 @@
+import { backend } from './cloud.js';
+import { resetCloudState, cloudChanged } from './storage.js';
 import { monthSummary } from './calendar.js';
 import { api, imageURL, exportBackup, restoreBackup } from './storage.js';
 import { fresh, net, risk } from './model.js';
 
-// UI state only. IndexedDB holds records and screenshots in this browser.
+// UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 let database = { settings: { pairs: [], currency: 'USD', timezone: 'Asia/Manila' }, entries: [] };
@@ -34,8 +36,10 @@ async function load() {
     database = await api('/api/journal');
     message('#load-error');
     render();
+    $('#sync-status').textContent = `Synced ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   } catch (error) {
-    message('#load-error', `${error.message} Allow browser storage for this website, then reload. Your existing data has not been reset.`);
+    $('#sync-status').textContent = 'Sync failed';
+    message('#load-error', `${error.message} Check your connection and use Sync now. No empty journal has been saved over your cloud data.`);
   }
 }
 
@@ -61,7 +65,7 @@ function render() {
   $('#pnl-calendar').hidden = view === 'gallery';
   if (view !== 'gallery') renderCalendar(selected);
   $('#records-title').textContent = `${view === 'gallery' ? 'Screenshots' : 'Entries'} (${selected.length})`;
-  $('#footnote').textContent = `${database.settings.currency} results. Times entered in ${database.settings.timezone}. Saved in this browser. Export backups regularly; there is no cloud sync.`;
+  $('#footnote').textContent = `${database.settings.currency} results. Times entered in ${database.settings.timezone}. Private cloud journal. Automatically refreshes while this page is open; internet required to save.`;
   if (view === 'gallery') {
     const cards = selected.flatMap(entry => entry.images.map(image => `<button class="image-card" data-image="${image.id}" data-image-name="${escape(image.name)}"><img src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><div><strong>${escape(entry.pair)}</strong><span>${entry.kind === 'backtest' ? 'Backtest' : 'Live trade'} · ${escape(entry.entryTime.replace('T', ' '))}</span></div></button>`));
     $('#entries').innerHTML = `<div class="gallery">${cards.join('') || '<div class="empty"><h3>No screenshots yet</h3><p>Attach a chart image to a trade or backtest.</p></div>'}</div>`;
@@ -301,5 +305,84 @@ $('#backup-file').addEventListener('change', async event => {
   catch (error) { message('#load-error', error.message); }
   event.target.value = '';
 });
-window.addEventListener('focus', () => { if (!busy && !$('#entry-dialog').open && !$('#settings-dialog').open) void load(); });
-void load();
+let currentUser = null;
+let syncInProgress = false;
+async function syncIfIdle(force = false) {
+  if (!currentUser || busy || syncInProgress || document.hidden || document.querySelector('dialog[open]')) return;
+  syncInProgress = true;
+  try { if (force || await cloudChanged()) await load(); } catch (error) { $('#sync-status').textContent = 'Sync failed'; message('#load-error', error.message); } finally { syncInProgress = false; }
+}
+$('#sync-now').addEventListener('click', () => syncIfIdle(true));
+window.addEventListener('focus', () => syncIfIdle());
+setInterval(() => syncIfIdle(), 30000);
+
+function showSession(session) {
+  const next = session?.user || null;
+  if (next?.id !== currentUser?.id) {
+    resetCloudState();
+    database = { settings: { pairs: [], currency: 'USD', timezone: 'Asia/Manila' }, entries: [] };
+    document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
+    $('#entries').replaceChildren(); $('#pnl-calendar').replaceChildren(); $('#metrics').replaceChildren(); $('#curve').replaceChildren();
+    editing = null; files = []; removedImages = [];
+  }
+  currentUser = next;
+  $('#auth-screen').hidden = Boolean(next);
+  $('#journal-workspace').hidden = !next;
+  $('#account-email').textContent = next?.email || '';
+  if (next) void syncIfIdle();
+}
+async function authAction(action) {
+  const controls = document.querySelectorAll('#auth-screen button');
+  controls.forEach(button => button.disabled = true);
+  $('#auth-message').textContent = '';
+  try {
+    const email = $('#auth-email').value.trim(), password = $('#auth-password').value;
+    const client = backend();
+    if (action !== 'reset' && (!email || password.length < 8)) throw Error('Enter your email and a password of at least 8 characters.');
+    if (action === 'login') {
+      const { data, error } = await client.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      $('#auth-password').value = ''; showSession(data.session);
+    } else if (action === 'signup') {
+      const { data, error } = await client.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } });
+      if (error) throw error;
+      $('#auth-password').value = '';
+      $('#auth-message').textContent = 'Check your email to confirm your account, then sign in. If email delivery is not configured, ask the project owner to create your account.';
+      if (data.session) showSession(data.session);
+    } else {
+      if (!email) throw Error('Enter your email first.');
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+      if (error) throw error;
+      $('#auth-message').textContent = 'If an account exists, check your email for a reset link.';
+    }
+  } catch (error) { $('#auth-message').textContent = error.message; }
+  finally { controls.forEach(button => button.disabled = false); }
+}
+$('#auth-form').addEventListener('submit', event => { event.preventDefault(); void authAction('login'); });
+$('#signup').addEventListener('click', () => authAction('signup'));
+$('#reset-password').addEventListener('click', () => authAction('reset'));
+$('#sign-out').addEventListener('click', async () => {
+  if (busy) return;
+  const { error } = await backend().auth.signOut({ scope: 'local' });
+  if (error) { message('#load-error', error.message); return; }
+  showSession(null);
+});
+$('#password-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = event.currentTarget.querySelector('button'); button.disabled = true;
+  try {
+    const { error } = await backend().auth.updateUser({ password: $('#new-password').value });
+    if (error) throw error;
+    $('#new-password').value = ''; $('#password-dialog').close();
+  } catch (error) { $('#password-message').textContent = error.message; }
+  finally { button.disabled = false; }
+});
+try {
+  const client = backend();
+  client.auth.onAuthStateChange((event, session) => {
+    // Schedule outside the SDK callback to avoid auth lock deadlocks.
+    setTimeout(() => { showSession(session); if (event === 'PASSWORD_RECOVERY') $('#password-dialog').showModal(); }, 0);
+  });
+  client.auth.getSession().then(({ data, error }) => { if (error) $('#auth-message').textContent = error.message; else showSession(data.session); });
+} catch (error) { $('#auth-message').textContent = error.message; }
+

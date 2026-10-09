@@ -1,31 +1,41 @@
 import { defaultSettings } from './model.js';
 import { validateTrade, validateSettings } from './validation.js';
 
-// No network requests. Each browser profile owns its own IndexedDB journal.
-const connection = new Promise((resolve, reject) => {
-  const request = indexedDB.open('trade-notebook-pages-v1', 1);
-  request.onupgradeneeded = () => request.result.createObjectStore('journal');
-  request.onsuccess = () => resolve(request.result);
-  request.onerror = () => reject(Error('Browser storage is unavailable.'));
-  request.onblocked = () => reject(Error('Close other journal tabs and reload.'));
-});
+import { backend, signedUser } from './cloud.js';
+let snapshot = null;
+let revision = 0;
+let owner = null;
+let epoch = 0;
+export function resetCloudState() { epoch++; snapshot = null; revision = 0; owner = null; }
 
 async function transaction(mutator) {
-  const db = await connection;
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('journal', mutator ? 'readwrite' : 'readonly');
-    const store = tx.objectStore('journal');
-    const request = store.get('current');
-    let result, failure;
-    request.onsuccess = () => {
-      try {
-        result = request.result || { settings: structuredClone(defaultSettings), entries: [] };
-        if (mutator) { result = mutator(result); store.put(result, 'current'); }
-      } catch (error) { failure = error; tx.abort(); }
-    };
-    tx.oncomplete = () => resolve(result);
-    tx.onabort = tx.onerror = () => reject(failure || Error('Could not save. Browser storage may be full or blocked. Export a backup before clearing any data.'));
-  });
+  const user = await signedUser();
+  if (owner && owner !== user.id) resetCloudState();
+  owner = user.id;
+  const started = epoch;
+  if (!mutator) {
+    const { data, error } = await backend().from('trade_journals').select('payload,revision').eq('owner_id', user.id).maybeSingle();
+    if (started !== epoch) throw Error('Account changed during sync. Try again.');
+    if (error) throw Error(error.message);
+    revision = data?.revision || 0;
+    snapshot = data?.payload || { settings: structuredClone(defaultSettings), entries: [] };
+    return structuredClone(snapshot);
+  }
+  if (!snapshot) throw Error('Load the cloud journal before saving.');
+  const next = mutator(structuredClone(snapshot));
+  if (new TextEncoder().encode(JSON.stringify(next)).length > 60 * 1024 * 1024) throw Error('This journal reached the 60 MB limit. Export a backup and remove unused screenshots before adding more.');
+  const { data, error } = await backend().rpc('save_trade_journal', { expected_revision: revision, journal: next });
+  if (started !== epoch) throw Error('Account changed during save. Sign in again to review the saved result.');
+  if (error) throw Error(error.message.includes('SYNC_CONFLICT') ? 'Another device changed this journal. Your form has not been saved. Copy your notes, close the form, and press Sync now before trying again.' : `Cloud save failed: ${error.message}. Keep your form open.`);
+  revision = Number(data); snapshot = next;
+  return structuredClone(next);
+}
+
+export async function cloudChanged() {
+  const user = await signedUser();
+  const { data, error } = await backend().from('trade_journals').select('revision').eq('owner_id', user.id).maybeSingle();
+  if (error) throw Error(error.message);
+  return owner !== user.id || snapshot === null || (data?.revision || 0) !== revision;
 }
 
 function screenshot(image) {
@@ -62,8 +72,7 @@ export async function api(url, options = {}) {
     const entry = { ...trade, id: existing?.id || crypto.randomUUID(), created: existing?.created || new Date().toISOString(), updated: new Date().toISOString(), images: [...keep, ...images] };
     return { ...db, entries: existing ? db.entries.map(e => e.id === entry.id ? entry : e) : [entry, ...db.entries] };
   });
-  // Best effort: browsers may still evict storage. Backups remain necessary.
-  if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+
   return { ok: true };
 }
 

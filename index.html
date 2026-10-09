@@ -6,10 +6,17 @@
   <title>Trade Notebook</title>
   <link rel="icon" href="./favicon.svg">
   <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
   <script type="module" src="./app.js"></script>
 </head>
 <body>
-  <div class="workspace">
+  <section id="auth-screen" class="auth-screen">
+    <div class="auth-card"><div class="eyebrow">TRADE NOTEBOOK</div><h1>Your private trading workspace</h1><p>Sign in on any device to access your trades, notes, screenshots and P&L calendar.</p>
+    <form id="auth-form"><label>Email<input type="email" id="auth-email" autocomplete="username" required></label><label>Password<input type="password" id="auth-password" autocomplete="current-password" minlength="8" required></label><button class="primary" id="auth-submit" type="submit">Sign in</button></form>
+    <button class="secondary" id="signup">Create account</button><button class="secondary" id="reset-password">Forgot password</button>
+    <p id="auth-message" role="status"></p><p class="helper">Your account has its own journal. Never share your password.</p></div>
+  </section>
+  <div class="workspace" id="journal-workspace" hidden>
     <aside>
       <div class="brand"><span class="brand-icon">↗</span><div>Trade Notebook<small>Personal workspace</small></div></div>
       <div class="workspace-name">My trading journal</div>
@@ -17,15 +24,16 @@
         <button data-view="live" class="active">Trading journal</button>
         <button data-view="backtest">Backtesting lab</button>
         <button data-view="gallery">Chart library</button>
+        <button id="sync-now">Sync now</button><button id="sign-out">Sign out</button>
         <button id="customize">Customize</button>
 <button id="export-backup">Export backup</button>
 <button id="restore-backup">Restore backup</button>
 <input type="file" id="backup-file" accept=".json,application/json" hidden>
       </nav>
-      <div class="sidebar-bottom">Saved in this browser<small>No sign-in. Back up regularly.</small></div>
+      <div class="sidebar-bottom"><span id="account-email"></span><small>Private cloud journal</small></div>
     </aside>
     <main>
-      <header class="topbar"><span>Workspace / <span id="breadcrumb">Trading journal</span></span><span class="private">Browser storage</span></header>
+      <header class="topbar"><span>Workspace / <span id="breadcrumb">Trading journal</span></span><span class="private"><span id="sync-status">Cloud sync</span></span></header>
       <div class="page">
         <div class="page-heading"><div><div class="eyebrow">YOUR TRADING WORKSPACE</div><h1 id="heading">Trading journal</h1><p id="subtitle">Every trade, its reasoning, and what comes next.</p></div><button class="primary" id="new-entry">+ New trade</button></div>
         <div id="load-error" class="error" role="alert" hidden></div>
@@ -58,6 +66,7 @@
     <h2 id="settings-title">Make it yours</h2><p class="dialog-description">One option per line. Saved trades keep their original values.</p>
     <form id="settings-form"><div class="form-grid" id="settings-fields"></div><p class="helper">Currency labels do not convert saved amounts. Time zone labels do not shift recorded times. Enter timestamps in your chosen zone.</p><p id="settings-error" class="error" role="alert" hidden></p><button class="primary" type="submit">Save customization</button></form>
   </dialog>
+  <dialog id="password-dialog" class="settings-dialog"><h2>Set a new password</h2><form id="password-form"><label>New password<input id="new-password" type="password" minlength="8" autocomplete="new-password" required></label><button class="primary" type="submit">Update password</button><p id="password-message" role="status"></p></form></dialog>
   <dialog id="day-dialog" class="settings-dialog" aria-labelledby="day-title"><button class="close-dialog" data-close="day-dialog" aria-label="Close daily trades">×</button><h2 id="day-title"></h2><div id="day-trades"></div></dialog>
   <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-title"><button class="close-dialog" data-close="image-dialog" aria-label="Close image">×</button><h2 id="image-title">Chart screenshot</h2><img id="full-image" alt="Chart screenshot"></dialog>
 </body>
