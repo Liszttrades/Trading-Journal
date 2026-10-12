@@ -1,8 +1,9 @@
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=risk-playbook-20261012';
+import { createChartEditor } from './chart-editor.js?v=chart-editor-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=chart-editor-20261012';
 import { backend } from './cloud.js';
-import { resetCloudState, cloudChanged } from './storage.js?v=risk-playbook-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=chart-editor-20261012';
 import { monthSummary } from './calendar.js';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=risk-playbook-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=chart-editor-20261012';
 import { fresh, nextScalp, journalNow, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
@@ -325,10 +326,8 @@ document.addEventListener('click', event => {
   if (button.hasAttribute('data-new-entry')) openEntry();
   if (button.dataset.close && !busy) $(`#${button.dataset.close}`).close();
   if (button.dataset.image) {
-    $('#image-title').textContent = button.dataset.imageName || 'Chart screenshot';
-    $('#full-image').src = imageURL(button.dataset.image, database);
-    $('#full-image').alt = button.dataset.imageName || 'Chart screenshot';
-    $('#image-dialog').showModal();
+    const image = database.entries.flatMap(entry => entry.images).find(image => image.id === button.dataset.image);
+    if (image) chartEditor.open(image);
   }
   if (button.dataset.removeImage) { removedImages.push(button.dataset.removeImage); renderAttachments(); }
   if (button.dataset.removeFile !== undefined) { files.splice(Number(button.dataset.removeFile), 1); renderAttachments(); }
@@ -463,4 +462,9 @@ document.addEventListener('click', event => {
     form.elements.exitTime.value = now < form.elements.entryTime.value ? form.elements.entryTime.value : now;
   }
   if (button.dataset.timeAction === 'copy') form.elements.exitTime.value = form.elements.entryTime.value;
+});
+
+const chartEditor = createChartEditor(async (imageId, annotations) => {
+  await api('/api/annotations', { method: 'PUT', body: JSON.stringify({ imageId, annotations }) });
+  await load();
 });

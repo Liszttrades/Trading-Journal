@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trade Notebook</title>
   <link rel="icon" href="./favicon.svg">
-  <link rel="stylesheet" href="./style.css?v=risk-playbook-20261012">
+  <link rel="stylesheet" href="./style.css?v=chart-editor-20261012">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
-  <script type="module" src="./app.js?v=risk-playbook-20261012"></script>
+  <script type="module" src="./app.js?v=chart-editor-20261012"></script>
 </head>
 <body>
   <section id="auth-screen" class="auth-screen">
@@ -59,6 +59,6 @@
   </dialog>
   <dialog id="password-dialog" class="settings-dialog"><h2>Set a new password</h2><form id="password-form"><label>New password<input id="new-password" type="password" minlength="8" autocomplete="new-password" required></label><button class="primary" type="submit">Update password</button><p id="password-message" role="status"></p></form></dialog>
   <dialog id="day-dialog" class="settings-dialog" aria-labelledby="day-title"><button class="close-dialog" data-close="day-dialog" aria-label="Close daily trades">×</button><h2 id="day-title"></h2><div id="day-trades"></div></dialog>
-  <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-title"><button class="close-dialog" data-close="image-dialog" aria-label="Close image">×</button><h2 id="image-title">Chart screenshot</h2><img id="full-image" alt="Chart screenshot"></dialog>
+  <dialog id="image-dialog" class="image-dialog" aria-labelledby="image-title"><button class="close-dialog" data-close="image-dialog" aria-label="Close image">×</button><h2 id="image-title">Chart review</h2><div class="chart-toolbar"><button type="button" class="secondary" data-chart-action="out">−</button><span id="chart-zoom">100%</span><button type="button" class="secondary" data-chart-action="in">+</button><button type="button" class="secondary" data-chart-action="fit">Fit</button><select id="chart-tool" aria-label="Drawing tool"><option value="pan">Pan / inspect</option><option value="line">Line</option><option value="pen">Freehand</option><option value="rect">Rectangle</option><option value="ellipse">Circle / ellipse</option><option value="text">Text</option></select><input id="chart-color" type="color" value="#22d3ee" aria-label="Annotation color"><select id="chart-width" aria-label="Line thickness"><option>2</option><option>4</option><option>8</option></select><input id="chart-text" maxlength="500" placeholder="Text label, then click chart" aria-label="Chart text label"><button type="button" class="secondary" data-chart-action="undo">Undo</button><button type="button" class="secondary" data-chart-action="redo">Redo</button><button type="button" class="secondary" data-chart-action="clear">Clear marks</button><button type="button" class="secondary" data-chart-action="download">Download PNG</button><button type="button" class="primary" data-chart-action="save">Save annotations</button></div><div id="chart-viewport"><canvas id="chart-canvas" aria-label="Chart annotation canvas"></canvas></div><div class="chart-review-footer"><p id="chart-status" role="status"></p><span id="chart-position"></span></div></dialog>
 </body>
 </html>

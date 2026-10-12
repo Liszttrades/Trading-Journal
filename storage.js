@@ -1,3 +1,4 @@
+import { validateAnnotations } from './annotations.js?v=chart-editor-20261012';
 import { defaultSettings } from './model.js';
 import { validateTrade, validateSettings } from './validation.js?v=risk-playbook-20261012';
 
@@ -51,6 +52,16 @@ function screenshot(image) {
 export async function api(url, options = {}) {
   if (url === '/api/journal') return transaction();
   const input = JSON.parse(options.body);
+  if (url === '/api/annotations') {
+    const annotations = validateAnnotations(input.annotations);
+    await transaction(db => {
+      let found = false;
+      for (const entry of db.entries) for (const image of entry.images) if (image.id === input.imageId) { image.annotations = annotations; found = true; }
+      if (!found) throw Error('Chart no longer exists. Sync and try again.');
+      return db;
+    });
+    return { ok: true };
+  }
   if (url === '/api/settings') {
     const settings = validateSettings(input);
     await transaction(db => ({ ...db, settings }));
@@ -100,7 +111,7 @@ export async function restoreBackup(file) {
     if (!Array.isArray(entry.images) || entry.images.length > 4) throw Error('Invalid backup screenshots.');
     const images = entry.images.map(image => {
       if (typeof image.data !== 'string' || !/^data:image\/(png|jpeg|webp);base64,/.test(image.data)) throw Error('Invalid backup image.');
-      return screenshot({ name: image.name, base64: image.data.split(',')[1] });
+      return { ...screenshot({ name: image.name, base64: image.data.split(',')[1] }), annotations: validateAnnotations(image.annotations || []) };
     });
     return { ...trade, id: crypto.randomUUID(), created: new Date().toISOString(), updated: new Date().toISOString(), images };
   });

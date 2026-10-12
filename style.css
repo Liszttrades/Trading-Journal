@@ -1075,3 +1075,14 @@ dialog.entry-dialog { background:#111!important; border:1px solid #333!important
 .risk-plan .form-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
 @media(max-width:900px) { .plan-columns { grid-template-columns:1fr; } .risk-plan .form-grid { grid-template-columns:1fr; } }
 @media(max-width:700px) { .plan-header { align-items:flex-start; } .plan-card { padding:20px; } }
+
+dialog.image-dialog { width:96vw!important; max-width:none!important; height:94vh; max-height:94vh!important; padding:22px!important; border:1px solid #383838; border-radius:22px!important; background:#111; overflow:hidden; }
+.image-dialog h2 { font-size:18px; overflow-wrap:anywhere; }
+.chart-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0; }
+.chart-toolbar button,.chart-toolbar select,.chart-toolbar input { border-radius:9px; font-size:12px; padding:8px; }
+#chart-color { width:40px; height:34px; padding:3px; }
+#chart-text { width:200px; }
+#chart-viewport { height:calc(100% - 155px); min-height:150px; position:relative; background:#080808; border:1px solid #292929; border-radius:12px; overflow:hidden; touch-action:none; cursor:crosshair; }
+#chart-canvas { position:absolute; top:0; left:0; transform-origin:0 0; max-width:none; }
+.chart-review-footer { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:#aaa; margin-top:10px; }
+@media(max-width:900px) { dialog.image-dialog { padding:16px!important; } #chart-viewport { height:calc(100% - 240px); } .chart-toolbar { gap:5px; } }
