@@ -1,5 +1,5 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep your existing config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes required.
+Extract and upload ALL files to your Trading-Journal GitHub repository root, replacing matching files. Keep your current config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes needed.
 
-From/To replaced with a date preset dropdown: All time, Today, Last 7 days, Last 30 days and Last 90 days. Ranges include today and follow your configured journal time zone. Setup, Session, Outcome and Date menus now include icons, descriptive subtitles and selected checkmarks. Search icon overlap fixed. Reset clears all filters. CSV remains removed.
+Performance breakdown redesigned: Setup/Session/Pair tabs with category counts, one readable full-width comparison, totals, leading group summary, explicit highest net P&L ordering, aligned monetary values and win-rate bars. Mobile uses stacked rows. Missing categories are labeled clearly. Existing date/dropdown improvements and manual batch entry included; CSV remains removed.
 
-JavaScript syntax, local dependencies, HTML IDs and date calculations checked. Browser appearance and live cloud were not verified here.
+JavaScript syntax and dependencies checked. Browser appearance and live cloud were not tested here.

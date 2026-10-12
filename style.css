@@ -1291,3 +1291,57 @@ dialog.batch-dialog { max-width:1500px!important; width:95vw!important; max-heig
 .filter-menu button[aria-selected="true"] small { color:#aaa; }
 @media(max-width:1250px) { .filter-controls { grid-template-columns:repeat(3,minmax(0,1fr)); } .filter-search { grid-column:span 2; } }
 @media(max-width:700px) { .filter-controls { grid-template-columns:repeat(2,minmax(0,1fr)); } .filter-search { grid-column:1/-1; } .filter-menu { min-width:100%; width:230px; max-width:calc(100vw - 64px); } .filter-field:nth-last-of-type(1) .filter-menu { left:auto; right:0; } }
+
+/* Readable, full-width performance comparisons */
+#performance-breakdowns { padding:24px; border-radius:20px; background:#101010; }
+#performance-analysis { display:block; }
+#performance-breakdowns .section-heading { margin-bottom:22px; align-items:center; gap:12px; flex-wrap:wrap; }
+#performance-breakdowns .section-heading h2 { font-size:18px; }
+#performance-breakdowns .section-heading > span { font-size:12px; color:#888; }
+.breakdown-tabs { display:flex; gap:6px; border-bottom:1px solid #303030; margin-bottom:24px; }
+.breakdown-tabs button { display:flex; align-items:center; gap:9px; padding:13px 19px; border:0; border-bottom:2px solid transparent; border-radius:9px 9px 0 0; background:transparent; color:#8e8e8e; font-size:13px; }
+.breakdown-tabs button:hover { background:#1c1c1c; color:#eee; }
+.breakdown-tabs button[aria-selected="true"] { background:#1b1b1b; border-bottom-color:#eee; color:white; }
+.breakdown-tabs button > span { padding:3px 6px; border-radius:5px; font-size:10px; background:#292929; color:#aaa; }
+.breakdown-tabs button:focus-visible { outline:2px solid #aaa; outline-offset:2px; }
+.breakdown-overview { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:20px; }
+.breakdown-intro { display:flex; gap:14px; align-items:center; }
+.breakdown-icon { display:grid; place-items:center; width:44px; height:44px; border:1px solid #393939; background:#1c1c1c; border-radius:13px; flex-shrink:0; }
+.breakdown-icon svg { width:23px; height:23px; fill:none; stroke:#ccc; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+.breakdown-intro h3 { margin:0 0 6px; font-size:15px; font-weight:600; }
+.breakdown-intro p { margin:0; font-size:12px; color:#999; }
+.breakdown-total { text-align:right; }
+.breakdown-total > span,.breakdown-total > small { display:block; color:#999; font-size:11px; }
+.breakdown-total strong { display:block; margin:5px 0; font-size:25px; font-weight:600; font-variant-numeric:tabular-nums; }
+.breakdown-insight { display:flex; align-items:center; flex-wrap:wrap; gap:12px; padding:14px 17px; background:#191919; border:1px solid #303030; border-radius:12px; margin:0 0 24px; }
+.breakdown-insight > span { color:#909090; font-size:11px; text-transform:uppercase; letter-spacing:.07em; }
+.breakdown-insight strong { font-size:13px; }
+.breakdown-insight small { margin-left:auto; font-size:12px; color:#aaa; }
+#performance-analysis .breakdown-table { width:100%; min-width:0; table-layout:fixed; border-collapse:collapse; }
+#performance-analysis .breakdown-table thead th { padding:12px 16px; background:#181818; color:#aaa; font-size:11px; font-weight:500; text-align:right; border-bottom:1px solid #303030; white-space:normal; }
+#performance-analysis .breakdown-table thead th:first-child { width:27%; text-align:left; border-radius:9px 0 0 0; }
+#performance-analysis .breakdown-table tbody th,#performance-analysis .breakdown-table tbody td { padding:18px 16px; border-bottom:1px solid #282828; text-align:right; font-size:13px; font-variant-numeric:tabular-nums; white-space:normal; overflow-wrap:anywhere; }
+#performance-analysis .breakdown-table tbody th { text-align:left; color:#eee; font-weight:500; }
+.breakdown-table tbody tr:hover { background:#171717; }
+.breakdown-rank { display:inline-block; margin-right:14px; font-size:11px; color:#707070; font-weight:400; }
+.breakdown-money { font-weight:500; }
+.win-rate-copy { display:block; }
+.win-rate-track { display:block; height:3px; width:66px; max-width:100%; background:#303030; border-radius:3px; margin:7px 0 0 auto; overflow:hidden; }
+.win-rate-track > span { display:block; height:100%; background:#bcbcbc; border-radius:3px; }
+.breakdown-note { color:#888; font-size:11px; line-height:1.7; margin:18px 0 0; }
+.breakdown-empty { padding:35px!important; color:#999; text-align:center!important; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media(max-width:700px) {
+ #performance-breakdowns { padding:17px; }
+ .breakdown-overview { align-items:flex-start; flex-direction:column; gap:18px; }
+ .breakdown-total { text-align:left; }
+ .breakdown-insight small { margin-left:0; width:100%; }
+ .breakdown-tabs button { padding:12px 14px; }
+ #performance-analysis .breakdown-table,#performance-analysis .breakdown-table tbody { display:block; }
+ .breakdown-table thead { display:none; }
+ #performance-analysis .breakdown-table tbody tr { display:grid; grid-template-columns:1fr 1fr; gap:14px; border:1px solid #303030; padding:16px; border-radius:12px; margin-bottom:12px; background:#141414; }
+ #performance-analysis .breakdown-table tbody th { grid-column:1/-1; padding:0 0 12px; border-bottom:1px solid #303030; }
+ #performance-analysis .breakdown-table tbody td { text-align:left; border:0; padding:0; }
+ .breakdown-table td[data-label]::before { content:attr(data-label); display:block; color:#999; font-size:10px; font-weight:400; margin-bottom:6px; }
+ .win-rate-track { margin-left:0; }
+}

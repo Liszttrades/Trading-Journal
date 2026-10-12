@@ -1,14 +1,14 @@
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=date-menus-20261012';
-import { createWorkbench } from './workbench.js?v=date-menus-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=date-menus-20261012';
-import { createRoadmap } from './roadmap.js?v=date-menus-20261012';
-import { createChartEditor } from './chart-editor.js?v=date-menus-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=date-menus-20261012';
-import { backend } from './cloud.js?v=date-menus-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=date-menus-20261012';
-import { monthSummary } from './calendar.js?v=date-menus-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=date-menus-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=date-menus-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=readable-performance-20261012';
+import { createWorkbench } from './workbench.js?v=readable-performance-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=readable-performance-20261012';
+import { createRoadmap } from './roadmap.js?v=readable-performance-20261012';
+import { createChartEditor } from './chart-editor.js?v=readable-performance-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=readable-performance-20261012';
+import { backend } from './cloud.js?v=readable-performance-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=readable-performance-20261012';
+import { monthSummary } from './calendar.js?v=readable-performance-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=readable-performance-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=readable-performance-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);

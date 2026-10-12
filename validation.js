@@ -1,4 +1,4 @@
-import { net } from './model.js?v=date-menus-20261012';
+import { net } from './model.js?v=readable-performance-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
