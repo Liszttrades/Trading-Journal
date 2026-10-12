@@ -1181,3 +1181,8 @@ dialog.settings-dialog { background:#0a0a0a!important; border:1px solid #2c2c2c!
 .calendar-day.profit-day { background:#162b22; border-color:#2d493b; }
 .calendar-day.loss-day { background:#2b1d21; border-color:#4b3037; }
 .calendar-day.flat-day { background:#191b1f; }
+
+/* Match trading-plan fields to the black customization controls. */
+#rules-panel .plan-card textarea,
+#rules-panel .plan-card input,
+#rules-panel .plan-card select { background:#111!important; border:1px solid #333!important; color:#eee!important; border-radius:10px!important; }
