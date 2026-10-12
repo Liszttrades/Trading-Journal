@@ -32,3 +32,11 @@ export function fresh(kind, pair) {
     quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: ''
   };
 }
+
+// Keep the day's repeated choices, never the previous trade's result or evidence.
+export function nextScalp(previous) {
+  const trade = fresh(previous.kind, previous.pair);
+  for (const key of ['direction', 'status', 'setup', 'session', 'multiplier']) trade[key] = previous[key];
+  trade.entryTime = previous.exitTime || previous.entryTime;
+  return trade;
+}

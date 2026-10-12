@@ -46,7 +46,7 @@
   </div>
   <dialog id="entry-dialog" class="entry-dialog" aria-labelledby="entry-title">
     <button class="close-dialog" data-close="entry-dialog" aria-label="Close entry">×</button>
-    <h2 id="entry-title">New journal entry</h2><p class="dialog-description">Save your reasoning, results, and chart evidence.</p>
+    <h2 id="entry-title">New journal entry</h2><p class="dialog-description">Log each scalp separately. Save &amp; add another keeps the day, pair, setup, and session; enter the next trade’s times and result.</p>
     <form id="entry-form">
       <div class="form-grid" id="core-fields"></div>
       <p class="helper">Actual net P&L already includes costs. Leave it blank to calculate from prices below.</p>
@@ -58,7 +58,7 @@
       <label class="upload">Choose screenshots<input type="file" id="upload" multiple accept="image/png,image/jpeg,image/webp"></label>
       <div class="attachments" id="attachments"></div>
       <p id="form-error" class="error" role="alert" hidden></p>
-      <div class="dialog-actions"><button class="negative secondary" type="button" id="delete-entry" hidden>Delete entry</button><button class="primary" type="submit" id="save-entry">Save entry</button></div>
+      <div class="dialog-actions"><button class="negative secondary" type="button" id="delete-entry" hidden>Delete entry</button><button class="secondary" type="submit" id="save-next">Save &amp; add another</button><button class="primary" type="submit" id="save-entry">Save entry</button></div>
     </form>
   </dialog>
   <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">

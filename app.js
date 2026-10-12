@@ -2,7 +2,7 @@ import { backend } from './cloud.js';
 import { resetCloudState, cloudChanged } from './storage.js';
 import { monthSummary } from './calendar.js';
 import { api, imageURL, exportBackup, restoreBackup } from './storage.js';
-import { fresh, net, risk } from './model.js';
+import { fresh, nextScalp, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -136,12 +136,12 @@ function number(label, name, value, min = '') {
   return `<label>${label}<input type="number" step="any" name="${name}" value="${value ?? ''}" ${min !== '' ? `min="${min}"` : ''}></label>`;
 }
 
-function openEntry(entry = null) {
+function openEntry(entry = null, draft = null) {
   editing = entry;
   files = [];
   removedImages = [];
   deleting = false;
-  const trade = entry || fresh(view === 'backtest' ? 'backtest' : 'live', database.settings.pairs[0]);
+  const trade = entry || draft || fresh(view === 'backtest' ? 'backtest' : 'live', database.settings.pairs[0]);
   const settings = database.settings;
   $('#entry-title').textContent = entry ? 'Review entry' : 'New journal entry';
   $('#core-fields').innerHTML = [
@@ -161,6 +161,7 @@ function openEntry(entry = null) {
   $('#entry-form').elements.notes.value = trade.notes;
   $('#entry-form').elements.lesson.value = trade.lesson;
   $('#upload').value = '';
+  $('#save-next').hidden = Boolean(entry);
   $('#delete-entry').hidden = !entry;
   $('#delete-entry').textContent = 'Delete entry';
   message('#form-error');
@@ -179,6 +180,7 @@ function renderAttachments() {
 function setBusy(value) {
   busy = value;
   $('#save-entry').disabled = value;
+  $('#save-next').disabled = value;
   $('#delete-entry').disabled = value;
   $('#save-entry').textContent = value ? 'Saving…' : 'Save entry';
 }
@@ -195,6 +197,7 @@ async function fileData(file) {
 $('#entry-form').addEventListener('submit', async event => {
   event.preventDefault();
   if (busy) return;
+  const addAnother = event.submitter?.id === 'save-next' && !editing;
   setBusy(true);
   message('#form-error');
   const form = new FormData(event.currentTarget);
@@ -206,6 +209,11 @@ $('#entry-form').addEventListener('submit', async event => {
     await api('/api/entries', { method: editing ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trade, id: editing?.id, images, removeImages: removedImages }) });
     $('#entry-dialog').close();
     await load();
+    if (addAnother) {
+      openEntry(null, nextScalp(trade));
+      $('#entry-title').textContent = 'Saved · Next scalp';
+      $('#entry-form').elements.entryTime.focus();
+    }
   } catch (error) {
     message('#form-error', error.message);
   } finally {
