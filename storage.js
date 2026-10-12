@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=complete-journal-20261012';
-import { validateRoadmap } from './roadmap.js?v=complete-journal-20261012';
-import { validateAnnotations } from './annotations.js?v=complete-journal-20261012';
-import { defaultSettings } from './model.js?v=complete-journal-20261012';
-import { validateTrade, validateSettings } from './validation.js?v=complete-journal-20261012';
+import {prepareBatch} from './insights.js?v=workspace-layout-20261012';
+import { validateRoadmap } from './roadmap.js?v=workspace-layout-20261012';
+import { validateAnnotations } from './annotations.js?v=workspace-layout-20261012';
+import { defaultSettings } from './model.js?v=workspace-layout-20261012';
+import { validateTrade, validateSettings } from './validation.js?v=workspace-layout-20261012';
 
-import { backend, signedUser } from './cloud.js?v=complete-journal-20261012';
+import { backend, signedUser } from './cloud.js?v=workspace-layout-20261012';
 let snapshot = null;
 let revision = 0;
 let owner = null;

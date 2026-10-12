@@ -1,13 +1,13 @@
-import { createWorkbench } from './workbench.js?v=complete-journal-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=complete-journal-20261012';
-import { createRoadmap } from './roadmap.js?v=complete-journal-20261012';
-import { createChartEditor } from './chart-editor.js?v=complete-journal-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=complete-journal-20261012';
-import { backend } from './cloud.js?v=complete-journal-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=complete-journal-20261012';
-import { monthSummary } from './calendar.js?v=complete-journal-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=complete-journal-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=complete-journal-20261012';
+import { createWorkbench } from './workbench.js?v=workspace-layout-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=workspace-layout-20261012';
+import { createRoadmap } from './roadmap.js?v=workspace-layout-20261012';
+import { createChartEditor } from './chart-editor.js?v=workspace-layout-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=workspace-layout-20261012';
+import { backend } from './cloud.js?v=workspace-layout-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=workspace-layout-20261012';
+import { monthSummary } from './calendar.js?v=workspace-layout-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=workspace-layout-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=workspace-layout-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -70,6 +70,7 @@ function render() {
   $('#journal-filters').hidden = isTools || view === 'rules';
   $('#daily-status').hidden = view !== 'live';
   $('#advanced-analysis').hidden = !['live','backtest'].includes(view);
+  $('#performance-breakdowns').hidden = !['live','backtest'].includes(view);
   $('#batch-open').hidden = isTools || view === 'rules';
   if (view === 'live') workbench.daily();
   if (isTools) {

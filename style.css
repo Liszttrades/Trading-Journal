@@ -1225,6 +1225,16 @@ dialog.batch-dialog { max-width:1500px!important; width:95vw!important; max-heig
 .skip-duplicates input { width:auto; }
 .batch-controls { display:flex; gap:10px; margin:14px 0; }
 #batch-message { margin:16px 0; color:#cdb58a; }
-#csv-mapping { margin-top:20px; }
+
 @media(max-width:1100px) { .journal-filters { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(max-width:700px) { .journal-filters { grid-template-columns:1fr 1fr; } .advanced-metrics { grid-template-columns:1fr 1fr; } .daily-monitor { gap:10px; font-size:13px; } }
+
+/* Workspace organization */
+.heading-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.records .journal-filters { margin:0 0 22px; padding:18px; border:1px solid #292929; border-radius:14px; background:#0b0b0b; }
+#performance-breakdowns { margin:24px 0; }
+#performance-analysis { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+#performance-analysis .analysis-section { margin:0; min-width:0; background:#0b0b0b; }
+#performance-analysis > .helper { grid-column:1/-1; margin:0; }
+@media(max-width:1100px) { #performance-analysis { grid-template-columns:1fr; } }
+@media(max-width:600px) { .heading-actions { width:100%; } .heading-actions button { flex:1; } .records .journal-filters { padding:12px; } }
