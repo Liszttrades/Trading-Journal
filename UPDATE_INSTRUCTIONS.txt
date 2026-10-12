@@ -1,5 +1,5 @@
-Extract and upload ALL files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep your existing config.js. Wait for GitHub Pages deployment and hard refresh (Ctrl+Shift+R). No SQL changes needed.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep your existing config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes required.
 
-Filter design: refined black panel, heading and outline icons, active filter count, wider search, dark custom Setup/Session/Outcome dropdowns, selected checkmarks, keyboard navigation and focus styling, responsive layout. CSV remains removed; manual batch entry remains.
+From/To replaced with a date preset dropdown: All time, Today, Last 7 days, Last 30 days and Last 90 days. Ranges include today and follow your configured journal time zone. Setup, Session, Outcome and Date menus now include icons, descriptive subtitles and selected checkmarks. Search icon overlap fixed. Reset clears all filters. CSV remains removed.
 
-JavaScript syntax, HTML structure and local dependencies verified. Browser appearance and live cloud were not verified in this environment.
+JavaScript syntax, local dependencies, HTML IDs and date calculations checked. Browser appearance and live cloud were not verified here.

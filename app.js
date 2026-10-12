@@ -1,14 +1,14 @@
-import {syncFilterMenus} from './filters.js?v=filter-design-20261012';
-import { createWorkbench } from './workbench.js?v=filter-design-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=filter-design-20261012';
-import { createRoadmap } from './roadmap.js?v=filter-design-20261012';
-import { createChartEditor } from './chart-editor.js?v=filter-design-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=filter-design-20261012';
-import { backend } from './cloud.js?v=filter-design-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=filter-design-20261012';
-import { monthSummary } from './calendar.js?v=filter-design-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=filter-design-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=filter-design-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=date-menus-20261012';
+import { createWorkbench } from './workbench.js?v=date-menus-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=date-menus-20261012';
+import { createRoadmap } from './roadmap.js?v=date-menus-20261012';
+import { createChartEditor } from './chart-editor.js?v=date-menus-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=date-menus-20261012';
+import { backend } from './cloud.js?v=date-menus-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=date-menus-20261012';
+import { monthSummary } from './calendar.js?v=date-menus-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=date-menus-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=date-menus-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -107,8 +107,9 @@ function render() {
     control.innerHTML=`<option value="">${label}</option>`+options(choices,selectedValue);
     control.value=selectedValue;
   }
+  applyDatePreset(database.settings.timezone);
   syncFilterMenus();
-  const activeFilters=['#trade-search','#filter-from','#filter-to','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0);
+  const activeFilters=['#trade-search','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-range').value!=='all'?1:0) + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0);
   $('#filter-state').textContent=activeFilters?`${activeFilters} active filter${activeFilters===1?'':'s'}`:'All trades';
   $('#filter-state').classList.toggle('has-filters',Boolean(activeFilters));
   const selected = filterEntries(database.entries,{kind:view==='gallery'?'all':view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
@@ -546,10 +547,10 @@ new ResizeObserver(records => {
 }).observe($('#curve'));
 
 const workbench = createWorkbench({getDB:()=>database,api,reload:load,openTrade:draft=>openEntry(null,draft),getView:()=>view});
-for (const selector of ['#filter-from','#filter-to','#filter-setup','#filter-session','#filter-outcome']) $(selector).addEventListener('change',render);
+for (const selector of ['#filter-range','#filter-setup','#filter-session','#filter-outcome']) $(selector).addEventListener('change',render);
 let searchTimer;
 $('#trade-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(render,180);});
-$('#clear-filters').addEventListener('click',()=>{for(const s of ['#filter-from','#filter-to','#filter-setup','#filter-session','#trade-search']) $(s).value='';$('#filter-outcome').value='all';$('#pair-filter').value='All pairs';render();});
+$('#clear-filters').addEventListener('click',()=>{for(const s of ['#filter-from','#filter-to','#filter-setup','#filter-session','#trade-search']) $(s).value='';$('#filter-outcome').value='all';$('#filter-range').value='all';$('#pair-filter').value='All pairs';render();});
 $('#entry-form').addEventListener('input',updateTradeWarnings);
 $('#entry-form').addEventListener('change',updateTradeWarnings);
 function updateTradeWarnings(){
