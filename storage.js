@@ -1,9 +1,10 @@
-import { validateRoadmap } from './roadmap.js?v=minimal-editor-20261012';
-import { validateAnnotations } from './annotations.js?v=minimal-editor-20261012';
-import { defaultSettings } from './model.js';
-import { validateTrade, validateSettings } from './validation.js?v=risk-playbook-20261012';
+import {prepareBatch} from './insights.js?v=complete-journal-20261012';
+import { validateRoadmap } from './roadmap.js?v=complete-journal-20261012';
+import { validateAnnotations } from './annotations.js?v=complete-journal-20261012';
+import { defaultSettings } from './model.js?v=complete-journal-20261012';
+import { validateTrade, validateSettings } from './validation.js?v=complete-journal-20261012';
 
-import { backend, signedUser } from './cloud.js';
+import { backend, signedUser } from './cloud.js?v=complete-journal-20261012';
 let snapshot = null;
 let revision = 0;
 let owner = null;
@@ -76,6 +77,21 @@ export async function api(url, options = {}) {
     const settings = validateSettings(input);
     await transaction(db => ({ ...db, settings }));
     return { ok: true };
+  }
+  if (url === '/api/batch') {
+    if (!Array.isArray(input.trades) || !input.trades.length || input.trades.length > 500) throw Error('Add 1–500 trades per batch.');
+    const incoming = input.trades.map((t,i)=>{try{return validateTrade(t);}catch(e){throw Error(`Trade ${i+1}: ${e.message}`);}});
+    let result;
+    await transaction(db=>{
+      const prepared = prepareBatch(db.entries,incoming,input.skipDuplicates !== false);
+      result = { added:prepared.accepted.length, skipped:prepared.skipped };
+      const now = new Date().toISOString();
+      db.entries = [...prepared.accepted.map(trade=>({...trade,id:crypto.randomUUID(),created:now,updated:now,images:[]})),...db.entries];
+      for (const [key,field] of [['pairs','pair'],['setups','setup'],['sessions','session']]) db.settings[key] = [...new Set([...db.settings[key],...prepared.accepted.map(t=>t[field]).filter(Boolean)])].slice(0,80);
+      db.settings = validateSettings(db.settings);
+      return db;
+    });
+    return result;
   }
   if (url !== '/api/entries') throw Error('Unknown operation.');
   if (options.method === 'DELETE') {

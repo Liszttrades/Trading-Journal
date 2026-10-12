@@ -14,13 +14,13 @@ export function net(trade) {
   if (trade.pnl !== null) return trade.pnl;
   if (trade.entry === null || trade.exit === null || trade.quantity === null) return null;
   const direction = trade.direction === 'Long' ? 1 : -1;
-  return (trade.exit - trade.entry) * direction * trade.quantity * trade.multiplier - trade.fees;
+  return (trade.exit - trade.entry) * direction * trade.quantity * trade.multiplier * (trade.fxRate ?? 1) - trade.fees;
 }
 
 export function risk(trade) {
   if (trade.risk !== null) return trade.risk;
   if (trade.entry === null || trade.stop === null || trade.quantity === null) return null;
-  return Math.abs(trade.entry - trade.stop) * trade.quantity * trade.multiplier;
+  return Math.abs(trade.entry - trade.stop) * trade.quantity * trade.multiplier * (trade.fxRate ?? 1);
 }
 
 export function journalNow(timezone = 'Asia/Manila', date = new Date()) {
@@ -40,7 +40,7 @@ export function fresh(kind, pair, timezone = 'Asia/Manila') {
 // Keep the day's repeated choices, never the previous trade's result or evidence.
 export function nextScalp(previous) {
   const trade = fresh(previous.kind, previous.pair);
-  for (const key of ['direction', 'status', 'setup', 'session', 'multiplier']) trade[key] = previous[key];
+  for (const key of ['direction', 'status', 'setup', 'session', 'multiplier', 'fxRate']) if (previous[key] !== undefined) trade[key] = previous[key];
   trade.entryTime = previous.exitTime || previous.entryTime;
   trade.exitTime = trade.entryTime;
   return trade;

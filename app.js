@@ -1,11 +1,13 @@
-import { createRoadmap } from './roadmap.js?v=minimal-editor-20261012';
-import { createChartEditor } from './chart-editor.js?v=minimal-editor-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=minimal-editor-20261012';
-import { backend } from './cloud.js';
-import { resetCloudState, cloudChanged } from './storage.js?v=minimal-editor-20261012';
-import { monthSummary } from './calendar.js';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=minimal-editor-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js';
+import { createWorkbench } from './workbench.js?v=complete-journal-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=complete-journal-20261012';
+import { createRoadmap } from './roadmap.js?v=complete-journal-20261012';
+import { createChartEditor } from './chart-editor.js?v=complete-journal-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=complete-journal-20261012';
+import { backend } from './cloud.js?v=complete-journal-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=complete-journal-20261012';
+import { monthSummary } from './calendar.js?v=complete-journal-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=complete-journal-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=complete-journal-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -63,6 +65,20 @@ function render() {
   document.body.classList.toggle('gallery-view', view === 'gallery');
   $('#pair-chips').hidden = view !== 'gallery';
   $('#pair-filter').hidden = view === 'gallery';
+  const isTools = view === 'tools';
+  $('#tools-panel').hidden = !isTools;
+  $('#journal-filters').hidden = isTools || view === 'rules';
+  $('#daily-status').hidden = view !== 'live';
+  $('#advanced-analysis').hidden = !['live','backtest'].includes(view);
+  $('#batch-open').hidden = isTools || view === 'rules';
+  if (view === 'live') workbench.daily();
+  if (isTools) {
+    $('#heading').textContent = $('#breadcrumb').textContent = 'Account & risk';
+    $('#subtitle').textContent = 'Recorded balance, risk budget, and position sizing.';
+    document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+    document.querySelector('.records').hidden = true; $('#new-entry').hidden = true; $('#rules-panel').hidden = true; $('#performance').hidden = true; $('#pnl-calendar').hidden = true;
+    workbench.tools(); return;
+  }
   $('#rules-panel').hidden = view !== 'rules';
   document.querySelector('.records').hidden = view === 'rules';
   $('#new-entry').hidden = view === 'rules';
@@ -83,7 +99,14 @@ function render() {
   document.querySelectorAll('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === view));
   const currentPair = $('#pair-filter').value || 'All pairs';
   $('#pair-filter').innerHTML = options(['All pairs', ...database.settings.pairs, ...database.entries.map(entry => entry.pair)], currentPair);
-  const selected = database.entries.filter(entry => (view === 'gallery' || entry.kind === view) && (currentPair === 'All pairs' || entry.pair === currentPair));
+  for (const [selector,key,label] of [['#filter-setup','setup','All setups'],['#filter-session','session','All sessions']]) {
+    const control=$(selector),selectedValue=control.value;
+    const choices=[...new Set(database.entries.map(e=>e[key]).filter(Boolean))];
+    control.innerHTML=`<option value="">${label}</option>`+options(choices,selectedValue);
+    control.value=selectedValue;
+  }
+  const selected = filterEntries(database.entries,{kind:view==='gallery'?'all':view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
+  if (view !== 'gallery') workbench.analytics(selected);
   $('#performance').hidden = view === 'gallery';
   $('#pnl-calendar').hidden = view === 'gallery';
   if (view !== 'gallery') renderCalendar(selected);
@@ -180,6 +203,7 @@ function openEntry(entry = null, draft = null) {
   deleting = false;
   const trade = entry || draft || fresh(view === 'backtest' ? 'backtest' : 'live', database.settings.pairs[0], database.settings.timezone);
   const settings = database.settings;
+  if (!entry) trade.equitySnapshot = trade.equitySnapshot ?? equity(database);
   $('#entry-title').textContent = entry ? 'Review entry' : 'New journal entry';
   $('#core-fields').innerHTML = [
     select('Entry type', 'kind', ['live', 'backtest'], trade.kind),
@@ -191,11 +215,16 @@ function openEntry(entry = null, draft = null) {
     select('Setup', 'setup', settings.setups, trade.setup, true),
     select('Session', 'session', settings.sessions, trade.session, true),
     number(`Actual net P&L (${settings.currency})`, 'pnl', trade.pnl),
-    number(`Initial risk (${settings.currency})`, 'risk', trade.risk, 0)
+    number(`Initial risk (${settings.currency})`, 'risk', trade.risk, 0),
+    number(`Equity when entering (${settings.currency})`, 'equitySnapshot', trade.equitySnapshot, 0),
+    number('Recorded leverage (1:x)', 'leverage', trade.leverage, 1)
   ].join('');
   $('#time-zone-note').textContent = `Times use ${settings.timezone}. New entries start with matching entry and exit times; adjust them for the actual trade. Open trades do not count toward realized P&L.`;
-  $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Quantity / units', 'quantity', trade.quantity, 0), number('Contract multiplier', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0)].join('');
+  $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Quantity / units', 'quantity', trade.quantity, 0), number('Contract multiplier', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0), number(`Journal currency per 1 price-currency unit`, 'fxRate', trade.fxRate ?? 1, 0)].join('');
   $('#review-fields').innerHTML = select('Mood', 'mood', settings.moods, trade.mood, true) + select('Followed your rules?', 'rules', ['Yes', 'No'], trade.rules, true);
+  $('#entry-form').elements.mistakes.value = (trade.mistakes || []).join('; ');
+  $('#mistake-options').innerHTML = (settings.mistakeTags || []).map(t=>`<option value="${escape(t)}"></option>`).join('');
+  $('#trade-warnings').hidden=true;
   $('#entry-form').elements.notes.value = trade.notes;
   $('#entry-form').elements.lesson.value = trade.lesson;
   $('#upload').value = '';
@@ -204,6 +233,7 @@ function openEntry(entry = null, draft = null) {
   $('#delete-entry').textContent = 'Delete entry';
   message('#form-error');
   renderAttachments();
+  updateTradeWarnings();
   $('#entry-dialog').showModal();
 }
 
@@ -241,7 +271,8 @@ $('#entry-form').addEventListener('submit', async event => {
   const form = new FormData(event.currentTarget);
   const trade = {};
   for (const key of ['kind', 'pair', 'direction', 'status', 'entryTime', 'exitTime', 'setup', 'session', 'mood', 'rules', 'notes', 'lesson']) trade[key] = String(form.get(key) || '');
-  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'equitySnapshot', 'leverage']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  trade.mistakes=String(form.get('mistakes')||'').split(';').map(t=>t.trim()).filter(Boolean);
   try {
     const images = await Promise.all(files.map(fileData));
     await api('/api/entries', { method: editing ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trade, id: editing?.id, images, removeImages: removedImages }) });
@@ -286,7 +317,7 @@ $('#delete-entry').addEventListener('click', async () => {
 
 $('#customize').addEventListener('click', () => {
   const settings = database.settings;
-  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape(settings[key].join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone) + `<label>PHP per 1 unit of result currency<input type="number" step="any" min="0.000001" name="phpRate" value="${settings.phpRates?.[settings.currency] ?? ''}" placeholder="Enter your exchange rate"></label><p class="helper">Manual display conversion. Enter the rate for the selected currency; leave blank to disable. For PHP results, conversion is unnecessary. Rates are saved separately for each currency; original trade amounts stay unchanged.</p>`;
+  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape((settings[key] || []).join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone) + `<label>PHP per 1 unit of result currency<input type="number" step="any" min="0.000001" name="phpRate" value="${settings.phpRates?.[settings.currency] ?? ''}" placeholder="Enter your exchange rate"></label><p class="helper">Manual display conversion. Enter the rate for the selected currency; leave blank to disable. For PHP results, conversion is unnecessary. Rates are saved separately for each currency; original trade amounts stay unchanged.</p>`;
   $('#settings-form').elements.currency.addEventListener('change', event => {
     $('#settings-form').elements.phpRate.value = settings.phpRates?.[event.target.value] ?? '';
   });
@@ -300,7 +331,7 @@ $('#settings-form').addEventListener('submit', async event => {
   button.disabled = true;
   const form = new FormData(event.currentTarget);
   const settings = { ...database.settings };
-  ['pairs', 'setups', 'sessions', 'moods'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
+  ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
   settings.currency = form.get('currency');
   settings.phpRates = { ...database.settings.phpRates };
   if (form.get('phpRate') === '') delete settings.phpRates[settings.currency];
@@ -448,7 +479,7 @@ function renderRules() {
   const rules = { ...defaultRules, ...database.settings.tradingRules };
   const limit = rules.planVersion === 1 ? rules.maxEntries : null;
   const field = (label, name, value, min, max = '') => `<label>${label}<input name="${name}" type="number" min="${min}" ${max ? `max="${max}"` : ''} step="any" value="${value ?? ''}" placeholder="Not set"></label>`;
-  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Leverage & trade risk</h3><div class="form-grid">${field('Maximum leverage (1:x)','maxLeverage',rules.maxLeverage,1,100000)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Leverage and risk limits are saved plan reminders; the journal does not block broker orders or automatically verify these limits.</p></section><p id="rules-message" role="status"></p></form>`;
+  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Leverage & trade risk</h3><div class="form-grid">${field('Maximum leverage (1:x)','maxLeverage',rules.maxLeverage,1,100000)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Leverage and risk limits are saved plan reminders; the journal warns about recorded leverage and risk when available. Broker orders are not blocked.</p></section><p id="rules-message" role="status"></p></form>`;
 
 }
 document.addEventListener('submit', async event => {
@@ -507,3 +538,19 @@ new ResizeObserver(records => {
   const width = Math.round(records[0].contentRect.width);
   if (width > 0 && width !== curveWidth) { curveWidth = width; if (view === 'live' || view === 'backtest') render(); }
 }).observe($('#curve'));
+
+const workbench = createWorkbench({getDB:()=>database,api,reload:load,openTrade:draft=>openEntry(null,draft),getView:()=>view});
+for (const selector of ['#filter-from','#filter-to','#filter-setup','#filter-session','#filter-outcome']) $(selector).addEventListener('change',render);
+let searchTimer;
+$('#trade-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(render,180);});
+$('#clear-filters').addEventListener('click',()=>{for(const s of ['#filter-from','#filter-to','#filter-setup','#filter-session','#trade-search']) $(s).value='';$('#filter-outcome').value='all';$('#pair-filter').value='All pairs';render();});
+$('#entry-form').addEventListener('input',updateTradeWarnings);
+$('#entry-form').addEventListener('change',updateTradeWarnings);
+function updateTradeWarnings(){
+  const form=new FormData($('#entry-form'));
+  const trade={kind:form.get('kind'),entryTime:String(form.get('entryTime')||''),risk:form.get('risk')===''?null:Number(form.get('risk')),entry:form.get('entry')===''?null:Number(form.get('entry')),stop:form.get('stop')===''?null:Number(form.get('stop')),quantity:form.get('quantity')===''?null:Number(form.get('quantity')),multiplier:Number(form.get('multiplier')),fxRate:Number(form.get('fxRate')),fees:Number(form.get('fees')),equitySnapshot:form.get('equitySnapshot')===''?null:Number(form.get('equitySnapshot')),leverage:form.get('leverage')===''?null:Number(form.get('leverage'))};
+  const warnings=tradeWarnings(database,trade,editing?.id);
+  if(database.settings.tradingRules?.riskPercent && !trade.equitySnapshot) warnings.push('Record equity to check your percentage risk limit.');
+  $('#trade-warnings').hidden=!warnings.length;
+  $('#trade-warnings').innerHTML=warnings.map(t=>`<p>${escape(t)}</p>`).join('');
+}

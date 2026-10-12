@@ -1,4 +1,4 @@
-import { net } from './model.js';
+import { net } from './model.js?v=complete-journal-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -8,7 +8,7 @@ function validateTrade(value) {
   const template = {
     kind: 'live', pair: '', direction: 'Long', status: 'Open', entryTime: '', exitTime: '',
     setup: '', session: '', mood: '', rules: '', entry: null, exit: null, stop: null,
-    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: ''
+    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: '', fxRate: 1, leverage: null, equitySnapshot: null, mistakes: []
   };
   const trade = {};
   for (const [key, fallback] of Object.entries(template)) trade[key] = value[key] ?? fallback;
@@ -20,18 +20,21 @@ function validateTrade(value) {
   requireInput(['Long', 'Short'].includes(trade.direction), 'Choose Long or Short.');
   requireInput(['Open', 'Closed'].includes(trade.status), 'Choose Open or Closed.');
   requireInput(['Yes', 'No', ''].includes(trade.rules), 'Choose Yes or No for rules.');
+  requireInput(Array.isArray(trade.mistakes) && trade.mistakes.length <= 20 && trade.mistakes.every(t => typeof t === 'string' && t.length <= 80), 'Use up to 20 mistake tags, 80 characters each.');
+  trade.mistakes = [...new Set(trade.mistakes.map(t => t.trim()).filter(Boolean))];
   trade.pair = trade.pair.trim();
   requireInput(trade.pair.length > 0 && trade.pair.length <= 40, 'Choose a pair.');
-  const validDate = text => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(text) && Number.isFinite(Date.parse(text));
+  const validDate = text => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(text) && Number.isFinite(Date.parse(text + 'Z')) && new Date(text + 'Z').toISOString().slice(0,16) === text;
   requireInput(validDate(trade.entryTime), 'Enter a valid entry date and time.');
   requireInput(!trade.exitTime || validDate(trade.exitTime), 'Enter a valid exit date and time.');
   requireInput(!trade.exitTime || trade.exitTime >= trade.entryTime, 'Exit must be after entry.');
-  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk']) {
+  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'leverage', 'equitySnapshot']) {
     requireInput(trade[key] === null || (typeof trade[key] === 'number' && Number.isFinite(trade[key])), `Enter a valid ${key}.`);
   }
   for (const key of ['entry', 'exit', 'stop', 'fees']) requireInput(trade[key] === null || trade[key] >= 0, `${key} cannot be negative.`);
-  for (const key of ['quantity', 'multiplier', 'risk']) requireInput(trade[key] === null || trade[key] > 0, `${key} must be positive.`);
+  for (const key of ['quantity', 'multiplier', 'risk', 'fxRate', 'leverage', 'equitySnapshot']) requireInput(trade[key] === null || trade[key] > 0, `${key} must be positive.`);
   requireInput(trade.multiplier !== null && trade.fees !== null, 'Enter multiplier and fees (0 fees is valid).');
+  requireInput(trade.fxRate !== null, 'Enter price-currency conversion rate (1 for same currency).');
   if (trade.status === 'Closed') {
     requireInput(Boolean(trade.exitTime), 'Closed entries need an exit date and time.');
     requireInput(net(trade) !== null && Number.isFinite(net(trade)), 'Enter actual net P&L, or entry/exit prices and quantity.');
@@ -73,6 +76,13 @@ function validateSettings(value) {
     requireInput(typeof rate === 'number' && Number.isFinite(rate) && rate > 0 && rate <= 1000000, 'PHP exchange rates must be positive numbers.');
     settings.phpRates[currency] = rate;
   }
+  const account = value.account || {};
+  for (const key of ['startingBalance','netFunding']) requireInput(account[key] == null || (typeof account[key] === 'number' && Number.isFinite(account[key])), 'Enter a valid account amount.');
+  requireInput(account.startingBalance == null || account.startingBalance >= 0, 'Starting balance cannot be negative.');
+  settings.account = { startingBalance: account.startingBalance ?? null, netFunding: account.netFunding ?? 0 };
+  const tags = value.mistakeTags || ['Chased entry','Early entry','No stop','Oversized','Revenge trade','Exited early','Ignored setup'];
+  requireInput(Array.isArray(tags) && tags.length <= 80 && tags.every(t=>typeof t === 'string' && t.length <= 80), 'Check your mistake tags.');
+  settings.mistakeTags = [...new Set(tags.map(t=>t.trim()).filter(Boolean))];
   settings.currency = value.currency;
   settings.timezone = value.timezone;
   return settings;

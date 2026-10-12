@@ -1,1 +1,28 @@
-Upload style.css and index.html directly to your existing GitHub repository root and commit. Keep all other files, including config.js. Wait for deployment and reopen the journal. Theme adds a soft indigo/violet mesh gradient and subtle grain texture behind the workspace; dark panels preserve readability and sidebar remains black. Drawing and roadmap backgrounds remain dotted. No external font/image dependencies. Fresh asset links included. Visual browser verification unavailable.
+TRADE NOTEBOOK — COMPLETE UPGRADE
+
+INSTALL
+1. Export your journal backup before updating.
+2. Extract this ZIP. Upload ALL extracted files to your Trading-Journal GitHub repository root, replacing matching files. Do not upload the ZIP itself or place the files in a new folder.
+3. Keep your existing config.js and Supabase database unchanged. config.js is intentionally excluded from this package. No SQL migration is needed.
+4. Commit the upload and wait for GitHub Pages deployment. Reload with a hard refresh (Ctrl+Shift+R).
+
+INCLUDED
+Account & risk tab: starting balance, net deposits/withdrawals, position sizing using stop distance, contract multiplier, FX, estimated fees and broker quantity step.
+Daily monitor: live entry count, remaining entries, realized daily loss/profit warnings. Trade form: recorded equity/leverage and planned risk warnings.
+Analytics: setup/session/pair/mistake-tag comparisons, maximum drawdown, average win/loss, expectancy and longest streaks.
+Search: notes/pair/setup/session/mistakes, date range, setup, session and outcome. Dates use exit date for closed trades and entry date for open trades.
+Mistakes: semicolon-separated trade tags; edit suggested tags in Customize.
+Batch entry: multiple completed scalps on one date. Preview before saving. CSV column mapping, template download and duplicate skipping.
+Your existing chart library, chart annotations, mistake roadmap, cloud login, backups, rules and PHP conversion remain included.
+
+USAGE
+Starting balance means the balance before the earliest recorded LIVE trade, not today's broker balance. Enter net deposits minus withdrawals since that date. Current recorded balance excludes open P&L and backtests.
+Position sizing supports linear products; enter broker contract multiplier and minimum quantity increment. FX is journal currency per one unit of quoted price currency (1 only when those currencies match). Actual net P&L overrides calculated price P&L. Risk plus estimated fees is compared with your plan.
+Configure daily entries, daily profit/loss, percentage/money risk and leverage in Rules & targets. Warnings are based on journal records; they do not place or block orders.
+CSV: up to 500 trades / 5 MB. Map pair, entryTime and either net pnl or complete price calculation fields. Closed rows also require exitTime. Dates: YYYY-MM-DD HH:mm or YYYY-MM-DDTHH:mm in journal timezone. Blank exitTime means Open. P&L and fees must already be in journal currency. Use semicolons between mistake tags.
+Manual batch: up to 100 completed trades sharing one day. Enter entry/exit clocks and net P&L (fees already deducted). Use CSV or the individual form for overnight trades.
+Duplicate matching compares kind, pair, direction, times, status, net P&L and quantity/entry/exit fields. Review the preview; matching identical legitimate trades may be skipped unless you disable duplicate skipping.
+Drawdown is absolute peak-to-trough cumulative CLOSED P&L in chronological exit order. Analytics use the current view and filters. Flat trades reset streaks. Multiple mistake tags count one trade in each group.
+
+VALIDATION
+10 calculation/import checks passed. Storage checks passed for rejecting an entire invalid batch before any write, atomic save and duplicate protection. All JavaScript syntax, local imports and HTML IDs checked. Real browser layout and live Supabase service were not tested in this environment.
