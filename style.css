@@ -1135,3 +1135,18 @@ dialog.image-dialog:not([open]) { display:none; }
 .flow-node-body textarea { min-height:170px; font-size:14px; line-height:1.5; }
 .flow-node header { font-size:14px; padding:14px; }
 @media(max-height:760px) { .image-dialog .chart-toolbar { gap:2px; top:105px; } .chart-toolbar .editor-icon { height:28px; } }
+
+/* Soft indigo/violet mesh gradient with a subtle film-grain layer. */
+body { background:#080810; }
+main { position:relative; isolation:isolate; background-color:#0e0d17; background-image:radial-gradient(ellipse at 78% 8%,rgba(99,77,196,.34),transparent 43%),radial-gradient(ellipse at 16% 36%,rgba(58,66,160,.26),transparent 47%),radial-gradient(ellipse at 70% 75%,rgba(150,112,181,.14),transparent 40%); border-color:#393345; }
+main::before { content:""; position:absolute; inset:0; z-index:-1; pointer-events:none; opacity:.08; border-radius:inherit; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23ffffff' filter='url(%23grain)' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); background-repeat:repeat; }
+.topbar { background:rgba(12,11,20,.65); border-color:#34303e; }
+.metric,.chart-panel,.records,.calendar-panel,.plan-card { background:rgba(17,16,27,.92); border-color:#383242; }
+body.gallery-view .records, #rules-panel { background:transparent; }
+.chart-card { background:linear-gradient(155deg,rgba(60,49,96,.82),rgba(17,16,25,.98) 65%); border-color:#3e364d; }
+.chart-card:hover { border-color:#8873b7; }
+.pair-chip { background:rgba(15,14,23,.65); border-color:#40364e; color:#bdb5cb; }
+.pair-chip.selected { background:#ede8f5; color:#18131f; border-color:#ede8f5; }
+nav button.active { background:#1a1623; }
+.auth-screen { background-color:#0b0a13; background-image:radial-gradient(ellipse at 55% 35%,#3c3266,transparent 65%); }
+.auth-card { background:rgba(17,15,26,.96); border-color:#4b3d61; }
