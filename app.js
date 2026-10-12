@@ -1,3 +1,4 @@
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js';
 import { backend } from './cloud.js';
 import { resetCloudState, cloudChanged } from './storage.js';
 import { monthSummary } from './calendar.js';
@@ -52,6 +53,18 @@ function options(items, selected = '', blank = false) {
 }
 
 function render() {
+  $('#rules-panel').hidden = view !== 'rules';
+  document.querySelector('.records').hidden = view === 'rules';
+  $('#new-entry').hidden = view === 'rules';
+  $('#performance').hidden = view === 'rules' || view === 'gallery';
+  $('#pnl-calendar').hidden = view === 'rules' || view === 'gallery';
+  if (view === 'rules') {
+    $('#heading').textContent = $('#breadcrumb').textContent = 'Rules & targets';
+    $('#subtitle').textContent = 'Your plan, daily targets, and overtrading review.';
+    document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    renderRules();
+    return;
+  }
   const title = view === 'backtest' ? 'Backtesting lab' : view === 'gallery' ? 'Chart library' : 'Trading journal';
   $('#heading').textContent = title;
   $('#breadcrumb').textContent = title;
@@ -91,11 +104,12 @@ function render() {
     $('#entries').innerHTML = '<div class="empty"><h3>A clean page for your next trade</h3><p>Add an entry, attach your charts, and capture your reasoning.</p><button class="secondary" data-new-entry>Add your first entry</button></div>';
     return;
   }
+  const flags = ruleFlags(database.entries, database.settings.tradingRules?.maxEntries ?? 3);
   const rows = selected.map(entry => {
     const pnl = net(entry);
     const r = risk(entry);
     const result = pnl === null ? '<span class="tag">Open</span>' : escape(money(pnl));
-    return `<tr><td><button class="trade-link" data-entry="${entry.id}">${escape(entry.pair)}<small>${escape(entry.setup || 'No setup')}</small></button></td><td><span class="tag ${entry.direction.toLowerCase()}">${entry.direction}</span></td><td>${escape(entry.entryTime.replace('T', ' '))}<small class="subtext">${escape(entry.session || database.settings.timezone)}</small></td><td class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${result}<small class="subtext">${entry.status}</small></td><td>${pnl !== null && r > 0 ? `${(pnl / r).toFixed(2)}R` : '—'}</td><td>${entry.images.length ? `${entry.images.length} attached` : '—'}</td><td><button class="secondary compact" data-entry="${entry.id}">Open</button></td></tr>`;
+    return `<tr><td><button class="trade-link" data-entry="${entry.id}">${escape(entry.pair)}<small>${escape(entry.setup || 'No setup')}</small>${flags.get(entry.id)?.overLimit ? '<small class="negative">FOMO · Rule breaker (daily limit)</small>' : entry.rules === 'No' ? '<small class="negative">Rule breaker (self-reported)</small>' : ''}</button></td><td><span class="tag ${entry.direction.toLowerCase()}">${entry.direction}</span></td><td>${escape(entry.entryTime.replace('T', ' '))}<small class="subtext">${escape(entry.session || database.settings.timezone)}</small></td><td class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${result}<small class="subtext">${entry.status}</small></td><td>${pnl !== null && r > 0 ? `${(pnl / r).toFixed(2)}R` : '—'}</td><td>${entry.images.length ? `${entry.images.length} attached` : '—'}</td><td><button class="secondary compact" data-entry="${entry.id}">Open</button></td></tr>`;
   });
   $('#entries').innerHTML = `<div class="table-scroll"><table><thead><tr>${['Pair / setup', 'Direction', 'Entry time', 'Result', 'R', 'Charts', ''].map(label => `<th>${label}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 }
@@ -258,7 +272,7 @@ $('#settings-form').addEventListener('submit', async event => {
   const button = event.currentTarget.querySelector('button[type="submit"]');
   button.disabled = true;
   const form = new FormData(event.currentTarget);
-  const settings = {};
+  const settings = { ...database.settings };
   ['pairs', 'setups', 'sessions', 'moods'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
   settings.currency = form.get('currency');
   settings.timezone = form.get('timezone');
@@ -394,3 +408,28 @@ try {
   client.auth.getSession().then(({ data, error }) => { if (error) $('#auth-message').textContent = error.message; else showSession(data.session); });
 } catch (error) { $('#auth-message').textContent = error.message; }
 
+
+function renderRules() {
+  const rules = { ...defaultRules, ...database.settings.tradingRules };
+  const day = new Intl.DateTimeFormat('en-CA', { timeZone: database.settings.timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  const date = ['year','month','day'].map(k => day.find(p => p.type === k).value).join('-');
+  const progress = dailyProgress(database.entries, date);
+  const flags = ruleFlags(database.entries, rules.maxEntries);
+  const flagged = database.entries.filter(e => e.kind === 'live' && (flags.get(e.id)?.overLimit || e.rules === 'No'));
+  const target = (value, goal, unit) => `${value.toFixed(2)}${unit} / ${goal == null ? 'No target' : goal + unit}${goal != null && value >= goal ? ' · Target reached' : ''}`;
+  $('#rules-panel').innerHTML = `<h2>Trading plan</h2><form id="rules-form"><div class="form-grid"><label>Maximum live entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" required value="${rules.maxEntries}"></label><label>Daily net profit target (${escape(database.settings.currency)})<input name="dailyMoney" type="number" min="0.01" step="any" value="${rules.dailyMoney ?? ''}"></label><label>Daily net R target<input name="dailyR" type="number" min="0.01" step="any" value="${rules.dailyR ?? ''}"></label></div><label>Your rules & notes<textarea name="notes" rows="6" maxlength="20000" placeholder="My checklist, entry criteria, and reminders">${escape(rules.notes)}</textarea></label><p class="helper">R means net P&L divided by initial risk. Daily R adds each closed trade’s R. Leave targets blank to disable them.</p><button class="primary" type="submit">Save rules</button><p id="rules-message" role="status"></p></form><h2>Today · ${escape(date)}</h2><p>Live entries: ${progress.count} / ${rules.maxEntries} · ${escape(target(progress.pnl, rules.dailyMoney, ' ' + database.settings.currency))} · ${escape(target(progress.r, rules.dailyR, 'R'))}</p><p class="helper">Targets use closed trades on their exit date. Entry limits use entry date, across all pairs, including open trades. Backtests are excluded. ${progress.missingRisk} closed trades missing risk are excluded from R.</p><h2>FOMO / rule breaker review (${flagged.length})</h2><p class="helper">Entry 4 onward is flagged with the default limit of 3. “FOMO” is an automatic overtrading tag, not an assessment of your emotions. Flags are recalculated using your current limit and chronological entry times; changing times, deleting trades, or changing the limit changes flags. Trades remain saved and editable.</p>${flagged.map(e => `<button type="button" class="secondary daily-trade" data-entry="${escape(e.id)}">${escape(e.entryTime.replace('T',' '))} · ${escape(e.pair)} · ${flags.get(e.id)?.overLimit ? 'FOMO / Rule breaker · entry #' + flags.get(e.id).ordinal : 'Rule breaker · self-reported'}</button>`).join('') || '<p>No rule breakers found.</p>'}`;
+}
+document.addEventListener('submit', async event => {
+  if (event.target.id !== 'rules-form') return;
+  event.preventDefault();
+  const button = event.target.querySelector('button[type="submit"]');
+  button.disabled = true;
+  const data = new FormData(event.target);
+  const tradingRules = { notes: String(data.get('notes')), maxEntries: Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: data.get('dailyR') === '' ? null : Number(data.get('dailyR')) };
+  try {
+    await api('/api/settings', { method: 'PUT', body: JSON.stringify({ ...database.settings, tradingRules }) });
+    await load();
+    $('#rules-message').textContent = 'Rules saved to your cloud account.';
+  } catch (error) { $('#rules-message').textContent = error.message; }
+  finally { button.disabled = false; }
+});

@@ -23,7 +23,7 @@
       <nav aria-label="Journal navigation">
         <button data-view="live" class="active">Trading journal</button>
         <button data-view="backtest">Backtesting lab</button>
-        <button data-view="gallery">Chart library</button>
+        <button data-view="rules">Rules &amp; targets</button><button data-view="gallery">Chart library</button>
         <button id="sync-now">Sync now</button><button id="sign-out">Sign out</button>
         <button id="customize">Customize</button>
 <button id="export-backup">Export backup</button>
@@ -37,7 +37,7 @@
       <div class="page">
         <div class="page-heading"><div><div class="eyebrow">YOUR TRADING WORKSPACE</div><h1 id="heading">Trading journal</h1><p id="subtitle">Every trade, its reasoning, and what comes next.</p></div><button class="primary" id="new-entry">+ New trade</button></div>
         <div id="load-error" class="error" role="alert" hidden></div>
-        <div id="performance"><div class="metrics" id="metrics"></div><section class="chart-panel"><div class="section-heading"><h2>Cumulative P&L</h2><span id="chart-unit"></span></div><div id="curve"></div></section></div>
+        <section id="rules-panel" class="chart-panel" hidden></section><div id="performance"><div class="metrics" id="metrics"></div><section class="chart-panel"><div class="section-heading"><h2>Cumulative P&L</h2><span id="chart-unit"></span></div><div id="curve"></div></section></div>
         <section id="pnl-calendar" class="calendar-panel" aria-label="Monthly profit and loss calendar"></section>
         <section class="records"><div class="section-heading"><h2 id="records-title">Entries</h2><select id="pair-filter" aria-label="Filter by pair"></select></div><div id="entries"><div class="empty">Loading your journal…</div></div></section>
         <p class="footnote" id="footnote"></p>

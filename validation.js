@@ -51,6 +51,12 @@ function validateSettings(value) {
   requireInput(typeof value.timezone === 'string', 'Choose a time zone.');
   try { new Intl.DateTimeFormat('en', { timeZone: value.timezone }); }
   catch { requireInput(false, 'Choose a valid time zone.'); }
+  const rules = value.tradingRules || {};
+  const maxEntries = rules.maxEntries ?? 3;
+  requireInput(Number.isInteger(maxEntries) && maxEntries >= 1 && maxEntries <= 1000, 'Daily entry limit must be 1–1000.');
+  requireInput(typeof (rules.notes ?? '') === 'string' && (rules.notes ?? '').length <= 20000, 'Rules notes must be at most 20,000 characters.');
+  for (const key of ['dailyMoney', 'dailyR']) requireInput(rules[key] == null || (Number.isFinite(rules[key]) && rules[key] > 0), 'Targets must be positive or blank.');
+  settings.tradingRules = { maxEntries, notes: rules.notes ?? '', dailyMoney: rules.dailyMoney ?? null, dailyR: rules.dailyR ?? null };
   settings.currency = value.currency;
   settings.timezone = value.timezone;
   return settings;
