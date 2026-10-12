@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trade Notebook</title>
   <link rel="icon" href="./favicon.svg">
-  <link rel="stylesheet" href="./style.css?v=comfortable-margins-20261012">
+  <link rel="stylesheet" href="./style.css?v=black-sidebar-20261012">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
-  <script type="module" src="./app.js?v=comfortable-margins-20261012"></script>
+  <script type="module" src="./app.js?v=black-sidebar-20261012"></script>
 </head>
 <body>
   <section id="auth-screen" class="auth-screen">
@@ -19,17 +19,8 @@
   <div class="workspace" id="journal-workspace" hidden>
     <aside>
       <div class="brand"><span class="brand-icon">↗</span><div>Trade Notebook<small>Personal workspace</small></div></div>
-      <div class="workspace-name">My trading journal</div>
-      <nav aria-label="Journal navigation">
-        <button data-view="live" class="active">Trading journal</button>
-        <button data-view="backtest">Backtesting lab</button>
-        <button data-view="rules">Rules &amp; targets</button><button data-view="gallery">Chart library</button>
-        <button id="sync-now">Sync now</button><button id="sign-out">Sign out</button>
-        <button id="customize">Customize</button>
-<button id="export-backup">Export backup</button>
-<button id="restore-backup">Restore backup</button>
-<input type="file" id="backup-file" accept=".json,application/json" hidden>
-      </nav>
+      <nav class="sidebar-primary" aria-label="Journal navigation"><div class="nav-group-title">Workspace</div><button data-view="live" class="active"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18M7 14l4-4 4 3 5-7"/></svg><span>Trading journal</span></button><button data-view="backtest"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6m-5 0v7L4 20a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1l-6-10V3M8 15h8"/></svg><span>Backtesting lab</span></button><div class="nav-group-title">Library</div><button data-view="gallery"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2h10M3 16l5-5 5 5 3-3 5 5"/><circle cx="16" cy="10" r="1"/></svg><span>Chart library</span></button><button data-view="rules"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h6"/></svg><span>Rules &amp; targets</span></button><button id="customize"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg><span>Customize</span></button></nav>
+      <nav class="sidebar-utilities" aria-label="Account and backups"><button id="sync-now"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7a8 8 0 0 0-14-2L3 8m0-5v5h5M4 17a8 8 0 0 0 14 2l3-3m0 5v-5h-5"/></svg><span>Sync now</span></button><button id="export-backup"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 15v6h16v-6"/></svg><span>Export backup</span></button><button id="restore-backup"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3m-4 4 4-4 4 4M4 15v6h16v-6"/></svg><span>Restore backup</span></button><button id="sign-out"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/></svg><span>Sign out</span></button><input type="file" id="backup-file" accept=".json,application/json" hidden></nav>
       <div class="sidebar-bottom"><span id="account-email"></span><small>Private cloud journal</small></div>
     </aside>
     <main>

@@ -1021,3 +1021,24 @@ body.gallery-view .chart-copy p { font-size:13px; }
   .local-chart { height:235px; }
   .calendar-panel { padding:16px; }
 }
+
+/* Black sidebar, grouped navigation, and crisp outline icons. */
+aside, body.gallery-view aside { background:#000; border-right:0; padding:24px 10px 16px; overflow-y:auto; }
+.brand { padding:0 8px; gap:0; }
+.brand-icon, .brand small { display:none; }
+.brand { font-family:Georgia,serif; font-size:22px; font-weight:400; color:#eee; }
+.sidebar-primary { margin-top:34px; gap:5px; }
+.nav-group-title { color:#a3a3a3; font-size:12px; padding:0 8px; margin:12px 0 8px; }
+.nav-group-title:not(:first-child) { margin-top:26px; }
+nav button { display:flex; align-items:center; gap:10px; padding:9px 9px; font-size:14px; border-radius:10px; min-height:36px; color:#eee; }
+nav button:hover, nav button.active { background:#151515; color:white; }
+.nav-icon { width:17px; height:17px; flex:0 0 17px; pointer-events:none; }
+.sidebar-utilities { margin-top:auto; padding-top:40px; gap:6px; }
+.sidebar-bottom { margin-top:14px; padding:8px; font-size:11px; color:#858585; }
+@media(max-width:700px) {
+  aside, body.gallery-view aside { padding:18px 12px; }
+  .sidebar-primary { margin-top:18px; display:flex; flex-wrap:wrap; }
+  .nav-group-title { width:100%; margin:8px 0; }
+  .nav-group-title:not(:first-child) { margin-top:10px; }
+  .sidebar-utilities { display:flex; flex-wrap:wrap; margin-top:12px; padding-top:10px; }
+}
