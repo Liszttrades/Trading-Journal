@@ -3,7 +3,7 @@ import { backend } from './cloud.js';
 import { resetCloudState, cloudChanged } from './storage.js';
 import { monthSummary } from './calendar.js';
 import { api, imageURL, exportBackup, restoreBackup } from './storage.js';
-import { fresh, nextScalp, net, risk } from './model.js';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -169,7 +169,7 @@ function openEntry(entry = null, draft = null) {
   files = [];
   removedImages = [];
   deleting = false;
-  const trade = entry || draft || fresh(view === 'backtest' ? 'backtest' : 'live', database.settings.pairs[0]);
+  const trade = entry || draft || fresh(view === 'backtest' ? 'backtest' : 'live', database.settings.pairs[0], database.settings.timezone);
   const settings = database.settings;
   $('#entry-title').textContent = entry ? 'Review entry' : 'New journal entry';
   $('#core-fields').innerHTML = [
@@ -184,6 +184,7 @@ function openEntry(entry = null, draft = null) {
     number(`Actual net P&L (${settings.currency})`, 'pnl', trade.pnl),
     number(`Initial risk (${settings.currency})`, 'risk', trade.risk, 0)
   ].join('');
+  $('#time-zone-note').textContent = `Times use ${settings.timezone}. New entries start with matching entry and exit times; adjust them for the actual trade. Open trades do not count toward realized P&L.`;
   $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Quantity / units', 'quantity', trade.quantity, 0), number('Contract multiplier', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0)].join('');
   $('#review-fields').innerHTML = select('Mood', 'mood', settings.moods, trade.mood, true) + select('Followed your rules?', 'rules', ['Yes', 'No'], trade.rules, true);
   $('#entry-form').elements.notes.value = trade.notes;
@@ -453,4 +454,16 @@ document.addEventListener('submit', async event => {
     $('#rules-message').textContent = 'Rules saved to your cloud account.';
   } catch (error) { $('#rules-message').textContent = error.message; }
   finally { button.disabled = false; }
+});
+
+document.addEventListener('click', event => {
+  const button = event.target.closest('[data-time-action]');
+  if (!button || busy) return;
+  const form = $('#entry-form');
+  const now = journalNow(database.settings.timezone);
+  if (button.dataset.timeAction === 'both') { form.elements.entryTime.value = now; form.elements.exitTime.value = now; }
+  if (button.dataset.timeAction === 'exit') {
+    form.elements.exitTime.value = now < form.elements.entryTime.value ? form.elements.entryTime.value : now;
+  }
+  if (button.dataset.timeAction === 'copy') form.elements.exitTime.value = form.elements.entryTime.value;
 });

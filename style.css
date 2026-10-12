@@ -1042,3 +1042,19 @@ nav button:hover, nav button.active { background:#151515; color:white; }
   .nav-group-title:not(:first-child) { margin-top:10px; }
   .sidebar-utilities { display:flex; flex-wrap:wrap; margin-top:12px; padding-top:10px; }
 }
+
+/* Rounded, neutral entry editor. */
+dialog.entry-dialog { background:#111!important; border:1px solid #333!important; border-radius:24px!important; padding:30px!important; width:calc(100% - 40px)!important; max-width:820px!important; box-shadow:0 24px 90px #0009; }
+.entry-dialog h2 { font-size:26px; letter-spacing:-.6px; }
+.entry-dialog .dialog-description { color:#999; }
+.entry-dialog input, .entry-dialog select, .entry-dialog textarea { background:#191919!important; border:1px solid #363636!important; border-radius:11px!important; padding:12px 14px!important; color:#eee!important; }
+.entry-dialog textarea { min-height:100px; }
+.entry-dialog details { border:1px solid #303030; background:#161616; border-radius:12px; overflow:hidden; }
+.entry-dialog summary { padding:14px; }
+.entry-dialog .upload { background:#171717; border:1px dashed #494949; border-radius:14px; color:#ccc; }
+.entry-dialog button { border-radius:10px; }
+.entry-dialog .dialog-actions { border-color:#303030; gap:10px; flex-wrap:wrap; }
+.time-shortcuts { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.time-shortcuts button { font-size:12px; padding:7px 11px; }
+#time-zone-note { margin:0 0 16px; }
+@media(max-width:700px) { dialog.entry-dialog { padding:22px!important; border-radius:18px!important; width:calc(100% - 20px)!important; } }

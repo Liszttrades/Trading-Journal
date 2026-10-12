@@ -23,11 +23,15 @@ export function risk(trade) {
   return Math.abs(trade.entry - trade.stop) * trade.quantity * trade.multiplier;
 }
 
-export function fresh(kind, pair) {
-  const date = new Date();
-  const localTime = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+export function journalNow(timezone = 'Asia/Manila', date = new Date()) {
+  const parts = new Intl.DateTimeFormat('en', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(date);
+  const get = key => parts.find(p => p.type === key).value;
+  return `${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}`;
+}
+export function fresh(kind, pair, timezone = 'Asia/Manila') {
+  const localTime = journalNow(timezone);
   return {
-    kind, pair, direction: 'Long', status: 'Open', entryTime: localTime, exitTime: '',
+    kind, pair, direction: 'Long', status: 'Open', entryTime: localTime, exitTime: localTime,
     setup: '', session: '', mood: '', rules: '', entry: null, exit: null, stop: null,
     quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: ''
   };
@@ -38,5 +42,6 @@ export function nextScalp(previous) {
   const trade = fresh(previous.kind, previous.pair);
   for (const key of ['direction', 'status', 'setup', 'session', 'multiplier']) trade[key] = previous[key];
   trade.entryTime = previous.exitTime || previous.entryTime;
+  trade.exitTime = trade.entryTime;
   return trade;
 }

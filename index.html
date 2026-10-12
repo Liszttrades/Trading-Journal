@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trade Notebook</title>
   <link rel="icon" href="./favicon.svg">
-  <link rel="stylesheet" href="./style.css?v=black-sidebar-20261012">
+  <link rel="stylesheet" href="./style.css?v=rounded-entry-20261012">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.js"></script>
-  <script type="module" src="./app.js?v=black-sidebar-20261012"></script>
+  <script type="module" src="./app.js?v=rounded-entry-20261012"></script>
 </head>
 <body>
   <section id="auth-screen" class="auth-screen">
@@ -37,9 +37,9 @@
   </div>
   <dialog id="entry-dialog" class="entry-dialog" aria-labelledby="entry-title">
     <button class="close-dialog" data-close="entry-dialog" aria-label="Close entry">×</button>
-    <h2 id="entry-title">New journal entry</h2><p class="dialog-description">Log each scalp separately. Save &amp; add another keeps the day, pair, setup, and session; enter the next trade’s times and result.</p>
+    <h2 id="entry-title">New journal entry</h2><p class="dialog-description">Capture a scalp, attach your chart, and keep your next entry ready.</p>
     <form id="entry-form">
-      <div class="form-grid" id="core-fields"></div>
+      <div class="form-grid" id="core-fields"></div><div class="time-shortcuts"><button class="secondary" type="button" data-time-action="both">Both times: now</button><button class="secondary" type="button" data-time-action="exit">Exit: now</button><button class="secondary" type="button" data-time-action="copy">Exit = entry</button></div><p id="time-zone-note" class="helper"></p>
       <p class="helper">Actual net P&L already includes costs. Leave it blank to calculate from prices below.</p>
       <details><summary>Price details & position size</summary><div class="form-grid numeric-grid" id="price-fields"></div><p class="helper">Price change × direction × quantity × multiplier − fees. Use actual broker net P&L for complex trades.</p></details>
       <div class="form-grid" id="review-fields"></div>
