@@ -2,7 +2,7 @@ import {validateAnnotations} from './annotations.js';
 export function createChartEditor(save) {
  const dialog=document.querySelector('#image-dialog'), canvas=document.querySelector('#chart-canvas'), ctx=canvas.getContext('2d'), viewport=document.querySelector('#chart-viewport');
  const $=s=>dialog.querySelector(s);
- let img=new Image(), items=[], history=[], redo=[], draft=null, active=null, scale=1, x=0,y=0,drag=null, dirty=false, saving=false;
+ let img=new Image(), items=[], history=[], redo=[], draft=null, active=null, scale=1, fitScale=1, x=0,y=0,drag=null, dirty=false, saving=false;
  const status=t=>$('#chart-status').textContent=t;
  const snapshot=()=>{history.push(structuredClone(items));redo=[];dirty=true;};
  function drawShape(a) {
@@ -14,12 +14,14 @@ export function createChartEditor(save) {
   ctx.moveTo(...p[0]);for(const q of p.slice(1))ctx.lineTo(...q);ctx.stroke();
  }
  function render(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(img,0,0);for(const a of items)drawShape(a);if(draft)drawShape(draft);canvas.style.transform=`translate(${x}px,${y}px) scale(${scale})`;$('#chart-zoom').textContent=`${Math.round(scale*100)}%`;}
- function fit(){scale=Math.min((viewport.clientWidth-24)/canvas.width,(viewport.clientHeight-24)/canvas.height);x=(viewport.clientWidth-canvas.width*scale)/2;y=(viewport.clientHeight-canvas.height*scale)/2;render();}
- function zoom(f,px=viewport.clientWidth/2,py=viewport.clientHeight/2){const next=Math.min(12,Math.max(.03,scale*f));x=px-(px-x)*next/scale;y=py-(py-y)*next/scale;scale=next;render();}
+ function fit(){scale=fitScale=Math.min((viewport.clientWidth-24)/canvas.width,(viewport.clientHeight-24)/canvas.height);x=(viewport.clientWidth-canvas.width*scale)/2;y=(viewport.clientHeight-canvas.height*scale)/2;render();}
+ function zoom(f,px=viewport.clientWidth/2,py=viewport.clientHeight/2){const next=Math.min(fitScale*8,Math.max(fitScale,scale*f));x=px-(px-x)*next/scale;y=py-(py-y)*next/scale;scale=next;render();}
  function point(e){const r=canvas.getBoundingClientRect();return [Math.max(0,Math.min(1,(e.clientX-r.left)/r.width)),Math.max(0,Math.min(1,(e.clientY-r.top)/r.height))];}
  viewport.addEventListener('wheel',e=>{e.preventDefault();const r=viewport.getBoundingClientRect();zoom(e.deltaY<0?1.15:1/1.15,e.clientX-r.left,e.clientY-r.top);},{passive:false});
  viewport.addEventListener('pointerdown',e=>{
-  if(saving || !active || !img.complete)return;
+  if(saving || !active || !img.complete || !img.naturalWidth)return;
+  const bounds=canvas.getBoundingClientRect();
+  if(e.clientX<bounds.left||e.clientX>bounds.right||e.clientY<bounds.top||e.clientY>bounds.bottom)return;
   const tool=$('#chart-tool').value;viewport.setPointerCapture(e.pointerId);
   if(tool==='pan'){drag={x:e.clientX,y:e.clientY,ox:x,oy:y};return;}
   if(items.length>=500){status('Maximum 500 annotations.');return;}
@@ -35,6 +37,8 @@ export function createChartEditor(save) {
  function finish(){if(draft){snapshot();items.push(draft);draft=null;render();}drag=null;}
  viewport.addEventListener('pointerup',finish);viewport.addEventListener('pointercancel',()=>{draft=null;drag=null;render();});
  dialog.addEventListener('click',async e=>{
+  const toolButton=e.target.closest('[data-chart-tool]');
+  if(toolButton && !saving){$('#chart-tool').value=toolButton.dataset.chartTool;document.querySelectorAll('[data-chart-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b===toolButton)));$('#chart-text').hidden=toolButton.dataset.chartTool!=='text';viewport.style.cursor=toolButton.dataset.chartTool==='pan'?'grab':'crosshair';}
   const action=e.target.closest('[data-chart-action]')?.dataset.chartAction;if(!action||saving)return;
   if(action==='in')zoom(1.25);if(action==='out')zoom(.8);if(action==='fit')fit();
   if(action==='undo'&&history.length){redo.push(structuredClone(items));items=history.pop();dirty=true;render();}
@@ -46,5 +50,5 @@ export function createChartEditor(save) {
  dialog.addEventListener('cancel',e=>{if(saving){e.preventDefault();return;}if(dirty&&!confirm('Close without saving these annotations?'))e.preventDefault();});
  dialog.querySelector('[data-close="image-dialog"]').addEventListener('click',e=>{if(saving||(dirty&&!confirm('Close without saving these annotations?'))){e.stopImmediatePropagation();e.preventDefault();}});
  window.addEventListener('resize',()=>{if(dialog.open&&active)fit();});
- return {canSwitch(){return !dirty || confirm('Switch views without saving chart annotations?');},open(image){active=image.id;items=validateAnnotations(image.annotations||[]);history=[];redo=[];draft=null;dirty=false;$('#chart-tool').value='pan';$('#image-title').textContent=image.reviewName || image.name;status('Scroll to zoom · Drag to pan · Choose a tool to mark the chart.');img=new Image();img.onload=()=>{canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;fit();};img.src=image.data;if(!dialog.open)dialog.showModal();}};
+ return {canSwitch(){return !dirty || confirm('Switch views without saving chart annotations?');},open(image){active=image.id;items=validateAnnotations(image.annotations||[]);history=[];redo=[];draft=null;dirty=false;$('#chart-tool').value='pan';$('#chart-text').hidden=true;document.querySelectorAll('[data-chart-tool]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.chartTool==='pan')));$('#image-title').textContent=image.reviewName || image.name;status('Scroll to zoom · Drag to pan · Choose a tool to mark the chart.');img=new Image();img.onload=()=>{canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;fit();};img.src=image.data;if(!dialog.open)dialog.showModal();}};
 }

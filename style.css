@@ -1110,3 +1110,28 @@ dialog.image-dialog { width:96vw!important; max-width:none!important; height:94v
 .flow-edges path { fill:none; stroke:#707070; stroke-width:2; }
 #flow-status { color:#888; font-size:12px; padding:7px; }
 @media(max-width:700px) { .flow-controls { left:8px; right:auto; flex-wrap:wrap; max-width:95%; } }
+
+/* Fixed minimalist tool dock; only the chart image and marks transform. */
+dialog.image-dialog { position:fixed; background:#0b0b0b!important; display:flex; flex-direction:column; }
+dialog.image-dialog:not([open]) { display:none; }
+.image-dialog .chart-toolbar { position:absolute; top:116px; left:34px; z-index:5; display:flex!important; flex-direction:column; flex-wrap:nowrap; gap:6px; width:50px; padding:7px; background:#151515ee; border:1px solid #343434; border-radius:14px; margin:0; }
+.image-dialog .chart-toolbar[hidden] { display:none!important; }
+.chart-toolbar .editor-icon { width:34px; height:34px; padding:7px!important; border:0; border-radius:8px; color:#aaa; background:transparent; display:grid; place-items:center; }
+.editor-icon svg { width:19px; height:19px; pointer-events:none; }
+.chart-toolbar .editor-icon:hover { color:#fff; background:#292929; }
+.chart-toolbar .editor-icon[aria-pressed="true"] { color:#111; background:#eee; }
+.chart-toolbar #chart-width { width:34px!important; min-width:0!important; padding:5px!important; font-size:11px; }
+.chart-toolbar #chart-color { width:34px; height:30px; }
+.tool-divider { width:26px; height:1px; background:#333; margin:3px auto; }
+.chart-toolbar #chart-text { position:absolute; top:182px; left:58px; width:220px; background:#171717; border:1px solid #444; padding:10px; }
+.image-zoom-controls { position:fixed; bottom:5vh; right:5vw; display:flex; align-items:center; gap:4px; background:#171717ee; border:1px solid #333; border-radius:10px; padding:4px; }
+#chart-viewport { flex:1; height:auto!important; min-height:0; background-color:#030303; background-image:radial-gradient(#303030 .8px,transparent .8px); background-size:18px 18px; }
+#chart-canvas { box-shadow:0 0 0 1px #333; }
+.chart-review-footer { flex:0 0 auto; }
+#flow-review { flex:1; height:auto; min-height:0; }
+#flow-board { height:calc(100% - 30px); }
+.flow-node { width:320px; }
+.flow-chart { width:620px; }
+.flow-node-body textarea { min-height:170px; font-size:14px; line-height:1.5; }
+.flow-node header { font-size:14px; padding:14px; }
+@media(max-height:760px) { .image-dialog .chart-toolbar { gap:2px; top:105px; } .chart-toolbar .editor-icon { height:28px; } }

@@ -1,5 +1,5 @@
-import { validateRoadmap } from './roadmap.js?v=flow-review-20261012';
-import { validateAnnotations } from './annotations.js?v=flow-review-20261012';
+import { validateRoadmap } from './roadmap.js?v=minimal-editor-20261012';
+import { validateAnnotations } from './annotations.js?v=minimal-editor-20261012';
 import { defaultSettings } from './model.js';
 import { validateTrade, validateSettings } from './validation.js?v=risk-playbook-20261012';
 

@@ -1,10 +1,10 @@
-import { createRoadmap } from './roadmap.js?v=flow-review-20261012';
-import { createChartEditor } from './chart-editor.js?v=flow-review-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=flow-review-20261012';
+import { createRoadmap } from './roadmap.js?v=minimal-editor-20261012';
+import { createChartEditor } from './chart-editor.js?v=minimal-editor-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=minimal-editor-20261012';
 import { backend } from './cloud.js';
-import { resetCloudState, cloudChanged } from './storage.js?v=flow-review-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=minimal-editor-20261012';
 import { monthSummary } from './calendar.js';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=flow-review-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=minimal-editor-20261012';
 import { fresh, nextScalp, journalNow, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
