@@ -45,7 +45,12 @@ async function load() {
 }
 
 function money(value) {
-  return new Intl.NumberFormat('en', { style: 'currency', currency: database.settings.currency, maximumFractionDigits: 2 }).format(value);
+  const currency = database.settings.currency;
+  const original = new Intl.NumberFormat('en', { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
+  const rate = database.settings.phpRates?.[currency];
+  return currency !== 'PHP' && Number.isFinite(rate) && rate > 0
+    ? `${original} · ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 2 }).format(value * rate)}`
+    : original;
 }
 
 function options(items, selected = '', blank = false) {
@@ -81,7 +86,7 @@ function render() {
   $('#pnl-calendar').hidden = view === 'gallery';
   if (view !== 'gallery') renderCalendar(selected);
   $('#records-title').textContent = `${view === 'gallery' ? 'Screenshots' : 'Entries'} (${selected.length})`;
-  $('#footnote').textContent = `${database.settings.currency} results. Times entered in ${database.settings.timezone}. Private cloud journal. Automatically refreshes while this page is open; internet required to save.`;
+  $('#footnote').textContent = `${database.settings.currency} results. ${database.settings.currency !== 'PHP' && database.settings.phpRates?.[database.settings.currency] ? `PHP equivalents use your saved rate: 1 ${database.settings.currency} = ${database.settings.phpRates[database.settings.currency]} PHP. ` : 'Set a PHP conversion rate in Customize to show peso equivalents. '} Times entered in ${database.settings.timezone}. Private cloud journal. Automatically refreshes while this page is open; internet required to save.`;
   if (view === 'gallery') {
     const pairs = [...new Set([...database.settings.pairs, ...database.entries.map(entry => entry.pair)])];
     $('#pair-chips').innerHTML = ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
@@ -271,7 +276,10 @@ $('#delete-entry').addEventListener('click', async () => {
 
 $('#customize').addEventListener('click', () => {
   const settings = database.settings;
-  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape(settings[key].join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone);
+  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape(settings[key].join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone) + `<label>PHP per 1 unit of result currency<input type="number" step="any" min="0.000001" name="phpRate" value="${settings.phpRates?.[settings.currency] ?? ''}" placeholder="Enter your exchange rate"></label><p class="helper">Manual display conversion. Enter the rate for the selected currency; leave blank to disable. For PHP results, conversion is unnecessary. Rates are saved separately for each currency; original trade amounts stay unchanged.</p>`;
+  $('#settings-form').elements.currency.addEventListener('change', event => {
+    $('#settings-form').elements.phpRate.value = settings.phpRates?.[event.target.value] ?? '';
+  });
   message('#settings-error');
   $('#settings-dialog').showModal();
 });
@@ -284,6 +292,9 @@ $('#settings-form').addEventListener('submit', async event => {
   const settings = { ...database.settings };
   ['pairs', 'setups', 'sessions', 'moods'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
   settings.currency = form.get('currency');
+  settings.phpRates = { ...database.settings.phpRates };
+  if (form.get('phpRate') === '') delete settings.phpRates[settings.currency];
+  else settings.phpRates[settings.currency] = Number(form.get('phpRate'));
   settings.timezone = form.get('timezone');
   try {
     await api('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings) });

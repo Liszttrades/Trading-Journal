@@ -988,3 +988,15 @@ body.gallery-view .chart-copy p { font-size:14px; line-height:1.5; }
 body.gallery-view .chart-note { min-height:42px; }
 body.gallery-view .chart-tags span, body.gallery-view .chart-tags button { font-size:12px; padding:5px 10px; }
 @media(max-width:700px) { body.gallery-view .gallery { grid-template-columns:1fr; } }
+
+/* Give every workspace view the same full-width canvas as Chart Library. */
+@media(min-width:701px) { .workspace { grid-template-columns:210px minmax(0,1fr); } aside { padding:24px 12px; } }
+.page { width:100%; max-width:none!important; margin:0; padding:46px 20px 24px; }
+.topbar { padding-left:20px; padding-right:20px; }
+.metric { min-height:155px; padding:28px; }
+.metric strong { overflow-wrap:anywhere; font-size:clamp(24px,2vw,34px); }
+.local-chart { height:340px; }
+.calendar-panel { padding:28px; }
+.calendar-day, .calendar-week { min-height:135px; }
+.calendar-grid strong { white-space:normal; overflow-wrap:anywhere; }
+@media(max-width:700px) { .page { padding:28px 16px; } .metric { min-height:130px; padding:18px; } .local-chart { height:250px; } .calendar-panel { padding:16px; } }
