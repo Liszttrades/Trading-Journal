@@ -1,4 +1,4 @@
-import { net, risk } from './model.js?v=panel-gradients-20261012';
+import { net, risk } from './model.js?v=entry-dropdowns-20261012';
 export const defaultRules = { notes: '', dailyMoney: null, dailyR: null, maxEntries: null };
 export function ruleFlags(entries, limit = null) {
   const counts = new Map();

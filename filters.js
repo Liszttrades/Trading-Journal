@@ -1,4 +1,4 @@
-import {journalNow} from './model.js?v=panel-gradients-20261012';
+import {journalNow} from './model.js?v=entry-dropdowns-20261012';
 const chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
 const check='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
 const controls=new Map();

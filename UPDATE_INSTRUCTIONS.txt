@@ -1,3 +1,3 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R).
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
 
-Calendar outer box keeps its dark gradient. Day, blank and weekly cells restored to solid backgrounds with existing green/red result tints. Cumulative P&L outer box now has the same subtle gradient. Average win/loss colors and all previous features preserved. No database changes. CSS selectors checked; live browser appearance unverified.
+All entry-form dropdowns now use matching dark custom menus: icons, descriptions, checkmarks, keyboard arrows, Home/End and Escape. Applies when creating or reviewing trades. Original hidden select fields retain normal form submission and change events. All prior updates included. JavaScript syntax and dependencies checked; browser rendering unverified.

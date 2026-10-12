@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=panel-gradients-20261012';
-import { validateRoadmap } from './roadmap.js?v=panel-gradients-20261012';
-import { validateAnnotations } from './annotations.js?v=panel-gradients-20261012';
-import { defaultSettings } from './model.js?v=panel-gradients-20261012';
-import { validateTrade, validateSettings } from './validation.js?v=panel-gradients-20261012';
+import {prepareBatch} from './insights.js?v=entry-dropdowns-20261012';
+import { validateRoadmap } from './roadmap.js?v=entry-dropdowns-20261012';
+import { validateAnnotations } from './annotations.js?v=entry-dropdowns-20261012';
+import { defaultSettings } from './model.js?v=entry-dropdowns-20261012';
+import { validateTrade, validateSettings } from './validation.js?v=entry-dropdowns-20261012';
 
-import { backend, signedUser } from './cloud.js?v=panel-gradients-20261012';
+import { backend, signedUser } from './cloud.js?v=entry-dropdowns-20261012';
 let snapshot = null;
 let revision = 0;
 let owner = null;
