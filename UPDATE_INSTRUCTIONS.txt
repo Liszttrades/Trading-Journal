@@ -1,5 +1,5 @@
-Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep your existing config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes needed.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R).
 
-Batch entry now uses numbered scalp cards with labeled fields, a grouped date/journal panel, row count, workflow steps and review/save footer. Times start with the current journal time and remain editable. Notes use a textarea. Preview, validation, duplicate skipping and save behavior remain. Pair selection uses the custom dark detailed menu with checkmarks and keyboard support. Existing improvements included; CSV remains removed.
+Fix: the native pair selector remains hidden on every render. Only the styled pair menu is visible. Pair filtering and chart-library pair chips remain functional. All previous updates included. No database changes.
 
-JavaScript syntax, HTML structure, IDs and module dependencies verified. Browser appearance and live cloud were not tested here.
+JavaScript syntax and the visibility correction checked. Browser rendering was not tested here.

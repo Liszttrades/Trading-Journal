@@ -1,6 +1,6 @@
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=batch-cards-20261012';
-import {validateTrade} from './validation.js?v=batch-cards-20261012';
-import {journalNow} from './model.js?v=batch-cards-20261012';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=single-pair-picker-20261012';
+import {validateTrade} from './validation.js?v=single-pair-picker-20261012';
+import {journalNow} from './model.js?v=single-pair-picker-20261012';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {

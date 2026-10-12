@@ -1,4 +1,4 @@
-import { net } from './model.js?v=batch-cards-20261012';
+import { net } from './model.js?v=single-pair-picker-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }

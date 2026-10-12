@@ -1,4 +1,4 @@
-import {journalNow} from './model.js?v=batch-cards-20261012';
+import {journalNow} from './model.js?v=single-pair-picker-20261012';
 const chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
 const check='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
 const controls=new Map();
@@ -19,6 +19,7 @@ export function syncFilterMenus(){
    wrapper.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close();trigger.focus();}if(e.target===trigger)return;const options=[...menu.children],i=options.indexOf(document.activeElement);let next=null;if(e.key==='ArrowDown')next=(i+1)%options.length;if(e.key==='ArrowUp')next=(i-1+options.length)%options.length;if(e.key==='Home')next=0;if(e.key==='End')next=options.length-1;if(next!==null){e.preventDefault();options[next]?.focus();}});
    document.addEventListener('pointerdown',e=>{if(!wrapper.contains(e.target))close();});wrapper.addEventListener('focusout',e=>{if(!wrapper.contains(e.relatedTarget))close();});
   }
+  select.hidden=true;
   c.trigger.replaceChildren();const text=document.createElement('span');text.textContent=select.selectedOptions[0]?.textContent||'All';c.trigger.insertAdjacentHTML('beforeend',menuIcon(id));c.trigger.append(text);c.trigger.insertAdjacentHTML('beforeend',chevron);
   c.menu.replaceChildren();for(const option of select.options){const button=document.createElement('button');button.type='button';button.setAttribute('role','option');button.setAttribute('aria-selected',String(option.selected));button.tabIndex=-1;button.dataset.value=option.value;const text=document.createElement('span');text.textContent=option.textContent;const copy=document.createElement('span');copy.className='menu-option-copy';copy.append(text);const hint=document.createElement('small');hint.textContent=menuHint(id,option.value);copy.append(hint);button.insertAdjacentHTML('beforeend',menuIcon(id,option.value));button.append(copy);if(option.selected)button.insertAdjacentHTML('beforeend',check);c.menu.append(button);}
  }
