@@ -53,6 +53,7 @@ function options(items, selected = '', blank = false) {
 }
 
 function render() {
+  document.body.classList.toggle('gallery-view', view === 'gallery');
   $('#pair-chips').hidden = view !== 'gallery';
   $('#pair-filter').hidden = view === 'gallery';
   $('#rules-panel').hidden = view !== 'rules';
