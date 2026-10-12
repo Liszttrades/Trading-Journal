@@ -1058,3 +1058,20 @@ dialog.entry-dialog { background:#111!important; border:1px solid #333!important
 .time-shortcuts button { font-size:12px; padding:7px 11px; }
 #time-zone-note { margin:0 0 16px; }
 @media(max-width:700px) { dialog.entry-dialog { padding:22px!important; border-radius:18px!important; width:calc(100% - 20px)!important; } }
+
+#rules-panel { padding:0; border:0; background:transparent; }
+.plan-editor { max-width:1220px; margin:0 auto; }
+.plan-header { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:22px; }
+#rules-panel .plan-header h2 { margin-top:5px; }
+.plan-kicker { font-size:11px; letter-spacing:1.5px; color:#8f8f8f; }
+.plan-columns { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.plan-card { background:#151515; border:1px solid #303030; border-radius:18px; padding:24px; }
+.plan-card h3 { margin:8px 0 20px; font-size:18px; }
+#rules-panel .plan-card textarea { min-height:190px; margin:0 0 12px; resize:vertical; }
+.plan-card input, .plan-card textarea { background:#1b1b1b; color:#eee; border:1px solid #373737; border-radius:10px; padding:12px; }
+.plan-card label { font-size:13px; color:#bbb; }
+.plan-card .helper { margin-top:14px; }
+.risk-plan { margin-top:20px; }
+.risk-plan .form-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+@media(max-width:900px) { .plan-columns { grid-template-columns:1fr; } .risk-plan .form-grid { grid-template-columns:1fr; } }
+@media(max-width:700px) { .plan-header { align-items:flex-start; } .plan-card { padding:20px; } }

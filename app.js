@@ -1,8 +1,8 @@
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=blank-plan-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=risk-playbook-20261012';
 import { backend } from './cloud.js';
-import { resetCloudState, cloudChanged } from './storage.js?v=blank-plan-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=risk-playbook-20261012';
 import { monthSummary } from './calendar.js';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=blank-plan-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=risk-playbook-20261012';
 import { fresh, nextScalp, journalNow, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
@@ -434,7 +434,9 @@ try {
 function renderRules() {
   const rules = { ...defaultRules, ...database.settings.tradingRules };
   const limit = rules.planVersion === 1 ? rules.maxEntries : null;
-  $('#rules-panel').innerHTML = `<h2>Trading plan</h2><p class="helper">Your plan, your rules. Fill in what matters to you.</p><form id="rules-form"><label>Rules & notes<textarea name="notes" rows="8" maxlength="20000" placeholder="Write your trading plan, entry checklist, and reminders…">${escape(rules.notes)}</textarea></label><div class="form-grid"><label>Target daily net P&L (${escape(database.settings.currency)})<input name="dailyMoney" type="number" min="0.01" step="any" value="${rules.dailyMoney ?? ''}" placeholder="Set your target"></label><label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Set your daily limit"></label></div><p class="helper">Leave either field blank to disable it. Your saved plan syncs with your account.</p><button class="primary" type="submit">Save trading plan</button><p id="rules-message" role="status"></p></form>`;
+  const field = (label, name, value, min, max = '') => `<label>${label}<input name="${name}" type="number" min="${min}" ${max ? `max="${max}"` : ''} step="any" value="${value ?? ''}" placeholder="Not set"></label>`;
+  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Leverage & trade risk</h3><div class="form-grid">${field('Maximum leverage (1:x)','maxLeverage',rules.maxLeverage,1,100000)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Leverage and risk limits are saved plan reminders; the journal does not block broker orders or automatically verify these limits.</p></section><p id="rules-message" role="status"></p></form>`;
+
 }
 document.addEventListener('submit', async event => {
   if (event.target.id !== 'rules-form') return;
@@ -442,7 +444,7 @@ document.addEventListener('submit', async event => {
   const button = event.target.querySelector('button[type="submit"]');
   button.disabled = true;
   const data = new FormData(event.target);
-  const tradingRules = { notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null };
+  const tradingRules = { notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null, ...Object.fromEntries(['dailyLoss', 'maxLeverage', 'riskPercent', 'riskMoney'].map(key => [key, data.get(key) === '' ? null : Number(data.get(key))])) };
   try {
     await api('/api/settings', { method: 'PUT', body: JSON.stringify({ ...database.settings, tradingRules }) });
     await load();

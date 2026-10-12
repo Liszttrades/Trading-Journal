@@ -57,6 +57,13 @@ function validateSettings(value) {
   requireInput(typeof (rules.notes ?? '') === 'string' && (rules.notes ?? '').length <= 20000, 'Rules notes must be at most 20,000 characters.');
   for (const key of ['dailyMoney', 'dailyR']) requireInput(rules[key] == null || (Number.isFinite(rules[key]) && rules[key] > 0), 'Targets must be positive or blank.');
   settings.tradingRules = { planVersion: rules.planVersion === 1 ? 1 : 0, maxEntries, notes: rules.notes ?? '', dailyMoney: rules.dailyMoney ?? null, dailyR: rules.dailyR ?? null };
+  for (const key of ['dailyLoss', 'maxLeverage', 'riskPercent', 'riskMoney']) {
+    const number = rules[key] ?? null;
+    requireInput(number === null || (typeof number === 'number' && Number.isFinite(number) && number > 0), 'Risk limits must be positive or blank.');
+    if (key === 'riskPercent') requireInput(number === null || number <= 100, 'Risk percentage cannot exceed 100.');
+    if (key === 'maxLeverage') requireInput(number === null || (number >= 1 && number <= 100000), 'Enter leverage between 1 and 100000.');
+    settings.tradingRules[key] = number;
+  }
   const phpRates = value.phpRates ?? {};
   requireInput(phpRates && typeof phpRates === 'object' && !Array.isArray(phpRates), 'Check your PHP rates.');
   settings.phpRates = {};
