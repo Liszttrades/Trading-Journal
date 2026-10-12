@@ -1,4 +1,4 @@
-import {validateAnnotations} from './annotations.js?v=single-pair-picker-20261012';
+import {validateAnnotations} from './annotations.js?v=lot-size-black-20261012';
 export function createChartEditor(save) {
  const dialog=document.querySelector('#image-dialog'), canvas=document.querySelector('#chart-canvas'), ctx=canvas.getContext('2d'), viewport=document.querySelector('#chart-viewport');
  const $=s=>dialog.querySelector(s);

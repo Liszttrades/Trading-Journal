@@ -1,14 +1,14 @@
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=single-pair-picker-20261012';
-import { createWorkbench } from './workbench.js?v=single-pair-picker-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=single-pair-picker-20261012';
-import { createRoadmap } from './roadmap.js?v=single-pair-picker-20261012';
-import { createChartEditor } from './chart-editor.js?v=single-pair-picker-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=single-pair-picker-20261012';
-import { backend } from './cloud.js?v=single-pair-picker-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=single-pair-picker-20261012';
-import { monthSummary } from './calendar.js?v=single-pair-picker-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=single-pair-picker-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=single-pair-picker-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=lot-size-black-20261012';
+import { createWorkbench } from './workbench.js?v=lot-size-black-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=lot-size-black-20261012';
+import { createRoadmap } from './roadmap.js?v=lot-size-black-20261012';
+import { createChartEditor } from './chart-editor.js?v=lot-size-black-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=lot-size-black-20261012';
+import { backend } from './cloud.js?v=lot-size-black-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=lot-size-black-20261012';
+import { monthSummary } from './calendar.js?v=lot-size-black-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=lot-size-black-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=lot-size-black-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -225,10 +225,10 @@ function openEntry(entry = null, draft = null) {
     number(`Actual net P&L (${settings.currency})`, 'pnl', trade.pnl),
     number(`Initial risk (${settings.currency})`, 'risk', trade.risk, 0),
     number(`Equity when entering (${settings.currency})`, 'equitySnapshot', trade.equitySnapshot, 0),
-    number('Recorded leverage (1:x)', 'leverage', trade.leverage, 1)
+    number('Lot size', 'quantity', trade.quantity, 0.000001)
   ].join('');
   $('#time-zone-note').textContent = `Times use ${settings.timezone}. New entries start with matching entry and exit times; adjust them for the actual trade. Open trades do not count toward realized P&L.`;
-  $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Quantity / units', 'quantity', trade.quantity, 0), number('Contract multiplier', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0), number(`Journal currency per 1 price-currency unit`, 'fxRate', trade.fxRate ?? 1, 0)].join('');
+  $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Contract units per lot', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0), number(`Journal currency per 1 price-currency unit`, 'fxRate', trade.fxRate ?? 1, 0)].join('');
   $('#review-fields').innerHTML = select('Mood', 'mood', settings.moods, trade.mood, true) + select('Followed your rules?', 'rules', ['Yes', 'No'], trade.rules, true);
   $('#entry-form').elements.mistakes.value = (trade.mistakes || []).join('; ');
   $('#mistake-options').innerHTML = (settings.mistakeTags || []).map(t=>`<option value="${escape(t)}"></option>`).join('');
@@ -279,7 +279,8 @@ $('#entry-form').addEventListener('submit', async event => {
   const form = new FormData(event.currentTarget);
   const trade = {};
   for (const key of ['kind', 'pair', 'direction', 'status', 'entryTime', 'exitTime', 'setup', 'session', 'mood', 'rules', 'notes', 'lesson']) trade[key] = String(form.get(key) || '');
-  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'equitySnapshot', 'leverage']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'equitySnapshot']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  trade.leverage=editing?.leverage ?? null;
   trade.mistakes=String(form.get('mistakes')||'').split(';').map(t=>t.trim()).filter(Boolean);
   try {
     const images = await Promise.all(files.map(fileData));
@@ -487,7 +488,7 @@ function renderRules() {
   const rules = { ...defaultRules, ...database.settings.tradingRules };
   const limit = rules.planVersion === 1 ? rules.maxEntries : null;
   const field = (label, name, value, min, max = '') => `<label>${label}<input name="${name}" type="number" min="${min}" ${max ? `max="${max}"` : ''} step="any" value="${value ?? ''}" placeholder="Not set"></label>`;
-  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Leverage & trade risk</h3><div class="form-grid">${field('Maximum leverage (1:x)','maxLeverage',rules.maxLeverage,1,100000)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Leverage and risk limits are saved plan reminders; the journal warns about recorded leverage and risk when available. Broker orders are not blocked.</p></section><p id="rules-message" role="status"></p></form>`;
+  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Lot size & trade risk</h3><div class="form-grid">${field('Maximum lot size','maxLotSize',rules.maxLotSize,0.000001)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Lot size and risk limits warn when a recorded trade exceeds your plan. Broker orders are not blocked.</p></section><p id="rules-message" role="status"></p></form>`;
 
 }
 document.addEventListener('submit', async event => {
@@ -496,7 +497,7 @@ document.addEventListener('submit', async event => {
   const button = event.target.querySelector('button[type="submit"]');
   button.disabled = true;
   const data = new FormData(event.target);
-  const tradingRules = { notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null, ...Object.fromEntries(['dailyLoss', 'maxLeverage', 'riskPercent', 'riskMoney'].map(key => [key, data.get(key) === '' ? null : Number(data.get(key))])) };
+  const tradingRules = { notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null, ...Object.fromEntries(['dailyLoss', 'maxLotSize', 'riskPercent', 'riskMoney'].map(key => [key, data.get(key) === '' ? null : Number(data.get(key))])) };
   try {
     await api('/api/settings', { method: 'PUT', body: JSON.stringify({ ...database.settings, tradingRules }) });
     await load();
@@ -556,7 +557,7 @@ $('#entry-form').addEventListener('input',updateTradeWarnings);
 $('#entry-form').addEventListener('change',updateTradeWarnings);
 function updateTradeWarnings(){
   const form=new FormData($('#entry-form'));
-  const trade={kind:form.get('kind'),entryTime:String(form.get('entryTime')||''),risk:form.get('risk')===''?null:Number(form.get('risk')),entry:form.get('entry')===''?null:Number(form.get('entry')),stop:form.get('stop')===''?null:Number(form.get('stop')),quantity:form.get('quantity')===''?null:Number(form.get('quantity')),multiplier:Number(form.get('multiplier')),fxRate:Number(form.get('fxRate')),fees:Number(form.get('fees')),equitySnapshot:form.get('equitySnapshot')===''?null:Number(form.get('equitySnapshot')),leverage:form.get('leverage')===''?null:Number(form.get('leverage'))};
+  const trade={kind:form.get('kind'),entryTime:String(form.get('entryTime')||''),risk:form.get('risk')===''?null:Number(form.get('risk')),entry:form.get('entry')===''?null:Number(form.get('entry')),stop:form.get('stop')===''?null:Number(form.get('stop')),quantity:form.get('quantity')===''?null:Number(form.get('quantity')),multiplier:Number(form.get('multiplier')),fxRate:Number(form.get('fxRate')),fees:Number(form.get('fees')),equitySnapshot:form.get('equitySnapshot')===''?null:Number(form.get('equitySnapshot')),leverage:null};
   const warnings=tradeWarnings(database,trade,editing?.id);
   if(database.settings.tradingRules?.riskPercent && !trade.equitySnapshot) warnings.push('Record equity to check your percentage risk limit.');
   $('#trade-warnings').hidden=!warnings.length;

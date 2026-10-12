@@ -1,5 +1,5 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R).
+Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
 
-Fix: the native pair selector remains hidden on every render. Only the styled pair menu is visible. Pair filtering and chart-library pair chips remain functional. All previous updates included. No database changes.
+Account & risk inputs now match the black Rules controls. Calculator uses lot size, contract units per lot and lot increments. Enter your broker-specific units per lot; it is deliberately blank rather than assuming a Forex/gold contract size. The trade form records Lot size using its existing quantity field. Rules now offer Maximum lot size and warn when a recorded quantity exceeds it; calculator applies that cap. Existing leverage values remain stored and are not converted to lots. Existing quantity values and trade P&L are unchanged: if you previously recorded units/contracts, review their quantity and multiplier before treating them as lots. New trade P&L uses lot size times contract units per lot.
 
-JavaScript syntax and the visibility correction checked. Browser rendering was not tested here.
+Lot cap, validation, warning and P&L calculation checks passed; JavaScript syntax checked. Browser layout and live cloud were not tested here.

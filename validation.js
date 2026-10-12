@@ -1,4 +1,4 @@
-import { net } from './model.js?v=single-pair-picker-20261012';
+import { net } from './model.js?v=lot-size-black-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -60,7 +60,7 @@ function validateSettings(value) {
   requireInput(typeof (rules.notes ?? '') === 'string' && (rules.notes ?? '').length <= 20000, 'Rules notes must be at most 20,000 characters.');
   for (const key of ['dailyMoney', 'dailyR']) requireInput(rules[key] == null || (Number.isFinite(rules[key]) && rules[key] > 0), 'Targets must be positive or blank.');
   settings.tradingRules = { planVersion: rules.planVersion === 1 ? 1 : 0, maxEntries, notes: rules.notes ?? '', dailyMoney: rules.dailyMoney ?? null, dailyR: rules.dailyR ?? null };
-  for (const key of ['dailyLoss', 'maxLeverage', 'riskPercent', 'riskMoney']) {
+  for (const key of ['dailyLoss', 'maxLeverage', 'maxLotSize', 'riskPercent', 'riskMoney']) {
     const number = rules[key] ?? null;
     requireInput(number === null || (typeof number === 'number' && Number.isFinite(number) && number > 0), 'Risk limits must be positive or blank.');
     if (key === 'riskPercent') requireInput(number === null || number <= 100, 'Risk percentage cannot exceed 100.');

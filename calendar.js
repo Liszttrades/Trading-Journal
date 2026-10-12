@@ -1,4 +1,4 @@
-import { net } from './model.js?v=single-pair-picker-20261012';
+import { net } from './model.js?v=lot-size-black-20261012';
 
 // Use recorded closing dates directly: journal timestamps already use the chosen zone.
 export function monthSummary(entries, year, month) {
