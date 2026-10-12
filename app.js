@@ -53,6 +53,8 @@ function options(items, selected = '', blank = false) {
 }
 
 function render() {
+  $('#pair-chips').hidden = view !== 'gallery';
+  $('#pair-filter').hidden = view === 'gallery';
   $('#rules-panel').hidden = view !== 'rules';
   document.querySelector('.records').hidden = view === 'rules';
   $('#new-entry').hidden = view === 'rules';
@@ -65,10 +67,10 @@ function render() {
     renderRules();
     return;
   }
-  const title = view === 'backtest' ? 'Backtesting lab' : view === 'gallery' ? 'Chart library' : 'Trading journal';
+  const title = view === 'backtest' ? 'Backtesting lab' : view === 'gallery' ? 'Chart Library' : 'Trading journal';
   $('#heading').textContent = title;
   $('#breadcrumb').textContent = title;
-  $('#subtitle').textContent = view === 'backtest' ? 'Test your setups. Keep the evidence.' : view === 'gallery' ? 'Your screenshots, connected to the trades behind them.' : 'Every trade, its reasoning, and what comes next.';
+  $('#subtitle').textContent = view === 'backtest' ? 'Test your setups. Keep the evidence.' : view === 'gallery' ? 'Your chart archive. Filter a pair, revisit a setup, and review the trade behind it.' : 'Every trade, its reasoning, and what comes next.';
   $('#new-entry').textContent = view === 'backtest' ? '+ New backtest' : '+ New trade';
   document.querySelectorAll('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === view));
   const currentPair = $('#pair-filter').value || 'All pairs';
@@ -80,8 +82,14 @@ function render() {
   $('#records-title').textContent = `${view === 'gallery' ? 'Screenshots' : 'Entries'} (${selected.length})`;
   $('#footnote').textContent = `${database.settings.currency} results. Times entered in ${database.settings.timezone}. Private cloud journal. Automatically refreshes while this page is open; internet required to save.`;
   if (view === 'gallery') {
-    const cards = selected.flatMap(entry => entry.images.map(image => `<button class="image-card" data-image="${image.id}" data-image-name="${escape(image.name)}"><img src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><div><strong>${escape(entry.pair)}</strong><span>${entry.kind === 'backtest' ? 'Backtest' : 'Live trade'} · ${escape(entry.entryTime.replace('T', ' '))}</span></div></button>`));
-    $('#entries').innerHTML = `<div class="gallery">${cards.join('') || '<div class="empty"><h3>No screenshots yet</h3><p>Attach a chart image to a trade or backtest.</p></div>'}</div>`;
+    const pairs = [...new Set([...database.settings.pairs, ...database.entries.map(entry => entry.pair)])];
+    $('#pair-chips').innerHTML = ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
+    const cards = selected.flatMap(entry => entry.images.map(image => {
+      const pnl = net(entry);
+      return `<article class="chart-card"><button type="button" class="chart-art" data-image="${escape(image.id)}" data-image-name="${escape(image.name)}" aria-label="View ${escape(entry.pair + ' ' + image.name)}"><img loading="lazy" src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><span class="chart-kind">${entry.kind === 'backtest' ? 'BACKTEST' : 'LIVE'}</span></button><div class="chart-copy"><div class="chart-title"><strong>${escape(entry.pair)}</strong><span class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${pnl === null ? 'Open' : escape(money(pnl))}</span></div><p>${escape(entry.setup || 'No setup')} · ${escape(entry.entryTime.replace('T', ' '))}</p><p class="chart-note">${escape(entry.notes || image.name)}</p><div class="chart-tags"><span>${escape(entry.direction)}</span><span>${escape(entry.session || 'No session')}</span><button type="button" data-entry="${escape(entry.id)}">Review trade ↗</button></div></div></article>`;
+    }));
+    $('#records-title').textContent = `Screenshots (${cards.length})`;
+    $('#entries').innerHTML = `<div class="gallery">${cards.join('') || '<div class="empty"><h3>No charts for this selection</h3><p>Select another pair or attach screenshots to a trade or backtest.</p><button class="secondary" data-new-entry>Add a trade with charts</button></div>'}</div>`;
     return;
   }
   const closed = selected.filter(entry => net(entry) !== null);
@@ -289,6 +297,7 @@ $('#new-entry').addEventListener('click', () => openEntry());
 document.addEventListener('click', event => {
   const button = event.target.closest('button');
   if (!button) return;
+  if (button.hasAttribute('data-pair-filter')) { $('#pair-filter').value = button.dataset.pairFilter; render(); }
   if (button.dataset.monthStep) { const date = new Date(Date.UTC(calendarYear, calendarMonth + Number(button.dataset.monthStep), 1)); calendarYear = date.getUTCFullYear(); calendarMonth = date.getUTCMonth(); renderCalendar(calendarEntries); }
   if (button.hasAttribute('data-calendar-today')) { [calendarYear, calendarMonth] = currentMonth(); renderCalendar(calendarEntries); }
   if (button.dataset.calendarDay) {
