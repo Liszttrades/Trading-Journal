@@ -1000,3 +1000,24 @@ body.gallery-view .chart-tags span, body.gallery-view .chart-tags button { font-
 .calendar-day, .calendar-week { min-height:135px; }
 .calendar-grid strong { white-space:normal; overflow-wrap:anywhere; }
 @media(max-width:700px) { .page { padding:28px 16px; } .metric { min-height:130px; padding:18px; } .local-chart { height:250px; } .calendar-panel { padding:16px; } }
+
+/* Comfortable outer margins and moderately sized cards across the workspace. */
+main { margin:12px 12px 12px 0; border-radius:18px; overflow:hidden; }
+.page, body.gallery-view .page { width:100%; max-width:1680px!important; margin:0 auto; padding:36px 36px 30px; }
+.metric { min-height:135px; padding:22px; border-radius:12px; }
+.metric strong { font-size:clamp(23px,1.6vw,29px); }
+.local-chart { height:285px; }
+.calendar-panel { padding:24px; border-radius:16px; }
+.calendar-day, .calendar-week { min-height:115px; }
+body.gallery-view .gallery { grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr)); gap:18px; }
+body.gallery-view .chart-copy { padding:12px 5px 7px; }
+body.gallery-view .chart-title strong { font-size:15px; }
+body.gallery-view .chart-copy p { font-size:13px; }
+@media(max-width:1050px) { .page, body.gallery-view .page { padding:28px 24px; } }
+@media(max-width:700px) {
+  main { margin:10px; border-radius:14px; }
+  .page, body.gallery-view .page { padding:24px 16px; }
+  body.gallery-view .gallery { grid-template-columns:1fr; }
+  .local-chart { height:235px; }
+  .calendar-panel { padding:16px; }
+}
