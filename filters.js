@@ -1,14 +1,14 @@
-import {journalNow} from './model.js?v=readable-performance-20261012';
+import {journalNow} from './model.js?v=batch-cards-20261012';
 const chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
 const check='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
 const controls=new Map();
 export function syncFilterMenus(){
- for(const id of ['filter-range','filter-setup','filter-session','filter-outcome']){
+ for(const id of ['filter-range','filter-setup','filter-session','filter-outcome','pair-filter']){
   const select=document.getElementById(id);if(!select)continue;
   let c=controls.get(id);
   if(!c){
-   const field=select.parentElement,wrapper=document.createElement('div');wrapper.className='filter-select';
-   const trigger=document.createElement('button');trigger.type='button';trigger.className='filter-select-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-label',field.querySelector('span')?.textContent||id);
+   const field=select.parentElement,wrapper=document.createElement('div');wrapper.className='filter-select'+(id==='pair-filter'?' pair-picker':'');
+   const trigger=document.createElement('button');trigger.type='button';trigger.className='filter-select-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');trigger.setAttribute('aria-label',select.getAttribute('aria-label')||field.querySelector('span')?.textContent||id);
    const menu=document.createElement('div');menu.id=id+'-menu';menu.className='filter-menu';menu.setAttribute('role','listbox');menu.setAttribute('aria-label',trigger.getAttribute('aria-label'));menu.hidden=true;trigger.setAttribute('aria-controls',menu.id);
    select.hidden=true;wrapper.append(trigger,menu);field.append(wrapper);c={select,trigger,menu};controls.set(id,c);
    const close=()=>{menu.hidden=true;trigger.setAttribute('aria-expanded','false');};
@@ -29,6 +29,7 @@ function menuIcon(id,value='') {
  return '<svg class="menu-field-icon" viewBox="0 0 24 24" aria-hidden="true">'+paths+'</svg>';
 }
 function menuHint(id,value) {
+ if(id==='pair-filter')return value==='All pairs'?'Every market in your journal':'View entries for this market';
  if(id==='filter-range')return value==='all'?'Your complete trade history':value==='today'?'Current journal day':'Including today';
  if(id==='filter-setup')return value?'Trades using this setup':'Every recorded strategy';
  if(id==='filter-session')return value?'Trades from this session':'Across all trading sessions';

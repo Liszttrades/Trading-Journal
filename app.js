@@ -1,14 +1,14 @@
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=readable-performance-20261012';
-import { createWorkbench } from './workbench.js?v=readable-performance-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=readable-performance-20261012';
-import { createRoadmap } from './roadmap.js?v=readable-performance-20261012';
-import { createChartEditor } from './chart-editor.js?v=readable-performance-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=readable-performance-20261012';
-import { backend } from './cloud.js?v=readable-performance-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=readable-performance-20261012';
-import { monthSummary } from './calendar.js?v=readable-performance-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=readable-performance-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=readable-performance-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=batch-cards-20261012';
+import { createWorkbench } from './workbench.js?v=batch-cards-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=batch-cards-20261012';
+import { createRoadmap } from './roadmap.js?v=batch-cards-20261012';
+import { createChartEditor } from './chart-editor.js?v=batch-cards-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=batch-cards-20261012';
+import { backend } from './cloud.js?v=batch-cards-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=batch-cards-20261012';
+import { monthSummary } from './calendar.js?v=batch-cards-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=batch-cards-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=batch-cards-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -109,6 +109,7 @@ function render() {
   }
   applyDatePreset(database.settings.timezone);
   syncFilterMenus();
+  const pairPicker=document.querySelector('.pair-picker');if(pairPicker)pairPicker.hidden=view==='gallery';
   const activeFilters=['#trade-search','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-range').value!=='all'?1:0) + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0);
   $('#filter-state').textContent=activeFilters?`${activeFilters} active filter${activeFilters===1?'':'s'}`:'All trades';
   $('#filter-state').classList.toggle('has-filters',Boolean(activeFilters));

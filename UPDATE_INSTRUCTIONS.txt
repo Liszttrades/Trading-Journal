@@ -1,5 +1,5 @@
-Extract and upload ALL files to your Trading-Journal GitHub repository root, replacing matching files. Keep your current config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes needed.
+Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep your existing config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes needed.
 
-Performance breakdown redesigned: Setup/Session/Pair tabs with category counts, one readable full-width comparison, totals, leading group summary, explicit highest net P&L ordering, aligned monetary values and win-rate bars. Mobile uses stacked rows. Missing categories are labeled clearly. Existing date/dropdown improvements and manual batch entry included; CSV remains removed.
+Batch entry now uses numbered scalp cards with labeled fields, a grouped date/journal panel, row count, workflow steps and review/save footer. Times start with the current journal time and remain editable. Notes use a textarea. Preview, validation, duplicate skipping and save behavior remain. Pair selection uses the custom dark detailed menu with checkmarks and keyboard support. Existing improvements included; CSV remains removed.
 
-JavaScript syntax and dependencies checked. Browser appearance and live cloud were not tested here.
+JavaScript syntax, HTML structure, IDs and module dependencies verified. Browser appearance and live cloud were not tested here.

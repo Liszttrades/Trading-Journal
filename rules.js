@@ -1,4 +1,4 @@
-import { net, risk } from './model.js?v=readable-performance-20261012';
+import { net, risk } from './model.js?v=batch-cards-20261012';
 export const defaultRules = { notes: '', dailyMoney: null, dailyR: null, maxEntries: null };
 export function ruleFlags(entries, limit = null) {
   const counts = new Map();
