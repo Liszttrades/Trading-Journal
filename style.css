@@ -1220,3 +1220,14 @@ main::before { opacity:.04; }
 }
 @media(max-width:700px) { .ambient-morph { opacity:.43; } }
 @media(prefers-reduced-motion:reduce) { .ambient-morph { animation:none; } }
+
+/* Clip the wave to the workspace; black canvas with subtle global noise. */
+html,body,.workspace { background:#000; }
+main { background:#000; position:relative; isolation:isolate; clip-path:inset(0 round 18px); }
+aside,body.gallery-view aside { background:#000; position:sticky; z-index:2; }
+.ambient-morph { left:210px; top:0; width:calc(100vw - 210px); height:100vh; pointer-events:none; }
+main::before { display:none; }
+body::after { content:""; position:fixed; inset:0; z-index:20; pointer-events:none; opacity:.027; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23noise)' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); background-repeat:repeat; }
+.topbar { background:rgba(0,0,0,.82); }
+.auth-screen { background:#000; }
+@media(max-width:700px) { aside,body.gallery-view aside { position:static; } main { clip-path:inset(0 round 14px); } .ambient-morph { left:0; width:100vw; } }
