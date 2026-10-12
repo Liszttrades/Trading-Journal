@@ -52,11 +52,11 @@ function validateSettings(value) {
   try { new Intl.DateTimeFormat('en', { timeZone: value.timezone }); }
   catch { requireInput(false, 'Choose a valid time zone.'); }
   const rules = value.tradingRules || {};
-  const maxEntries = rules.maxEntries ?? 3;
-  requireInput(Number.isInteger(maxEntries) && maxEntries >= 1 && maxEntries <= 1000, 'Daily entry limit must be 1–1000.');
+  const maxEntries = rules.maxEntries ?? null;
+  requireInput(maxEntries === null || (Number.isInteger(maxEntries) && maxEntries >= 1 && maxEntries <= 1000), 'Daily entry limit must be 1–1000.');
   requireInput(typeof (rules.notes ?? '') === 'string' && (rules.notes ?? '').length <= 20000, 'Rules notes must be at most 20,000 characters.');
   for (const key of ['dailyMoney', 'dailyR']) requireInput(rules[key] == null || (Number.isFinite(rules[key]) && rules[key] > 0), 'Targets must be positive or blank.');
-  settings.tradingRules = { maxEntries, notes: rules.notes ?? '', dailyMoney: rules.dailyMoney ?? null, dailyR: rules.dailyR ?? null };
+  settings.tradingRules = { planVersion: rules.planVersion === 1 ? 1 : 0, maxEntries, notes: rules.notes ?? '', dailyMoney: rules.dailyMoney ?? null, dailyR: rules.dailyR ?? null };
   const phpRates = value.phpRates ?? {};
   requireInput(phpRates && typeof phpRates === 'object' && !Array.isArray(phpRates), 'Check your PHP rates.');
   settings.phpRates = {};

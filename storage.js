@@ -1,5 +1,5 @@
 import { defaultSettings } from './model.js';
-import { validateTrade, validateSettings } from './validation.js';
+import { validateTrade, validateSettings } from './validation.js?v=blank-plan-20261012';
 
 import { backend, signedUser } from './cloud.js';
 let snapshot = null;
