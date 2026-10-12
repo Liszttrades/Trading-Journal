@@ -1,16 +1,16 @@
-import {enhanceEntryMenus} from './entry-menus.js?v=entry-dropdowns-20261012';
-import {guidanceState} from './guidance.js?v=entry-dropdowns-20261012';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=entry-dropdowns-20261012';
-import { createWorkbench } from './workbench.js?v=entry-dropdowns-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=entry-dropdowns-20261012';
-import { createRoadmap } from './roadmap.js?v=entry-dropdowns-20261012';
-import { createChartEditor } from './chart-editor.js?v=entry-dropdowns-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=entry-dropdowns-20261012';
-import { backend } from './cloud.js?v=entry-dropdowns-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=entry-dropdowns-20261012';
-import { monthSummary } from './calendar.js?v=entry-dropdowns-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=entry-dropdowns-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=entry-dropdowns-20261012';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=customize-dropdowns-20261012';
+import {guidanceState} from './guidance.js?v=customize-dropdowns-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=customize-dropdowns-20261012';
+import { createWorkbench } from './workbench.js?v=customize-dropdowns-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=customize-dropdowns-20261012';
+import { createRoadmap } from './roadmap.js?v=customize-dropdowns-20261012';
+import { createChartEditor } from './chart-editor.js?v=customize-dropdowns-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=customize-dropdowns-20261012';
+import { backend } from './cloud.js?v=customize-dropdowns-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=customize-dropdowns-20261012';
+import { monthSummary } from './calendar.js?v=customize-dropdowns-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=customize-dropdowns-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=customize-dropdowns-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -343,6 +343,7 @@ $('#customize').addEventListener('click', () => {
     $('#settings-form').elements.phpRate.value = settings.phpRates?.[event.target.value] ?? '';
   });
   message('#settings-error');
+  enhanceSettingsMenus();
   $('#settings-dialog').showModal();
 });
 

@@ -1,6 +1,6 @@
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=entry-dropdowns-20261012';
-import {validateTrade} from './validation.js?v=entry-dropdowns-20261012';
-import {journalNow} from './model.js?v=entry-dropdowns-20261012';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=customize-dropdowns-20261012';
+import {validateTrade} from './validation.js?v=customize-dropdowns-20261012';
+import {journalNow} from './model.js?v=customize-dropdowns-20261012';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {
