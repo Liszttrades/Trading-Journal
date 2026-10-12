@@ -1,6 +1,6 @@
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=guided-workspace-20261012';
-import {validateTrade} from './validation.js?v=guided-workspace-20261012';
-import {journalNow} from './model.js?v=guided-workspace-20261012';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=pnl-first-20261012';
+import {validateTrade} from './validation.js?v=pnl-first-20261012';
+import {journalNow} from './model.js?v=pnl-first-20261012';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {

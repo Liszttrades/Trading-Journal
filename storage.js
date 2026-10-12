@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=guided-workspace-20261012';
-import { validateRoadmap } from './roadmap.js?v=guided-workspace-20261012';
-import { validateAnnotations } from './annotations.js?v=guided-workspace-20261012';
-import { defaultSettings } from './model.js?v=guided-workspace-20261012';
-import { validateTrade, validateSettings } from './validation.js?v=guided-workspace-20261012';
+import {prepareBatch} from './insights.js?v=pnl-first-20261012';
+import { validateRoadmap } from './roadmap.js?v=pnl-first-20261012';
+import { validateAnnotations } from './annotations.js?v=pnl-first-20261012';
+import { defaultSettings } from './model.js?v=pnl-first-20261012';
+import { validateTrade, validateSettings } from './validation.js?v=pnl-first-20261012';
 
-import { backend, signedUser } from './cloud.js?v=guided-workspace-20261012';
+import { backend, signedUser } from './cloud.js?v=pnl-first-20261012';
 let snapshot = null;
 let revision = 0;
 let owner = null;

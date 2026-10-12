@@ -1,9 +1,3 @@
-Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep config.js. Export a journal backup first. Wait for deployment and hard refresh (Ctrl+Shift+R). No database migration required.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
 
-Daily workflow: setup checklist, daily summary, entries, Needs review queue, then detailed performance and calendar. Sidebar grouped into Trading, Review & learning, Settings. New trade stays primary, Batch entry secondary. Saving an individual trade offers Add another scalp and Review this trade. Statistics show current view, date range, pair, setup, session, outcome, search and matching entry count.
-
-Checklist steps link directly to account, pairs, plan and first trade. Save Customize once to confirm pair choices; progress hides when all four steps complete. Review queue includes closed live trades without a lesson or Review complete status. Add a lesson or check Review complete and SAVE the trade to remove it from the queue. Reviewed status remains editable and is backed up. The queue shows the five most recent pending trades and total pending count.
-
-All previous design updates included. Lot-size calculations remain broker-specific; CSV remains removed.
-
-Checklist, review status persistence/validation and queue exclusions checked. JavaScript syntax, markup order and local dependencies checked. Browser layout and live Supabase were not tested here.
+P&L summary cards, cumulative P&L chart, advanced statistics and P&L calendar now appear first under the workspace heading, before setup guidance, daily status and entries. Current statistics filter scope remains displayed above P&L. All prior functionality included. Layout order and duplicate IDs checked. Live browser appearance unverified.

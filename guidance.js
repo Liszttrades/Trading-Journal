@@ -1,4 +1,4 @@
-import {net} from './model.js?v=guided-workspace-20261012';
+import {net} from './model.js?v=pnl-first-20261012';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[

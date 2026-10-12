@@ -1,4 +1,4 @@
-import {net,risk} from './model.js?v=guided-workspace-20261012';
+import {net,risk} from './model.js?v=pnl-first-20261012';
 export function equity(db){return db.settings.account?.startingBalance == null ? null : db.settings.account.startingBalance + (db.settings.account.netFunding || 0) + db.entries.filter(e=>e.kind==='live').reduce((s,e)=>s+(net(e)||0),0);}
 export function performance(entries){
  const closed=entries.filter(e=>net(e)!==null).slice().sort((a,b)=>a.exitTime.localeCompare(b.exitTime)||String(a.id).localeCompare(String(b.id)));

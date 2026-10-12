@@ -1,4 +1,4 @@
-import { net } from './model.js?v=guided-workspace-20261012';
+import { net } from './model.js?v=pnl-first-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
