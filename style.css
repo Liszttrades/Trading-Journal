@@ -1206,3 +1206,17 @@ main::before { opacity:.035; }
 body.gallery-view .records,#rules-panel { background:transparent; }
 .chart-card { background:linear-gradient(160deg,rgba(35,36,43,.96),rgba(24,25,30,.98)); border-color:#353740; }
 @media(max-width:700px) { .ambient-morph { inset:0; width:100vw; height:100vh; opacity:.65; } main::before { opacity:.03; } }
+
+/* Video-inspired smooth waves with the exact requested violet-to-black palette. */
+body { background:#000; }
+main { background:#000; }
+.ambient-morph { opacity:.52; animation:flow-wave-breathe 26s ease-in-out infinite; }
+main::before { opacity:.04; }
+.topbar { background:rgba(0,0,0,.8); }
+@keyframes flow-wave-breathe {
+  0%,100% { transform:scale(1.04) translate(0,0); }
+  33% { transform:scale(1.12,1.04) translate(-2vw,2vh); }
+  66% { transform:scale(1.04,1.12) translate(2vw,-2vh); }
+}
+@media(max-width:700px) { .ambient-morph { opacity:.43; } }
+@media(prefers-reduced-motion:reduce) { .ambient-morph { animation:none; } }
