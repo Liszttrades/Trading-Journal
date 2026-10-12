@@ -1164,3 +1164,12 @@ nav button.active { background:#151515; }
   .sidebar-primary,.sidebar-utilities { gap:7px; }
   .nav-group-title { padding:0 12px; }
 }
+
+/* Black customization dialog and aligned trading-plan content. */
+dialog.settings-dialog { background:#0a0a0a!important; border:1px solid #2c2c2c!important; border-radius:20px!important; color:#eee; }
+.settings-dialog input,.settings-dialog select,.settings-dialog textarea { background:#111!important; border:1px solid #333!important; color:#eee!important; border-radius:10px!important; }
+.settings-dialog .dialog-description,.settings-dialog .helper { color:#999; }
+#rules-panel .plan-editor { max-width:none; width:100%; margin:0; }
+#rules-panel .plan-card { background:#0a0a0a; border-color:#292929; }
+#rules-panel .plan-card input,#rules-panel .plan-card textarea { background:#111; border-color:#333; }
+#rules-panel .plan-header { margin-top:0; }
