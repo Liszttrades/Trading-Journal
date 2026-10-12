@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=lot-size-black-20261012';
-import { validateRoadmap } from './roadmap.js?v=lot-size-black-20261012';
-import { validateAnnotations } from './annotations.js?v=lot-size-black-20261012';
-import { defaultSettings } from './model.js?v=lot-size-black-20261012';
-import { validateTrade, validateSettings } from './validation.js?v=lot-size-black-20261012';
+import {prepareBatch} from './insights.js?v=guided-workspace-20261012';
+import { validateRoadmap } from './roadmap.js?v=guided-workspace-20261012';
+import { validateAnnotations } from './annotations.js?v=guided-workspace-20261012';
+import { defaultSettings } from './model.js?v=guided-workspace-20261012';
+import { validateTrade, validateSettings } from './validation.js?v=guided-workspace-20261012';
 
-import { backend, signedUser } from './cloud.js?v=lot-size-black-20261012';
+import { backend, signedUser } from './cloud.js?v=guided-workspace-20261012';
 let snapshot = null;
 let revision = 0;
 let owner = null;
@@ -101,16 +101,18 @@ export async function api(url, options = {}) {
   const trade = validateTrade(input.trade);
   if (!Array.isArray(input.images) || input.images.length > 4) throw Error('Choose up to four screenshots.');
   const images = input.images.map(screenshot);
+  let savedId;
   await transaction(db => {
     const existing = db.entries.find(entry => entry.id === input.id);
     if (options.method === 'PUT' && !existing) throw Error('Entry no longer exists. Reload and try again.');
     const keep = existing?.images.filter(image => !(input.removeImages || []).includes(image.id)) || [];
     if (keep.length + images.length > 4) throw Error('Each entry can have four screenshots.');
     const entry = { ...trade, id: existing?.id || crypto.randomUUID(), created: existing?.created || new Date().toISOString(), updated: new Date().toISOString(), images: [...keep, ...images] };
+    savedId=entry.id;
     return { ...db, entries: existing ? db.entries.map(e => e.id === entry.id ? entry : e) : [entry, ...db.entries] };
   });
 
-  return { ok: true };
+  return { ok: true, id:savedId };
 }
 
 export function imageURL(id, db) {

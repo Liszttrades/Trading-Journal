@@ -1,5 +1,9 @@
-Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
+Upload all extracted files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep config.js. Export a journal backup first. Wait for deployment and hard refresh (Ctrl+Shift+R). No database migration required.
 
-Account & risk inputs now match the black Rules controls. Calculator uses lot size, contract units per lot and lot increments. Enter your broker-specific units per lot; it is deliberately blank rather than assuming a Forex/gold contract size. The trade form records Lot size using its existing quantity field. Rules now offer Maximum lot size and warn when a recorded quantity exceeds it; calculator applies that cap. Existing leverage values remain stored and are not converted to lots. Existing quantity values and trade P&L are unchanged: if you previously recorded units/contracts, review their quantity and multiplier before treating them as lots. New trade P&L uses lot size times contract units per lot.
+Daily workflow: setup checklist, daily summary, entries, Needs review queue, then detailed performance and calendar. Sidebar grouped into Trading, Review & learning, Settings. New trade stays primary, Batch entry secondary. Saving an individual trade offers Add another scalp and Review this trade. Statistics show current view, date range, pair, setup, session, outcome, search and matching entry count.
 
-Lot cap, validation, warning and P&L calculation checks passed; JavaScript syntax checked. Browser layout and live cloud were not tested here.
+Checklist steps link directly to account, pairs, plan and first trade. Save Customize once to confirm pair choices; progress hides when all four steps complete. Review queue includes closed live trades without a lesson or Review complete status. Add a lesson or check Review complete and SAVE the trade to remove it from the queue. Reviewed status remains editable and is backed up. The queue shows the five most recent pending trades and total pending count.
+
+All previous design updates included. Lot-size calculations remain broker-specific; CSV remains removed.
+
+Checklist, review status persistence/validation and queue exclusions checked. JavaScript syntax, markup order and local dependencies checked. Browser layout and live Supabase were not tested here.

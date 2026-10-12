@@ -1,4 +1,4 @@
-import { net } from './model.js?v=lot-size-black-20261012';
+import { net } from './model.js?v=guided-workspace-20261012';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -8,7 +8,7 @@ function validateTrade(value) {
   const template = {
     kind: 'live', pair: '', direction: 'Long', status: 'Open', entryTime: '', exitTime: '',
     setup: '', session: '', mood: '', rules: '', entry: null, exit: null, stop: null,
-    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: '', fxRate: 1, leverage: null, equitySnapshot: null, mistakes: []
+    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: '', fxRate: 1, leverage: null, equitySnapshot: null, mistakes: [], reviewed: false
   };
   const trade = {};
   for (const [key, fallback] of Object.entries(template)) trade[key] = value[key] ?? fallback;
@@ -22,6 +22,7 @@ function validateTrade(value) {
   requireInput(['Yes', 'No', ''].includes(trade.rules), 'Choose Yes or No for rules.');
   requireInput(Array.isArray(trade.mistakes) && trade.mistakes.length <= 20 && trade.mistakes.every(t => typeof t === 'string' && t.length <= 80), 'Use up to 20 mistake tags, 80 characters each.');
   trade.mistakes = [...new Set(trade.mistakes.map(t => t.trim()).filter(Boolean))];
+  requireInput(typeof trade.reviewed === 'boolean', 'Invalid review status.');
   trade.pair = trade.pair.trim();
   requireInput(trade.pair.length > 0 && trade.pair.length <= 40, 'Choose a pair.');
   const validDate = text => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(text) && Number.isFinite(Date.parse(text + 'Z')) && new Date(text + 'Z').toISOString().slice(0,16) === text;
@@ -83,6 +84,7 @@ function validateSettings(value) {
   const tags = value.mistakeTags || ['Chased entry','Early entry','No stop','Oversized','Revenge trade','Exited early','Ignored setup'];
   requireInput(Array.isArray(tags) && tags.length <= 80 && tags.every(t=>typeof t === 'string' && t.length <= 80), 'Check your mistake tags.');
   settings.mistakeTags = [...new Set(tags.map(t=>t.trim()).filter(Boolean))];
+  settings.onboarding = { pairsReviewed: value.onboarding?.pairsReviewed === true };
   settings.currency = value.currency;
   settings.timezone = value.timezone;
   return settings;

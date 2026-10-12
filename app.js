@@ -1,14 +1,15 @@
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=lot-size-black-20261012';
-import { createWorkbench } from './workbench.js?v=lot-size-black-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=lot-size-black-20261012';
-import { createRoadmap } from './roadmap.js?v=lot-size-black-20261012';
-import { createChartEditor } from './chart-editor.js?v=lot-size-black-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=lot-size-black-20261012';
-import { backend } from './cloud.js?v=lot-size-black-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=lot-size-black-20261012';
-import { monthSummary } from './calendar.js?v=lot-size-black-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=lot-size-black-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=lot-size-black-20261012';
+import {guidanceState} from './guidance.js?v=guided-workspace-20261012';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=guided-workspace-20261012';
+import { createWorkbench } from './workbench.js?v=guided-workspace-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=guided-workspace-20261012';
+import { createRoadmap } from './roadmap.js?v=guided-workspace-20261012';
+import { createChartEditor } from './chart-editor.js?v=guided-workspace-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=guided-workspace-20261012';
+import { backend } from './cloud.js?v=guided-workspace-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=guided-workspace-20261012';
+import { monthSummary } from './calendar.js?v=guided-workspace-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=guided-workspace-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=guided-workspace-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -67,6 +68,11 @@ function render() {
   $('#pair-chips').hidden = view !== 'gallery';
   $('#pair-filter').hidden = true;
   const isTools = view === 'tools';
+  $('#setup-guide').hidden=view!=='live';
+  $('#review-queue').hidden=view!=='live';
+  $('#save-followup').hidden=view!=='live'||!lastSavedId;
+  $('#analytics-scope').hidden=!['live','backtest'].includes(view);
+  if(view==='live')renderGuidance();
   $('#tools-panel').hidden = !isTools;
   $('#journal-filters').hidden = isTools || view === 'rules';
   $('#daily-status').hidden = view !== 'live';
@@ -115,6 +121,7 @@ function render() {
   $('#filter-state').classList.toggle('has-filters',Boolean(activeFilters));
   const selected = filterEntries(database.entries,{kind:view==='gallery'?'all':view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
   if (view !== 'gallery') workbench.analytics(selected);
+  $('#analytics-scope').textContent=[view==='backtest'?'Backtests':'Live trades',$('#filter-range').selectedOptions[0].textContent,currentPair,$('#filter-setup').value||'All setups',$('#filter-session').value||'All sessions',$('#filter-outcome').selectedOptions[0].textContent,`${selected.length} matching entries`,$('#trade-search').value?`Search: ${$('#trade-search').value}`:''].filter(Boolean).join(' · ');
   $('#performance').hidden = view === 'gallery';
   $('#pnl-calendar').hidden = view === 'gallery';
   if (view !== 'gallery') renderCalendar(selected);
@@ -230,6 +237,7 @@ function openEntry(entry = null, draft = null) {
   $('#time-zone-note').textContent = `Times use ${settings.timezone}. New entries start with matching entry and exit times; adjust them for the actual trade. Open trades do not count toward realized P&L.`;
   $('#price-fields').innerHTML = [number('Entry price', 'entry', trade.entry, 0), number('Exit price', 'exit', trade.exit, 0), number('Initial stop', 'stop', trade.stop, 0), number('Contract units per lot', 'multiplier', trade.multiplier, 0), number(`Total fees (${settings.currency})`, 'fees', trade.fees, 0), number(`Journal currency per 1 price-currency unit`, 'fxRate', trade.fxRate ?? 1, 0)].join('');
   $('#review-fields').innerHTML = select('Mood', 'mood', settings.moods, trade.mood, true) + select('Followed your rules?', 'rules', ['Yes', 'No'], trade.rules, true);
+  $('#entry-form').elements.reviewed.checked=trade.reviewed===true;
   $('#entry-form').elements.mistakes.value = (trade.mistakes || []).join('; ');
   $('#mistake-options').innerHTML = (settings.mistakeTags || []).map(t=>`<option value="${escape(t)}"></option>`).join('');
   $('#trade-warnings').hidden=true;
@@ -280,11 +288,13 @@ $('#entry-form').addEventListener('submit', async event => {
   const trade = {};
   for (const key of ['kind', 'pair', 'direction', 'status', 'entryTime', 'exitTime', 'setup', 'session', 'mood', 'rules', 'notes', 'lesson']) trade[key] = String(form.get(key) || '');
   for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'equitySnapshot']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  trade.reviewed=form.get('reviewed')==='on';
   trade.leverage=editing?.leverage ?? null;
   trade.mistakes=String(form.get('mistakes')||'').split(';').map(t=>t.trim()).filter(Boolean);
   try {
     const images = await Promise.all(files.map(fileData));
-    await api('/api/entries', { method: editing ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trade, id: editing?.id, images, removeImages: removedImages }) });
+    const saved=await api('/api/entries', { method: editing ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trade, id: editing?.id, images, removeImages: removedImages }) });
+    lastSavedId=saved.id;
     $('#entry-dialog').close();
     await load();
     if (addAnother) {
@@ -339,7 +349,7 @@ $('#settings-form').addEventListener('submit', async event => {
   const button = event.currentTarget.querySelector('button[type="submit"]');
   button.disabled = true;
   const form = new FormData(event.currentTarget);
-  const settings = { ...database.settings };
+  const settings = { ...database.settings, onboarding:{pairsReviewed:true} };
   ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
   settings.currency = form.get('currency');
   settings.phpRates = { ...database.settings.phpRates };
@@ -403,6 +413,7 @@ $('#backup-file').addEventListener('change', async event => {
   event.target.value = '';
 });
 let currentUser = null;
+let lastSavedId=null;
 let syncInProgress = false;
 async function syncIfIdle(force = false) {
   if (!currentUser || busy || syncInProgress || document.hidden || document.querySelector('dialog[open]')) return;
@@ -417,6 +428,7 @@ function showSession(session) {
   const next = session?.user || null;
   if (next?.id !== currentUser?.id) {
     resetCloudState();
+    lastSavedId=null;
     database = { settings: { pairs: [], currency: 'USD', timezone: 'Asia/Manila' }, entries: [] };
     document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
     $('#entries').replaceChildren(); $('#pnl-calendar').replaceChildren(); $('#metrics').replaceChildren(); $('#curve').replaceChildren();
@@ -563,3 +575,12 @@ function updateTradeWarnings(){
   $('#trade-warnings').hidden=!warnings.length;
   $('#trade-warnings').innerHTML=warnings.map(t=>`<p>${escape(t)}</p>`).join('');
 }
+
+function renderGuidance(){
+ const state=guidanceState(database);
+ $('#setup-guide').hidden=state.complete;
+ $('#setup-guide').innerHTML=`<div class="guidance-heading"><div><span class="plan-kicker">GET STARTED</span><h2>Set up your trading routine</h2></div><span>${state.steps.filter(s=>s.done).length} / 4 ready</span></div><div class="setup-steps">${state.steps.map((s,i)=>`<button type="button" ${s.view?`data-view="${s.view}"`:s.action==='pairs'?'data-open-customize':'data-new-entry'} class="setup-step ${s.done?'done':''}"><b>${s.done?'✓':i+1}</b><span><strong>${escape(s.title)}</strong><small>${escape(s.detail)}</small></span></button>`).join('')}</div>`;
+ const queue=state.queue;$('#review-queue').innerHTML=`<div class="guidance-heading"><div><span class="plan-kicker">REVIEW & IMPROVE</span><h2>Needs review <span class="queue-count">${queue.length}</span></h2><p>Add a lesson or mark your review complete.</p></div></div>${queue.slice(0,5).map(t=>`<button class="review-queue-row" type="button" data-entry="${escape(t.id)}"><span><strong>${escape(t.pair)}</strong><small>${escape(t.exitTime.replace('T',' '))} · ${escape(t.setup||'No setup recorded')}</small></span><span class="${net(t)<0?'negative':net(t)>0?'positive':''}">${escape(money(net(t)))}</span><span class="review-link">Review trade ↗</span></button>`).join('')||'<p class="helper">All closed live trades have a lesson or a completed review.</p>'}${queue.length>5?`<p class="helper">Showing the 5 most recent of ${queue.length} trades needing review.</p>`:''}`;
+ const saved=database.entries.find(t=>t.id===lastSavedId);if(!saved){lastSavedId=null;$('#save-followup').hidden=true;}else $('#save-followup').innerHTML=`<span>✓ Trade saved · ${escape(saved.pair)}</span><div><button class="secondary" type="button" data-followup-scalp>Add another scalp</button><button class="secondary" type="button" data-entry="${escape(saved.id)}">Review this trade</button><button type="button" class="followup-dismiss" aria-label="Dismiss saved trade message">×</button></div>`;
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-open-customize]'))$('#customize').click();if(e.target.closest('[data-followup-scalp]')){const saved=database.entries.find(t=>t.id===lastSavedId);if(saved)openEntry(null,nextScalp(saved));}if(e.target.closest('.followup-dismiss')){lastSavedId=null;$('#save-followup').hidden=true;}});
