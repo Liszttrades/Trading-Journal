@@ -151,11 +151,18 @@ function renderCurve(entries) {
   const values = [0, ...entries.slice().sort((a, b) => a.exitTime.localeCompare(b.exitTime)).map(entry => running += net(entry))];
   const minimum = Math.min(...values, 0), maximum = Math.max(...values, 0);
   const spread = maximum - minimum || 1;
-  const x = index => 75 + index / Math.max(1, values.length - 1) * 600;
-  const y = value => 185 - (value - minimum) / spread * 155;
-  const line = values.map((value, index) => `${index ? 'L' : 'M'} ${x(index)} ${y(value)}`).join(' ');
-  const grids = [minimum, (minimum + maximum) / 2, maximum].map(value => `<line x1="75" x2="675" y1="${y(value)}" y2="${y(value)}" class="chart-grid"/><text x="65" y="${y(value) + 4}" text-anchor="end">${escape(value.toLocaleString('en', { maximumFractionDigits: 1 }))}</text>`).join('');
-  $('#curve').innerHTML = `<svg class="local-chart" viewBox="0 0 700 220" role="img" aria-label="Cumulative realized profit and loss across closed trades">${grids}<path d="${line}" class="chart-line"/><text x="75" y="214">Start</text><text x="675" y="214" text-anchor="end">${entries.length} closed entries</text></svg>`;
+  const width = Math.max(280, $('#curve').clientWidth || 800), height = 260;
+  const format = value => new Intl.NumberFormat('en', {style:'currency',currency:database.settings.currency,maximumFractionDigits:2}).format(value);
+  const labels = [minimum,minimum+spread/3,minimum+spread*2/3,maximum];
+  const gutter = Math.min(width*.38, Math.max(85,...labels.map(v=>format(v).length*7+18)));
+  const left=4,right=width-gutter,top=14,bottom=230;
+  const x = index => left + index / Math.max(1, values.length - 1) * (right-left);
+  const y = value => bottom - (value-minimum)/spread*(bottom-top);
+  const line = values.map((value,index)=>`${index?'L':'M'} ${x(index)} ${y(value)}`).join(' ');
+  const area = `${line} L${right} ${bottom} L${left} ${bottom} Z`;
+  const grids = labels.map(value=>`<line x1="${left}" x2="${right}" y1="${y(value)}" y2="${y(value)}" class="chart-grid"/><text x="${right+12}" y="${y(value)+4}" text-anchor="start">${escape(format(value))}</text>`).join('');
+  $('#curve').innerHTML = `<svg class="local-chart area-pnl-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Cumulative realized profit and loss across ${entries.length} closed entries"><defs><linearGradient id="pnl-white-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".12"/><stop offset="1" stop-color="#ffffff" stop-opacity=".025"/></linearGradient></defs>${grids}<path d="${area}" fill="url(#pnl-white-fill)"/><path d="${line}" class="chart-line"/><text x="${left}" y="254">Start</text><text x="${right}" y="254" text-anchor="end">${entries.length} closed entries</text></svg>`;
+
 }
 
 function select(label, name, items, value, blank = false) {
@@ -494,3 +501,9 @@ function showReviewMode(mode) {
 }
 $('#review-flow').addEventListener('click',()=>{if ($('#flow-review').hidden && chartEditor.canSwitch()) showReviewMode('flow');});
 $('#review-chart').addEventListener('click',()=>{if(!$('#flow-review').hidden && roadmap.canSwitch())showReviewMode('chart');});
+
+let curveWidth = 0;
+new ResizeObserver(records => {
+  const width = Math.round(records[0].contentRect.width);
+  if (width > 0 && width !== curveWidth) { curveWidth = width; if (view === 'live' || view === 'backtest') render(); }
+}).observe($('#curve'));

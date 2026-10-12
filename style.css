@@ -1186,3 +1186,8 @@ dialog.settings-dialog { background:#0a0a0a!important; border:1px solid #2c2c2c!
 #rules-panel .plan-card textarea,
 #rules-panel .plan-card input,
 #rules-panel .plan-card select { background:#111!important; border:1px solid #333!important; color:#eee!important; border-radius:10px!important; }
+
+#curve .area-pnl-chart { display:block; width:100%; height:auto; min-height:190px; max-height:none; }
+#curve .area-pnl-chart .chart-line { stroke:#f4f4f4; stroke-width:2.5; stroke-linejoin:round; stroke-linecap:round; fill:none; }
+#curve .area-pnl-chart .chart-grid { stroke:#292b31; stroke-width:1; }
+#curve .area-pnl-chart text { fill:#aaa; font-size:12px; }
