@@ -1,4 +1,4 @@
-import {validateAnnotations} from './annotations.js?v=workspace-layout-20261012';
+import {validateAnnotations} from './annotations.js?v=filter-design-20261012';
 export function createChartEditor(save) {
  const dialog=document.querySelector('#image-dialog'), canvas=document.querySelector('#chart-canvas'), ctx=canvas.getContext('2d'), viewport=document.querySelector('#chart-viewport');
  const $=s=>dialog.querySelector(s);

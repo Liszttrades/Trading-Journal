@@ -1,5 +1,5 @@
-Upload all extracted files to your Trading-Journal repository ROOT, replacing matching files. Keep your existing config.js. No database migration is required. Wait for GitHub Pages to deploy, then hard refresh (Ctrl+Shift+R). Export a journal backup before updating.
+Extract and upload ALL files to your Trading-Journal GitHub repository ROOT, replacing matching files. Keep your existing config.js. Wait for GitHub Pages deployment and hard refresh (Ctrl+Shift+R). No SQL changes needed.
 
-Changes: keeps Setup, Session and Pair performance in three collapsible cards below the calendar; search and filters now sit above entries; Batch entry sits beside New trade; CSV import/template/mapping removed. Manual batch entry remains. Other account, risk, analytics, chart library and cloud features remain included.
+Filter design: refined black panel, heading and outline icons, active filter count, wider search, dark custom Setup/Session/Outcome dropdowns, selected checkmarks, keyboard navigation and focus styling, responsive layout. CSV remains removed; manual batch entry remains.
 
-JavaScript syntax and HTML/module structure checked. Browser layout and live Supabase were not verified here.
+JavaScript syntax, HTML structure and local dependencies verified. Browser appearance and live cloud were not verified in this environment.

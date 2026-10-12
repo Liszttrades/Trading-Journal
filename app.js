@@ -1,13 +1,14 @@
-import { createWorkbench } from './workbench.js?v=workspace-layout-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=workspace-layout-20261012';
-import { createRoadmap } from './roadmap.js?v=workspace-layout-20261012';
-import { createChartEditor } from './chart-editor.js?v=workspace-layout-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=workspace-layout-20261012';
-import { backend } from './cloud.js?v=workspace-layout-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=workspace-layout-20261012';
-import { monthSummary } from './calendar.js?v=workspace-layout-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=workspace-layout-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=workspace-layout-20261012';
+import {syncFilterMenus} from './filters.js?v=filter-design-20261012';
+import { createWorkbench } from './workbench.js?v=filter-design-20261012';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=filter-design-20261012';
+import { createRoadmap } from './roadmap.js?v=filter-design-20261012';
+import { createChartEditor } from './chart-editor.js?v=filter-design-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=filter-design-20261012';
+import { backend } from './cloud.js?v=filter-design-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=filter-design-20261012';
+import { monthSummary } from './calendar.js?v=filter-design-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=filter-design-20261012';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=filter-design-20261012';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -106,6 +107,10 @@ function render() {
     control.innerHTML=`<option value="">${label}</option>`+options(choices,selectedValue);
     control.value=selectedValue;
   }
+  syncFilterMenus();
+  const activeFilters=['#trade-search','#filter-from','#filter-to','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0);
+  $('#filter-state').textContent=activeFilters?`${activeFilters} active filter${activeFilters===1?'':'s'}`:'All trades';
+  $('#filter-state').classList.toggle('has-filters',Boolean(activeFilters));
   const selected = filterEntries(database.entries,{kind:view==='gallery'?'all':view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
   if (view !== 'gallery') workbench.analytics(selected);
   $('#performance').hidden = view === 'gallery';
