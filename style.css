@@ -1170,3 +1170,9 @@ main::before { width:min(950px,76vw); height:min(850px,76vw); top:8vh; left:25vw
 }
 @media(max-width:700px) { main::before { width:85vw; height:85vw; left:12vw; opacity:.32; } }
 @media(prefers-reduced-motion:reduce) { main::before { animation:none; } }
+
+/* True liquid deformation plus low-opacity grain across charcoal background. */
+main::before { position:fixed; inset:0; width:auto; height:auto; border-radius:0; background-color:transparent; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23g)' fill='%23fff' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); background-blend-mode:normal; background-repeat:repeat; mask-image:none; opacity:.045; animation:none; transform:none; z-index:-1; }
+.ambient-morph { position:fixed; width:min(1050px,85vw); height:min(900px,85vw); left:20vw; top:7vh; z-index:-2; pointer-events:none; opacity:.45; overflow:visible; }
+@media(max-width:700px) { main::before { width:auto; height:auto; inset:0; opacity:.035; } .ambient-morph { width:95vw; height:85vw; left:5vw; top:18vh; opacity:.34; } }
+@media(prefers-reduced-motion:reduce) { .ambient-morph { display:none; } }
