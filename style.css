@@ -1195,3 +1195,14 @@ body.gallery-view .records, #rules-panel { background:transparent; }
 }
 @media(max-width:700px) { .ambient-morph { width:110vw; height:95vw; left:0; top:18vh; opacity:.55; } main::before { opacity:.045; } }
 @media(prefers-reduced-motion:reduce) { .ambient-morph { display:block; animation:none; } }
+
+/* Sample-video look: wide, smoky charcoal waves, without clock or cursor. */
+body { background:#08090b; }
+main { background:#0d0e11; border-color:#292b32; }
+.ambient-morph { position:fixed; inset:0; width:100vw; height:100vh; opacity:.72; animation:none; transform:none; z-index:-2; }
+main::before { opacity:.035; }
+.topbar { background:rgba(13,14,17,.8); }
+.metric,.chart-panel,.records,.calendar-panel,.plan-card { background:rgba(27,28,34,.94); border-color:#34363f; }
+body.gallery-view .records,#rules-panel { background:transparent; }
+.chart-card { background:linear-gradient(160deg,rgba(35,36,43,.96),rgba(24,25,30,.98)); border-color:#353740; }
+@media(max-width:700px) { .ambient-morph { inset:0; width:100vw; height:100vh; opacity:.65; } main::before { opacity:.03; } }
