@@ -1137,13 +1137,16 @@ dialog.image-dialog:not([open]) { display:none; }
 @media(max-height:760px) { .image-dialog .chart-toolbar { gap:2px; top:105px; } .chart-toolbar .editor-icon { height:28px; } }
 
 
-/* Original charcoal palette with a small, dark, moving grain glow. */
-body { background:#050505; }
-main { position:relative; isolation:isolate; background:#111; border-color:#252525; }
-main::before { content:""; position:fixed; width:330px; height:330px; top:12vh; left:32vw; z-index:-1; pointer-events:none; border-radius:50%; opacity:.28; background-color:#161521; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h160v160H0z'/%3E%3C/svg%3E"),radial-gradient(ellipse at 58% 60%,#9684c2 0%,#5144a0 22%,#28264d 46%,transparent 72%); background-blend-mode:soft-light,normal; mask-image:radial-gradient(ellipse,#000 15%,transparent 72%); animation:grain-glow-drift 32s ease-in-out infinite; }
+
+/* Plain original dark workspace, without ambient animation or grain. */
+html,body,.workspace { background:#050505; }
+main { background:#111; background-image:none; border-color:#252525; clip-path:none; }
+aside,body.gallery-view aside { background:#000; }
+main::before,main::after,body::before,body::after { display:none; content:none; }
+.ambient-morph { display:none; }
 .topbar { background:#111; border-color:#262626; }
 .metric,.chart-panel,.records,.calendar-panel,.plan-card { background:#141414; border-color:#2a2a2a; }
-body.gallery-view .records, #rules-panel { background:transparent; }
+body.gallery-view .records,#rules-panel { background:transparent; }
 .chart-card { background:linear-gradient(180deg,#202020,#131313); border-color:#2b2b2b; }
 .chart-card:hover { border-color:#555; }
 .pair-chip { background:transparent; color:#aaa; border-color:#303030; }
@@ -1151,83 +1154,13 @@ body.gallery-view .records, #rules-panel { background:transparent; }
 nav button.active { background:#151515; }
 .auth-screen { background:#0b0b0b; }
 .auth-card { background:#141414; border-color:#333; }
-@keyframes grain-glow-drift {
-  0%,100% { transform:translate(0,0) rotate(0deg) scale(.88); }
-  25% { transform:translate(22vw,12vh) rotate(35deg) scale(1); }
-  50% { transform:translate(10vw,48vh) rotate(-25deg) scale(.9); }
-  75% { transform:translate(-12vw,23vh) rotate(18deg) scale(1.05); }
+
+/* Slightly wider sidebar with more breathing room. */
+@media(min-width:701px) {
+  .workspace,body.gallery-view .workspace { grid-template-columns:250px minmax(0,1fr); }
+  aside,body.gallery-view aside { padding:28px 16px 20px; }
+  .brand { padding:0 8px; font-size:23px; }
+  nav button { padding:11px 12px; min-height:42px; gap:12px; }
+  .sidebar-primary,.sidebar-utilities { gap:7px; }
+  .nav-group-title { padding:0 12px; }
 }
-@media(max-width:700px) { main::before { width:220px; height:220px; left:25vw; opacity:.22; } }
-@media(prefers-reduced-motion:reduce) { main::before { animation:none; } }
-
-/* Large organic grain shape; charcoal canvas and content remain still. */
-main::before { width:min(950px,76vw); height:min(850px,76vw); top:8vh; left:25vw; opacity:.42; background-color:transparent; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h160v160H0z'/%3E%3C/svg%3E"),radial-gradient(ellipse at 35% 32%,#101016 0 7%,transparent 18%),radial-gradient(ellipse at 77% 38%,#111 0 13%,transparent 30%),radial-gradient(ellipse at 42% 51%,#beacd5 0 16%,#7862bc 32%,#383476 52%,transparent 72%); background-blend-mode:soft-light,normal,normal,normal; mask-image:radial-gradient(ellipse,#000 35%,transparent 73%); border-radius:43% 57% 62% 38% / 40% 45% 55% 60%; animation:violet-organic-drift 24s ease-in-out infinite; }
-@keyframes violet-organic-drift {
-  0%,100% { transform:translate(-8vw,-6vh) rotate(-12deg) scale(.94); border-radius:43% 57% 62% 38% / 40% 45% 55% 60%; }
-  25% { transform:translate(12vw,5vh) rotate(16deg) scale(1.03,.93); border-radius:62% 38% 46% 54% / 54% 63% 37% 46%; }
-  50% { transform:translate(3vw,24vh) rotate(-5deg) scale(.96,1.06); border-radius:35% 65% 40% 60% / 61% 36% 64% 39%; }
-  75% { transform:translate(-14vw,10vh) rotate(-23deg) scale(1.04,.98); border-radius:57% 43% 65% 35% / 37% 58% 42% 63%; }
-}
-@media(max-width:700px) { main::before { width:85vw; height:85vw; left:12vw; opacity:.32; } }
-@media(prefers-reduced-motion:reduce) { main::before { animation:none; } }
-
-/* True liquid deformation plus low-opacity grain across charcoal background. */
-main::before { position:fixed; inset:0; width:auto; height:auto; border-radius:0; background-color:transparent; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23g)' fill='%23fff' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); background-blend-mode:normal; background-repeat:repeat; mask-image:none; opacity:.045; animation:none; transform:none; z-index:-1; }
-.ambient-morph { position:fixed; width:min(1050px,85vw); height:min(900px,85vw); left:20vw; top:7vh; z-index:-2; pointer-events:none; opacity:.45; overflow:visible; }
-@media(max-width:700px) { main::before { width:auto; height:auto; inset:0; opacity:.035; } .ambient-morph { width:95vw; height:85vw; left:5vw; top:18vh; opacity:.34; } }
-@media(prefers-reduced-motion:reduce) { .ambient-morph { display:none; } }
-
-/* User-specified palette: stationary grain canvas, moving liquid gradient. */
-body, main { background-color:#202129; }
-main { background-image:none; border-color:#343640; }
-main::before { opacity:.055; }
-.ambient-morph { width:min(1100px,82vw); height:min(930px,76vw); left:20vw; top:5vh; opacity:.67; animation:palette-wave-travel 28s ease-in-out infinite; }
-.topbar { background:#202129; border-color:#343640; }
-.metric,.chart-panel,.records,.calendar-panel,.plan-card { background:#202129; border-color:#3a3c48; }
-body.gallery-view .records, #rules-panel { background:transparent; }
-.chart-card { background:linear-gradient(160deg,#292b36,#202129); border-color:#3a3c48; }
-@keyframes palette-wave-travel {
-  0%,100% { transform:translate(-22vw,-12vh) rotate(-12deg); }
-  20% { transform:translate(16vw,-8vh) rotate(10deg); }
-  45% { transform:translate(22vw,30vh) rotate(-6deg); }
-  70% { transform:translate(-10vw,42vh) rotate(15deg); }
-  85% { transform:translate(-24vw,12vh) rotate(-16deg); }
-}
-@media(max-width:700px) { .ambient-morph { width:110vw; height:95vw; left:0; top:18vh; opacity:.55; } main::before { opacity:.045; } }
-@media(prefers-reduced-motion:reduce) { .ambient-morph { display:block; animation:none; } }
-
-/* Sample-video look: wide, smoky charcoal waves, without clock or cursor. */
-body { background:#08090b; }
-main { background:#0d0e11; border-color:#292b32; }
-.ambient-morph { position:fixed; inset:0; width:100vw; height:100vh; opacity:.72; animation:none; transform:none; z-index:-2; }
-main::before { opacity:.035; }
-.topbar { background:rgba(13,14,17,.8); }
-.metric,.chart-panel,.records,.calendar-panel,.plan-card { background:rgba(27,28,34,.94); border-color:#34363f; }
-body.gallery-view .records,#rules-panel { background:transparent; }
-.chart-card { background:linear-gradient(160deg,rgba(35,36,43,.96),rgba(24,25,30,.98)); border-color:#353740; }
-@media(max-width:700px) { .ambient-morph { inset:0; width:100vw; height:100vh; opacity:.65; } main::before { opacity:.03; } }
-
-/* Video-inspired smooth waves with the exact requested violet-to-black palette. */
-body { background:#000; }
-main { background:#000; }
-.ambient-morph { opacity:.52; animation:flow-wave-breathe 26s ease-in-out infinite; }
-main::before { opacity:.04; }
-.topbar { background:rgba(0,0,0,.8); }
-@keyframes flow-wave-breathe {
-  0%,100% { transform:scale(1.04) translate(0,0); }
-  33% { transform:scale(1.12,1.04) translate(-2vw,2vh); }
-  66% { transform:scale(1.04,1.12) translate(2vw,-2vh); }
-}
-@media(max-width:700px) { .ambient-morph { opacity:.43; } }
-@media(prefers-reduced-motion:reduce) { .ambient-morph { animation:none; } }
-
-/* Clip the wave to the workspace; black canvas with subtle global noise. */
-html,body,.workspace { background:#000; }
-main { background:#000; position:relative; isolation:isolate; clip-path:inset(0 round 18px); }
-aside,body.gallery-view aside { background:#000; position:sticky; z-index:2; }
-.ambient-morph { left:210px; top:0; width:calc(100vw - 210px); height:100vh; pointer-events:none; }
-main::before { display:none; }
-body::after { content:""; position:fixed; inset:0; z-index:20; pointer-events:none; opacity:.027; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23noise)' d='M0 0h180v180H0z'/%3E%3C/svg%3E"); background-repeat:repeat; }
-.topbar { background:rgba(0,0,0,.82); }
-.auth-screen { background:#000; }
-@media(max-width:700px) { aside,body.gallery-view aside { position:static; } main { clip-path:inset(0 round 14px); } .ambient-morph { left:0; width:100vw; } }
