@@ -1,3 +1,5 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R).
 
-P&L summary cards, cumulative P&L chart, advanced statistics and P&L calendar now appear first under the workspace heading, before setup guidance, daily status and entries. Current statistics filter scope remains displayed above P&L. All prior functionality included. Layout order and duplicate IDs checked. Live browser appearance unverified.
+Calendar panel now matches the subtle dark gradient of the filter panel. Day and weekly cells have subtle gradients; profit/loss cells retain green/red tints. Positive Average win uses the same #9bceb5 green as calendar profits; negative Average loss uses the same #efa0a0 red as calendar losses. Missing averages remain neutral. P&L remains first. All prior functionality included. No database changes.
+
+JavaScript syntax checked. Browser appearance was not verified here.
