@@ -1173,3 +1173,11 @@ dialog.settings-dialog { background:#0a0a0a!important; border:1px solid #2c2c2c!
 #rules-panel .plan-card { background:#0a0a0a; border-color:#292929; }
 #rules-panel .plan-card input,#rules-panel .plan-card textarea { background:#111; border-color:#333; }
 #rules-panel .plan-header { margin-top:0; }
+
+/* Slightly darker calendar cells and muted profit/loss fills. */
+.calendar-day { background:#1b1d21; border-color:#2e3036; }
+.calendar-blank { background:#141619; border-color:#26282e; }
+.calendar-week { background:#22242a; border-color:#30323a; }
+.calendar-day.profit-day { background:#162b22; border-color:#2d493b; }
+.calendar-day.loss-day { background:#2b1d21; border-color:#4b3037; }
+.calendar-day.flat-day { background:#191b1f; }
