@@ -976,3 +976,15 @@ body.gallery-view .footnote { margin-top:24px; }
   body.gallery-view .page-heading { flex-wrap:wrap; gap:16px; }
   body.gallery-view .gallery { grid-template-columns:1fr; }
 }
+
+/* Larger chart cards for more readable scalping screenshots. */
+body.gallery-view .gallery { grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr)); gap:20px; }
+body.gallery-view .chart-card { padding:10px; border-radius:18px; }
+body.gallery-view .chart-art img { aspect-ratio:4/3; width:100%; height:auto; object-fit:contain; }
+body.gallery-view .chart-copy { padding:16px 6px 8px; }
+body.gallery-view .chart-title strong { font-size:17px; }
+body.gallery-view .chart-title > span { font-size:15px; }
+body.gallery-view .chart-copy p { font-size:14px; line-height:1.5; }
+body.gallery-view .chart-note { min-height:42px; }
+body.gallery-view .chart-tags span, body.gallery-view .chart-tags button { font-size:12px; padding:5px 10px; }
+@media(max-width:700px) { body.gallery-view .gallery { grid-template-columns:1fr; } }
