@@ -1086,3 +1086,27 @@ dialog.image-dialog { width:96vw!important; max-width:none!important; height:94v
 #chart-canvas { position:absolute; top:0; left:0; transform-origin:0 0; max-width:none; }
 .chart-review-footer { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:#aaa; margin-top:10px; }
 @media(max-width:900px) { dialog.image-dialog { padding:16px!important; } #chart-viewport { height:calc(100% - 240px); } .chart-toolbar { gap:5px; } }
+
+.image-dialog .chart-toolbar { display:flex!important; flex-wrap:wrap; }
+.image-dialog .chart-toolbar[hidden] { display:none!important; }
+.image-dialog .chart-toolbar select { width:auto!important; min-width:70px; flex:0 0 auto; }
+.image-dialog .chart-toolbar input { margin:0!important; }
+.review-switch { display:flex; gap:8px; margin:10px 0; }
+#flow-review { height:calc(100% - 90px); position:relative; }
+#flow-board { height:calc(100% - 30px); overflow:hidden; border-radius:14px; position:relative; background-color:#030303; background-image:radial-gradient(#303030 .8px,transparent .8px); background-size:18px 18px; touch-action:none; cursor:grab; }
+#flow-stage { position:absolute; inset:0; transform-origin:0 0; }
+.flow-controls { position:absolute; z-index:3; top:12px; right:12px; display:flex; gap:8px; align-items:center; background:#141414; border:1px solid #333; border-radius:12px; padding:8px; }
+.flow-node { position:absolute; width:280px; border:1px solid #363636; border-radius:14px; background:#141414; box-shadow:0 12px 35px #0008; }
+.flow-node:hover { border-color:#777; }
+.flow-node header { padding:12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #303030; cursor:move; font-size:13px; }
+.flow-node header button { background:#202020; color:#ddd; border:0; border-radius:6px; }
+.flow-node-body { padding:12px; }
+.flow-node-body input,.flow-node-body textarea { width:100%; background:#1c1c1c; color:#eee; border:1px solid #343434; border-radius:8px; padding:9px; font-size:13px; margin:0 0 10px; }
+.flow-node-body button { background:#222; color:#ddd; border:1px solid #333; border-radius:7px; padding:7px; font-size:12px; margin-right:6px; }
+.flow-chart { width:520px; }
+.image-dialog .flow-chart img { display:block; width:100%; max-height:none; height:auto; border-radius:0; }
+.flow-chart footer { padding:12px; font-size:12px; color:#999; }
+.flow-edges { position:absolute; left:-20000px; top:-20000px; pointer-events:none; overflow:visible; }
+.flow-edges path { fill:none; stroke:#707070; stroke-width:2; }
+#flow-status { color:#888; font-size:12px; padding:7px; }
+@media(max-width:700px) { .flow-controls { left:8px; right:auto; flex-wrap:wrap; max-width:95%; } }

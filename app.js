@@ -1,9 +1,10 @@
-import { createChartEditor } from './chart-editor.js?v=chart-editor-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=chart-editor-20261012';
+import { createRoadmap } from './roadmap.js?v=flow-review-20261012';
+import { createChartEditor } from './chart-editor.js?v=flow-review-20261012';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=flow-review-20261012';
 import { backend } from './cloud.js';
-import { resetCloudState, cloudChanged } from './storage.js?v=chart-editor-20261012';
+import { resetCloudState, cloudChanged } from './storage.js?v=flow-review-20261012';
 import { monthSummary } from './calendar.js';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=chart-editor-20261012';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=flow-review-20261012';
 import { fresh, nextScalp, journalNow, net, risk } from './model.js';
 
 // UI state only. The authenticated cloud database is the source of truth.
@@ -327,7 +328,13 @@ document.addEventListener('click', event => {
   if (button.dataset.close && !busy) $(`#${button.dataset.close}`).close();
   if (button.dataset.image) {
     const image = database.entries.flatMap(entry => entry.images).find(image => image.id === button.dataset.image);
-    if (image) chartEditor.open(image);
+    if (image) {
+      const entry = database.entries.find(e => e.images.some(i => i.id === image.id));
+      activeReview = { ...image, reviewName: `${entry.pair} · ${journalNow(database.settings.timezone).slice(0,10)}` };
+      document.querySelector('#image-title').textContent = activeReview.reviewName;
+      if (!$('#image-dialog').open) $('#image-dialog').showModal();
+      showReviewMode('flow');
+    }
   }
   if (button.dataset.removeImage) { removedImages.push(button.dataset.removeImage); renderAttachments(); }
   if (button.dataset.removeFile !== undefined) { files.splice(Number(button.dataset.removeFile), 1); renderAttachments(); }
@@ -466,5 +473,24 @@ document.addEventListener('click', event => {
 
 const chartEditor = createChartEditor(async (imageId, annotations) => {
   await api('/api/annotations', { method: 'PUT', body: JSON.stringify({ imageId, annotations }) });
+  if (activeReview?.id === imageId) activeReview.annotations = structuredClone(annotations);
   await load();
 });
+
+let activeReview = null;
+const roadmap = createRoadmap(async (imageId, value) => {
+  await api('/api/roadmap', { method:'PUT', body:JSON.stringify({imageId,roadmap:value}) });
+  activeReview.roadmap = value;
+  await load();
+});
+function showReviewMode(mode) {
+  $('#flow-review').hidden = mode !== 'flow';
+  $('#chart-viewport').hidden = mode !== 'chart';
+  document.querySelector('.chart-toolbar').hidden = mode !== 'chart';
+  document.querySelector('.chart-review-footer').hidden = mode !== 'chart';
+  $('#image-dialog').classList.toggle('flow-mode',mode==='flow');
+  if(mode==='flow') roadmap.open(activeReview);
+  else chartEditor.open({...activeReview,name:activeReview.reviewName});
+}
+$('#review-flow').addEventListener('click',()=>{if ($('#flow-review').hidden && chartEditor.canSwitch()) showReviewMode('flow');});
+$('#review-chart').addEventListener('click',()=>{if(!$('#flow-review').hidden && roadmap.canSwitch())showReviewMode('chart');});
