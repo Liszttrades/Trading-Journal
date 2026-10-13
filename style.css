@@ -1645,3 +1645,10 @@ input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-ou
 #tools-panel .entry-select-menu button{padding:12px}
 #tools-panel .entry-select-menu small{display:none}
 #tools-panel .entry-select-menu button:focus-visible{outline:1px solid #aaa;outline-offset:-2px}
+
+#tools-panel .broker-profile{margin-bottom:20px}
+#tools-panel .broker-profile .entry-menu-field{margin-bottom:0}
+#tools-panel .quote-panel{padding:16px;border:1px solid #343438;border-radius:12px;background:#171719;margin:0 0 20px}
+.quote-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:#aaa}.quote-heading strong{color:#eee;font-size:22px;font-variant-numeric:tabular-nums}
+#tools-panel .quote-panel details{margin-top:16px;padding:12px}.quote-panel label{margin-top:12px!important}.quote-panel a{font-size:12px;color:#ccc}.quote-panel summary{font-size:12px;cursor:pointer}
+#tools-panel .risk-broker .contract-template button{margin:12px 0 0}#tools-panel #my-lot-result{font-size:12px;line-height:1.7}#tools-panel #my-lots{margin-top:8px}#tools-panel .risk-explainer>label{margin-top:16px}

@@ -1,4 +1,4 @@
-import { net } from './model.js?v=risk-menu-20261013';
+import { net } from './model.js?v=broker-feed-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -87,6 +87,8 @@ function validateSettings(value) {
   for (const key of ['startingBalance','netFunding']) requireInput(account[key] == null || (typeof account[key] === 'number' && Number.isFinite(account[key])), 'Enter a valid account amount.');
   requireInput(account.startingBalance == null || account.startingBalance >= 0, 'Starting balance cannot be negative.');
   settings.account = { startingBalance: account.startingBalance ?? null, netFunding: account.netFunding ?? 0 };
+  for(const key of ['broker','brokerCustom','platform']){requireInput(account[key]==null||(typeof account[key]==='string'&&account[key].length<=80),'Enter a valid broker or platform name.');settings.account[key]=account[key]??'';}
+  requireInput(account.accountLeverage==null||(Number.isFinite(account.accountLeverage)&&account.accountLeverage>=1),'Leverage must be at least 1.');settings.account.accountLeverage=account.accountLeverage??null;
   const tags = value.mistakeTags || ['Chased entry','Early entry','No stop','Oversized','Revenge trade','Exited early','Ignored setup'];
   requireInput(Array.isArray(tags) && tags.length <= 80 && tags.every(t=>typeof t === 'string' && t.length <= 80), 'Check your mistake tags.');
   settings.mistakeTags = [...new Set(tags.map(t=>t.trim()).filter(Boolean))];
