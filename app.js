@@ -1,17 +1,18 @@
-import {startWorkspaceMotion} from './motion.js?v=monochrome-depth-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=monochrome-depth-20261013';
-import {guidanceState} from './guidance.js?v=monochrome-depth-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=monochrome-depth-20261013';
-import { createWorkbench } from './workbench.js?v=monochrome-depth-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=monochrome-depth-20261013';
-import { createRoadmap } from './roadmap.js?v=monochrome-depth-20261013';
-import { createChartEditor } from './chart-editor.js?v=monochrome-depth-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=monochrome-depth-20261013';
-import { backend } from './cloud.js?v=monochrome-depth-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=monochrome-depth-20261013';
-import { monthSummary } from './calendar.js?v=monochrome-depth-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=monochrome-depth-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=monochrome-depth-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=rules-routine-20261013';
+import {startWorkspaceMotion} from './motion.js?v=rules-routine-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=rules-routine-20261013';
+import {guidanceState} from './guidance.js?v=rules-routine-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=rules-routine-20261013';
+import { createWorkbench } from './workbench.js?v=rules-routine-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=rules-routine-20261013';
+import { createRoadmap } from './roadmap.js?v=rules-routine-20261013';
+import { createChartEditor } from './chart-editor.js?v=rules-routine-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=rules-routine-20261013';
+import { backend } from './cloud.js?v=rules-routine-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=rules-routine-20261013';
+import { monthSummary } from './calendar.js?v=rules-routine-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=rules-routine-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=rules-routine-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -254,6 +255,7 @@ function openEntry(entry = null, draft = null) {
   $('#delete-entry').textContent = 'Delete entry';
   message('#form-error');
   renderAttachments();
+  renderTradeChecklist(trade);
   updateTradeWarnings();
   enhanceEntryMenus();
   $('#entry-dialog').showModal();
@@ -294,6 +296,8 @@ $('#entry-form').addEventListener('submit', async event => {
   const trade = {};
   for (const key of ['kind', 'pair', 'direction', 'status', 'entryTime', 'exitTime', 'setup', 'session', 'mood', 'rules', 'notes', 'lesson']) trade[key] = String(form.get(key) || '');
   for (const key of ['entry', 'exit', 'stop', 'quantity', 'multiplier', 'fees', 'pnl', 'risk', 'fxRate', 'equitySnapshot']) trade[key] = form.get(key) === '' ? null : Number(form.get(key));
+  trade.planChecks=[...document.querySelectorAll('#trade-rule-checklist [data-plan-check]')].map(input=>({label:input.dataset.planCheck,checked:input.checked}));
+  trade.ruleException=String(form.get('ruleException')||'');
   trade.reviewed=form.get('reviewed')==='on';
   trade.leverage=editing?.leverage ?? null;
   trade.mistakes=String(form.get('mistakes')||'').split(';').map(t=>t.trim()).filter(Boolean);
@@ -507,7 +511,7 @@ function renderRules() {
   const rules = { ...defaultRules, ...database.settings.tradingRules };
   const limit = rules.planVersion === 1 ? rules.maxEntries : null;
   const field = (label, name, value, min, max = '') => `<label>${label}<input name="${name}" type="number" min="${min}" ${max ? `max="${max}"` : ''} step="any" value="${value ?? ''}" placeholder="Not set"></label>`;
-  $('#rules-panel').innerHTML = `<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Keep your setup and limits in one place.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Your own checklist. No preset trading rules.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Lot size & trade risk</h3><div class="form-grid">${field('Maximum lot size','maxLotSize',rules.maxLotSize,0.000001)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Lot size and risk limits warn when a recorded trade exceeds your plan. Broker orders are not blocked.</p></section><p id="rules-message" role="status"></p></form>`;
+  $('#rules-panel').innerHTML = ruleCockpit()+`<form id="rules-form" class="plan-editor"><div class="plan-header"><div><span class="plan-kicker">MY PLAYBOOK</span><h2>Trading plan</h2><p class="helper">Define it once. Check it before an entry. Review it after the trade.</p></div><button class="primary" type="submit">Save plan</button></div><div class="plan-columns"><section class="plan-card"><span class="plan-kicker">01 · STRATEGY</span><h3>My rules & notes</h3><textarea name="notes" rows="7" maxlength="20000" placeholder="Setup / entry checklist / exit plan / reminders">${escape(rules.notes)}</textarea><p class="helper">Write the reasoning behind your setup and when to stop trading.</p><label class="plan-checklist-editor">Before every entry · one check per line<textarea name="checklist" rows="4" placeholder="Write your own checks, e.g. Setup confirmed / Stop planned">${escape((rules.checklist||[]).join('\n'))}</textarea></label><p class="helper">Save these checks to show them in each trade form. No preset rules are added.</p></section><section class="plan-card"><span class="plan-kicker">02 · DAILY PLAN</span><h3>Targets & limits</h3><div class="form-grid">${field(`Daily target (${escape(database.settings.currency)})`,'dailyMoney',rules.dailyMoney,0.01)}<label>Maximum entries per day<input name="maxEntries" type="number" min="1" max="1000" step="1" value="${limit ?? ''}" placeholder="Not set"></label>${field(`Daily loss limit (${escape(database.settings.currency)})`,'dailyLoss',rules.dailyLoss,0.01)}</div><p class="helper">Leave blank for no limit. Entry limits count live trades across all pairs.</p></section></div><section class="plan-card risk-plan"><span class="plan-kicker">03 · RISK MANAGEMENT</span><h3>Lot size & trade risk</h3><div class="form-grid">${field('Maximum lot size','maxLotSize',rules.maxLotSize,0.000001)}${field('Maximum risk per trade (% of equity)','riskPercent',rules.riskPercent,0.01,100)}${field(`Maximum risk per trade (${escape(database.settings.currency)})`,'riskMoney',rules.riskMoney,0.01)}</div><p class="helper">Use either risk limit or both. Lot size and risk limits warn when a recorded trade exceeds your plan. Broker orders are not blocked.</p></section><p id="rules-message" role="status"></p></form>`;
 
 }
 document.addEventListener('submit', async event => {
@@ -516,7 +520,7 @@ document.addEventListener('submit', async event => {
   const button = event.target.querySelector('button[type="submit"]');
   button.disabled = true;
   const data = new FormData(event.target);
-  const tradingRules = { notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null, ...Object.fromEntries(['dailyLoss', 'maxLotSize', 'riskPercent', 'riskMoney'].map(key => [key, data.get(key) === '' ? null : Number(data.get(key))])) };
+  const tradingRules = { checklist:String(data.get('checklist')||'').split('\n').map(s=>s.trim()).filter(Boolean), notes: String(data.get('notes')), planVersion: 1, maxEntries: data.get('maxEntries') === '' ? null : Number(data.get('maxEntries')), dailyMoney: data.get('dailyMoney') === '' ? null : Number(data.get('dailyMoney')), dailyR: null, ...Object.fromEntries(['dailyLoss', 'maxLotSize', 'riskPercent', 'riskMoney'].map(key => [key, data.get(key) === '' ? null : Number(data.get(key))])) };
   try {
     await api('/api/settings', { method: 'PUT', body: JSON.stringify({ ...database.settings, tradingRules }) });
     await load();
@@ -578,6 +582,8 @@ function updateTradeWarnings(){
   const form=new FormData($('#entry-form'));
   const trade={kind:form.get('kind'),entryTime:String(form.get('entryTime')||''),risk:form.get('risk')===''?null:Number(form.get('risk')),entry:form.get('entry')===''?null:Number(form.get('entry')),stop:form.get('stop')===''?null:Number(form.get('stop')),quantity:form.get('quantity')===''?null:Number(form.get('quantity')),multiplier:Number(form.get('multiplier')),fxRate:Number(form.get('fxRate')),fees:Number(form.get('fees')),equitySnapshot:form.get('equitySnapshot')===''?null:Number(form.get('equitySnapshot')),leverage:null};
   const warnings=tradeWarnings(database,trade,editing?.id);
+  const checks=[...document.querySelectorAll('#trade-rule-checklist [data-plan-check]')];if(trade.kind==='live'&&checks.some(c=>!c.checked))warnings.push(`${checks.filter(c=>!c.checked).length} plan check(s) still unchecked. Complete them or record why you took this trade.`);
+  updateChecklistProgress();
   if(database.settings.tradingRules?.riskPercent && !trade.equitySnapshot) warnings.push('Record equity to check your percentage risk limit.');
   $('#trade-warnings').hidden=!warnings.length;
   $('#trade-warnings').innerHTML=warnings.map(t=>`<p>${escape(t)}</p>`).join('');
@@ -593,3 +599,16 @@ function renderGuidance(){
 document.addEventListener('click',e=>{if(e.target.closest('[data-open-customize]'))$('#customize').click();if(e.target.closest('[data-followup-scalp]')){const saved=database.entries.find(t=>t.id===lastSavedId);if(saved)openEntry(null,nextScalp(saved));}if(e.target.closest('.followup-dismiss')){lastSavedId=null;$('#save-followup').hidden=true;}});
 
 startWorkspaceMotion();
+
+function renderTradeChecklist(trade){
+ const checks=checklistForTrade(database.settings.tradingRules||{},trade),panel=$('#trade-rule-checklist');panel.hidden=!checks.length&&!trade.ruleException;
+ panel.innerHTML=`<div class="routine-card-heading"><div><span class="plan-kicker">BEFORE THIS ENTRY</span><h3>Check your plan</h3></div><span id="trade-check-progress" role="status"></span></div><div class="check-progress-track"><span id="trade-check-fill"></span></div>${checks.map(c=>`<label class="rule-check-row"><input type="checkbox" data-plan-check="${escape(c.label)}" ${c.checked?'checked':''}><span>${escape(c.label)}</span></label>`).join('')}<label class="exception-label">If you skipped a rule, explain why<textarea name="ruleException" maxlength="2000" rows="2" placeholder="What did you skip, and what will you change?">${escape(trade.ruleException||'')}</textarea></label><p class="helper">These checks are your record for this trade. They do not verify market conditions or block broker orders.</p>`;updateChecklistProgress();
+}
+function updateChecklistProgress(){const checks=[...document.querySelectorAll('#trade-rule-checklist [data-plan-check]')],done=checks.filter(c=>c.checked).length;if($('#trade-check-progress'))$('#trade-check-progress').textContent=`${done} / ${checks.length} checked`;if($('#trade-check-fill'))$('#trade-check-fill').style.width=checks.length?`${done/checks.length*100}%`:'0%';}
+function ruleCockpit(){
+ const day=journalNow(database.settings.timezone).slice(0,10),routine=ruleRoutine(database,day),s=routine.state;
+ const bar=(v,max)=>max?Math.min(100,Math.max(0,v/max*100)):0;
+ const tiles=[['Entries today',`${s.entries}${s.limit?' / '+s.limit:''}`,s.limit?`${s.remaining} remaining`:'Set an entry limit in your plan',bar(s.entries,s.limit)],['Daily target',money(s.pnl),s.target?`Target ${money(s.target)}`:'No profit target set',bar(s.pnl,s.target)],['Loss allowance',money(Math.max(0,-s.pnl)),s.lossLimit?`Limit ${money(s.lossLimit)}`:'No daily loss limit set',bar(-s.pnl,s.lossLimit)],['Reported rule adherence',routine.reported?`${Math.round(routine.followed/routine.reported*100)}%`:'—',`${routine.followed} Yes / ${routine.reported} reported · ${routine.unreported} unreported`,routine.reported?routine.followed/routine.reported*100:0]];
+ return `<section class="rules-cockpit"><div class="routine-card-heading"><div><span class="plan-kicker">TODAY’S ROUTINE · ${escape(day)}</span><h2>Make your plan part of every trade</h2><p>Across all live pairs · ${escape(database.settings.timezone)}</p></div><span class="routine-status">${routine.warnings.length?'Pause & review':'Review your plan'}</span></div><div class="routine-metrics">${tiles.map(([title,value,detail,progress])=>`<div class="routine-tile"><span>${title}</span><strong>${escape(value)}</strong><small>${escape(detail)}</small><div class="check-progress-track"><span style="width:${progress}%"></span></div></div>`).join('')}</div>${routine.warnings.length?`<div class="routine-alert">${routine.warnings.map(w=>`<span>${escape(w)}</span>`).join('')}<p>Review your limits before logging another live entry.</p></div>`:''}<div class="routine-flow"><span><b>01</b> Define your checklist</span><span><b>02</b> Check before entry</span><span><b>03</b> Record what happened</span><button class="secondary" type="button" data-routine-trade>Log a trade with checks ↗</button></div><p class="helper">Adherence uses your “Followed your rules?” reports. Progress uses recorded entries and realized net P&L, not broker activity. Checks are self-reported.</p></section>`;
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-routine-trade]')){document.querySelector('[data-view="live"]').click();openEntry();}});

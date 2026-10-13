@@ -1,4 +1,4 @@
-import { net } from './model.js?v=monochrome-depth-20261013';
+import { net } from './model.js?v=rules-routine-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -8,7 +8,7 @@ function validateTrade(value) {
   const template = {
     kind: 'live', pair: '', direction: 'Long', status: 'Open', entryTime: '', exitTime: '',
     setup: '', session: '', mood: '', rules: '', entry: null, exit: null, stop: null,
-    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: '', fxRate: 1, leverage: null, equitySnapshot: null, mistakes: [], reviewed: false
+    quantity: null, multiplier: 1, fees: 0, pnl: null, risk: null, notes: '', lesson: '', fxRate: 1, leverage: null, equitySnapshot: null, mistakes: [], reviewed: false, planChecks: [], ruleException: ''
   };
   const trade = {};
   for (const [key, fallback] of Object.entries(template)) trade[key] = value[key] ?? fallback;
@@ -23,6 +23,9 @@ function validateTrade(value) {
   requireInput(Array.isArray(trade.mistakes) && trade.mistakes.length <= 20 && trade.mistakes.every(t => typeof t === 'string' && t.length <= 80), 'Use up to 20 mistake tags, 80 characters each.');
   trade.mistakes = [...new Set(trade.mistakes.map(t => t.trim()).filter(Boolean))];
   requireInput(typeof trade.reviewed === 'boolean', 'Invalid review status.');
+  requireInput(Array.isArray(trade.planChecks) && trade.planChecks.length <= 20 && trade.planChecks.every(c=>c && typeof c.label==='string' && c.label.length>0 && c.label.length<=160 && typeof c.checked==='boolean'), 'Use up to 20 valid rule checks.');
+  trade.planChecks=trade.planChecks.map(c=>({label:c.label,checked:c.checked}));
+  requireInput(typeof trade.ruleException==='string' && trade.ruleException.length<=2000, 'Rule exception notes must be at most 2,000 characters.');
   trade.pair = trade.pair.trim();
   requireInput(trade.pair.length > 0 && trade.pair.length <= 40, 'Choose a pair.');
   const validDate = text => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(text) && Number.isFinite(Date.parse(text + 'Z')) && new Date(text + 'Z').toISOString().slice(0,16) === text;
@@ -56,6 +59,8 @@ function validateSettings(value) {
   try { new Intl.DateTimeFormat('en', { timeZone: value.timezone }); }
   catch { requireInput(false, 'Choose a valid time zone.'); }
   const rules = value.tradingRules || {};
+  const checklist=rules.checklist ?? [];
+  requireInput(Array.isArray(checklist)&&checklist.length<=20&&checklist.every(s=>typeof s==='string'&&s.length<=160), 'Use up to 20 checklist items, 160 characters each.');
   const maxEntries = rules.maxEntries ?? null;
   requireInput(maxEntries === null || (Number.isInteger(maxEntries) && maxEntries >= 1 && maxEntries <= 1000), 'Daily entry limit must be 1–1000.');
   requireInput(typeof (rules.notes ?? '') === 'string' && (rules.notes ?? '').length <= 20000, 'Rules notes must be at most 20,000 characters.');
@@ -68,6 +73,7 @@ function validateSettings(value) {
     if (key === 'maxLeverage') requireInput(number === null || (number >= 1 && number <= 100000), 'Enter leverage between 1 and 100000.');
     settings.tradingRules[key] = number;
   }
+  settings.tradingRules.checklist=[...new Set(checklist.map(s=>s.trim()).filter(Boolean))];
   const phpRates = value.phpRates ?? {};
   requireInput(phpRates && typeof phpRates === 'object' && !Array.isArray(phpRates), 'Check your PHP rates.');
   settings.phpRates = {};

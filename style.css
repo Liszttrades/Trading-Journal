@@ -1549,3 +1549,44 @@ button.primary:active:not(:disabled) { transform:translateY(1px); }
 #performance > .chart-panel .section-heading h2::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:#ddd; margin-right:9px; vertical-align:middle; }
 #performance-breakdowns,#review-queue,#setup-guide { background:linear-gradient(130deg,#151515,#101010); box-shadow:inset 0 1px 0 #ffffff03; }
 @media(prefers-reduced-motion:reduce) { .metric::after { transition:none; } #curve .curve-point { transition:none; } }
+
+/* A practical, animated monochrome playbook. */
+#rules-panel { background:transparent; border:0; padding:0; }
+.rules-cockpit { padding:26px; margin-bottom:26px; border:1px solid #363636; border-radius:20px; background:linear-gradient(135deg,#1b1b1b,#0d0d0d); box-shadow:inset 0 1px 0 #ffffff07; }
+.routine-card-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; margin-bottom:22px; }
+.routine-card-heading h2 { font-size:22px; letter-spacing:-.025em; margin:8px 0; }
+.routine-card-heading h3 { margin:7px 0; font-size:16px; }
+.routine-card-heading p { color:#929292; font-size:11px; margin:0; }
+.routine-status { white-space:nowrap; border:1px solid #494949; padding:8px 12px; border-radius:25px; font-size:10px; color:#ddd; }
+.routine-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.routine-tile { background:#151515; border:1px solid #333; border-radius:13px; padding:17px; transition:transform .2s,border-color .2s; }
+.routine-tile:hover { transform:translateY(-2px); border-color:#666; }
+.routine-tile > span { display:block; color:#999; font-size:10px; }
+.routine-tile strong { display:block; font-size:23px; margin:9px 0; font-weight:600; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.routine-tile small { display:block; color:#888; font-size:10px; min-height:30px; }
+.check-progress-track { height:4px; border-radius:4px; overflow:hidden; background:#333; margin-top:14px; }
+.check-progress-track > span { display:block; height:100%; border-radius:4px; background:linear-gradient(90deg,#858585,#eee); transition:width .35s ease; }
+.routine-flow { display:flex; align-items:center; flex-wrap:wrap; gap:18px; border-top:1px solid #333; margin-top:23px; padding-top:20px; font-size:11px; color:#bbb; }
+.routine-flow b { font-size:10px; color:#777; margin-right:6px; }
+.routine-flow button { margin-left:auto; }
+.routine-alert { padding:14px; border:1px solid #655345; background:#211c17; border-radius:10px; margin-top:18px; }
+.routine-alert > span { display:inline-block; font-size:11px; color:#d5c2aa; margin:0 16px 5px 0; }
+.routine-alert p { margin:3px 0 0; font-size:11px; color:#aaa; }
+#rules-panel .plan-card { background:linear-gradient(140deg,#171717,#101010); border:1px solid #333; border-radius:18px; transition:border-color .2s,box-shadow .2s; }
+#rules-panel .plan-card:hover { border-color:#525252; box-shadow:0 7px 20px #0002; }
+#rules-panel .plan-kicker { color:#aaa; letter-spacing:.13em; font-size:10px; }
+#rules-panel .plan-header { padding:0 2px; margin-bottom:22px; }
+.plan-checklist-editor { margin-top:20px; font-size:12px; }
+.plan-checklist-editor textarea { min-height:110px!important; }
+.trade-rule-checklist { margin:20px 0; padding:20px; border:1px solid #3a3a3a; border-radius:15px; background:linear-gradient(135deg,#1a1a1a,#101010); }
+#trade-check-progress { font-size:11px; color:#aaa; padding-top:12px; }
+.trade-rule-checklist .check-progress-track { margin:0 0 16px; }
+.rule-check-row { display:flex; align-items:center; gap:12px; margin:8px 0; padding:12px; background:#171717; border:1px solid #303030; border-radius:10px; font-size:12px; transition:background .18s,border-color .18s; cursor:pointer; }
+.rule-check-row input { width:16px!important; min-height:16px; accent-color:#ccc; flex-shrink:0; }
+.rule-check-row:has(input:checked) { background:#242424; border-color:#555; }
+.rule-check-row:has(input:checked) span { color:#fff; }
+.exception-label { margin-top:18px; font-size:11px; color:#aaa; }
+.exception-label textarea { min-height:70px!important; }
+@media(max-width:1000px) { .routine-metrics { grid-template-columns:1fr 1fr; } }
+@media(max-width:600px) { .rules-cockpit { padding:18px; } .routine-card-heading { flex-direction:column; } .routine-card-heading h2 { font-size:19px; } .routine-metrics { grid-template-columns:1fr; } .routine-flow button { margin-left:0; width:100%; } }
+@media(prefers-reduced-motion:reduce) { .check-progress-track > span,.rule-check-row,.routine-tile { transition:none; } }

@@ -1,4 +1,4 @@
-import { net } from './model.js?v=monochrome-depth-20261013';
+import { net } from './model.js?v=rules-routine-20261013';
 
 // Use recorded closing dates directly: journal timestamps already use the chosen zone.
 export function monthSummary(entries, year, month) {
