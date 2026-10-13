@@ -1,8 +1,8 @@
-import {brokerFields,tradeOutcome} from './broker-tools.js?v=simple-risk-20261013';
-import {enhanceRiskMenus} from './entry-menus.js?v=simple-risk-20261013';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=simple-risk-20261013';
-import {validateTrade} from './validation.js?v=simple-risk-20261013';
-import {journalNow} from './model.js?v=simple-risk-20261013';
+import {brokerFields,tradeOutcome} from './broker-tools.js?v=provider-icons-20261013';
+import {enhanceRiskMenus} from './entry-menus.js?v=provider-icons-20261013';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=provider-icons-20261013';
+import {validateTrade} from './validation.js?v=provider-icons-20261013';
+import {journalNow} from './model.js?v=provider-icons-20261013';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {

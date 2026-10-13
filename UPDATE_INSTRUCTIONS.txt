@@ -1,15 +1,7 @@
-SIMPLE MANUAL RISK CALCULATOR
+BROKER & PLATFORM ICONS
 
-Upload all extracted files to the root of your GitHub repository, replacing the matching files. Keep config.js. No SQL changes needed. After Pages deploys, hard refresh.
+Upload all extracted website files to your existing repository root, replacing matching files. Keep config.js (not included). After Pages deploys, hard refresh. No SQL changes.
 
-The price-feed UI and WebSocket code are removed. No API key is needed.
+Each listed broker/platform now has a distinct local lettermark icon in dropdown options and the selected value. These are custom identification badges, not official company logos. Other/unselected choices use a broker building or platform screen icon. No external image requests or new dependencies. Previous manual calculator and layout updates are included.
 
-Enter account balance, lot size, pair, entry, stop loss, take profit and estimated fees. The calculator shows potential stop-loss amount, account-risk percentage, target profit, risk/reward and hypothetical resulting balances. It infers Buy when stop is below entry and Sell when stop is above. Targets must be on the profitable side.
-
-Gold uses a visible 100-ounce-per-lot template; verify Contract settings against your broker. Other symbols need their contract size. Currency conversion must match the quoted price currency and account currency. Leverage does not change price-move risk for the same lot size.
-
-The USD example button uses balance 100, 0.01 lots, entry 4188, stop 4170, target 4220, 100 units/lot and no fees. It gives $18 loss and $32 profit. At 0.04 lots, these become $72 and $128. The example does not save account changes or place a trade.
-
-Saved rules generate warnings rather than changing the lot size you enter. Use in new trade transfers the plan to the entry form; take profit is preserved in the trade notes.
-
-Arithmetic, direction/target checks, fees, invalid values, JS syntax and imports passed. The signed-in layout remains unverified.
+JavaScript syntax and local imports checked. Live browser appearance not verified here.

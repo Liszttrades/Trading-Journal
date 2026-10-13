@@ -1,18 +1,18 @@
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=simple-risk-20261013';
-import {startWorkspaceMotion} from './motion.js?v=simple-risk-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=simple-risk-20261013';
-import {guidanceState} from './guidance.js?v=simple-risk-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=simple-risk-20261013';
-import { createWorkbench } from './workbench.js?v=simple-risk-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=simple-risk-20261013';
-import { createRoadmap } from './roadmap.js?v=simple-risk-20261013';
-import { createChartEditor } from './chart-editor.js?v=simple-risk-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=simple-risk-20261013';
-import { backend } from './cloud.js?v=simple-risk-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=simple-risk-20261013';
-import { monthSummary } from './calendar.js?v=simple-risk-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=simple-risk-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=simple-risk-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=provider-icons-20261013';
+import {startWorkspaceMotion} from './motion.js?v=provider-icons-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=provider-icons-20261013';
+import {guidanceState} from './guidance.js?v=provider-icons-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=provider-icons-20261013';
+import { createWorkbench } from './workbench.js?v=provider-icons-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=provider-icons-20261013';
+import { createRoadmap } from './roadmap.js?v=provider-icons-20261013';
+import { createChartEditor } from './chart-editor.js?v=provider-icons-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=provider-icons-20261013';
+import { backend } from './cloud.js?v=provider-icons-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=provider-icons-20261013';
+import { monthSummary } from './calendar.js?v=provider-icons-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=provider-icons-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=provider-icons-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
