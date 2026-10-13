@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=tennis-contrast-20261014';
-import { validateRoadmap } from './roadmap.js?v=tennis-contrast-20261014';
-import { validateAnnotations } from './annotations.js?v=tennis-contrast-20261014';
-import { defaultSettings } from './model.js?v=tennis-contrast-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=tennis-contrast-20261014';
+import {prepareBatch} from './insights.js?v=neutral-default-20261014';
+import { validateRoadmap } from './roadmap.js?v=neutral-default-20261014';
+import { validateAnnotations } from './annotations.js?v=neutral-default-20261014';
+import { defaultSettings } from './model.js?v=neutral-default-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=neutral-default-20261014';
 
-import { backend, signedUser } from './cloud.js?v=tennis-contrast-20261014';
+import { backend, signedUser } from './cloud.js?v=neutral-default-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

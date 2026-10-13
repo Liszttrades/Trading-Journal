@@ -1,4 +1,4 @@
-import { net } from './model.js?v=tennis-contrast-20261014';
+import { net } from './model.js?v=neutral-default-20261014';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
