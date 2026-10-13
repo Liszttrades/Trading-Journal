@@ -1,4 +1,4 @@
-const svg=paths=>`<svg viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
+const svg=paths=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 const chevron=svg('<path d="m7 10 5 5 5-5"/>'),check=svg('<path d="m5 12 4 4 10-10"/>');
 const icons={pair:'<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c4 4 4 12 0 16-4-4-4-12 0-16"/>',direction:'<path d="M8 19V5m-4 4 4-4 4 4M16 5v14m-4-4 4 4 4-4"/>',status:'<circle cx="12" cy="12" r="8"/><path d="m8 12 3 3 5-6"/>',session:'<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',setup:'<path d="M4 17l5-5 4 3 7-10M15 5h5v5"/>',mood:'<circle cx="12" cy="12" r="8"/><path d="M8 14h8M8 9h1m6 0h1"/>',rules:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 10h6m-6 5h6"/>',kind:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8m-8 6h5"/>'};
 // Local lettermark icons keep broker/platform choices distinct without remote images.

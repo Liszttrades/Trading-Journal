@@ -1,19 +1,19 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=large-type-calendar-20261014';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=large-type-calendar-20261014';
-import {startWorkspaceMotion} from './motion.js?v=large-type-calendar-20261014';
-import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=large-type-calendar-20261014';
-import {guidanceState} from './guidance.js?v=large-type-calendar-20261014';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=large-type-calendar-20261014';
-import { createWorkbench } from './workbench.js?v=large-type-calendar-20261014';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=large-type-calendar-20261014';
-import { createRoadmap } from './roadmap.js?v=large-type-calendar-20261014';
-import { createChartEditor } from './chart-editor.js?v=large-type-calendar-20261014';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=large-type-calendar-20261014';
-import { backend } from './cloud.js?v=large-type-calendar-20261014';
-import { resetCloudState, cloudChanged } from './storage.js?v=large-type-calendar-20261014';
-import { monthSummary } from './calendar.js?v=large-type-calendar-20261014';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=large-type-calendar-20261014';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=large-type-calendar-20261014';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=peach-compact-calendar-20261014';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=peach-compact-calendar-20261014';
+import {startWorkspaceMotion} from './motion.js?v=peach-compact-calendar-20261014';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=peach-compact-calendar-20261014';
+import {guidanceState} from './guidance.js?v=peach-compact-calendar-20261014';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=peach-compact-calendar-20261014';
+import { createWorkbench } from './workbench.js?v=peach-compact-calendar-20261014';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=peach-compact-calendar-20261014';
+import { createRoadmap } from './roadmap.js?v=peach-compact-calendar-20261014';
+import { createChartEditor } from './chart-editor.js?v=peach-compact-calendar-20261014';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=peach-compact-calendar-20261014';
+import { backend } from './cloud.js?v=peach-compact-calendar-20261014';
+import { resetCloudState, cloudChanged } from './storage.js?v=peach-compact-calendar-20261014';
+import { monthSummary } from './calendar.js?v=peach-compact-calendar-20261014';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=peach-compact-calendar-20261014';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=peach-compact-calendar-20261014';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
