@@ -1603,3 +1603,33 @@ button.primary:active:not(:disabled) { transform:translateY(1px); }
 @media(max-width:1000px){.risk-layout{grid-template-columns:1fr}.risk-summary{position:static}.risk-balance{min-width:200px}}
 @media(max-width:650px){#tools-panel .risk-hero{align-items:stretch;flex-direction:column;padding:24px;gap:24px}.risk-balance{border-left:0;border-top:1px solid #333;padding:20px 0 0}.risk-layout .form-grid,.risk-account .form-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.risk-answer,.risk-meter span{animation:none}}
+
+/* Shared shell: straight edges and a dark-gray navigation panel. */
+#journal-workspace > main{margin:0;border-radius:0;border-top:0;border-bottom:0;border-right:0;min-width:0}
+#journal-workspace > aside{background:#191919;border-right:1px solid #303030;border-radius:0}
+#journal-workspace > main > .topbar{border-radius:0}
+/* Consistent form rhythm; labels must not stretch to the neighboring help text. */
+#tools-panel{gap:20px}
+#tools-panel .plan-card{padding:24px}
+#tools-panel .risk-hero{padding:24px;gap:24px}
+#tools-panel .risk-layout{gap:20px}
+#tools-panel .form-grid{align-items:start;gap:20px;margin:0}
+#tools-panel label{display:flex;flex-direction:column;justify-content:flex-start;align-self:start;gap:8px;margin:0;line-height:1.5;min-width:0}
+#tools-panel label input,#tools-panel label select{box-sizing:border-box;height:44px;margin:0;width:100%}
+#tools-panel .risk-step{margin-bottom:20px}
+#tools-panel .risk-step p{margin:0}
+#tools-panel .risk-step h2{font-size:18px}
+#tools-panel .risk-account small{font-size:11px;line-height:1.5}
+#tools-panel .risk-account .helper{margin:16px 0}
+#tools-panel #account-message:empty{display:none}
+#tools-panel .risk-layout label:has(select){margin-bottom:20px}
+#tools-panel .risk-summary{height:auto;min-height:0;display:block;align-self:start;overflow:visible}
+#tools-panel .risk-summary h2{margin:12px 0 20px}
+#tools-panel .risk-limit-list{margin:0;padding:4px 0}
+#tools-panel .risk-summary button{margin:12px 0 0}
+#tools-panel .risk-empty{padding:12px 0;margin:0}
+#tools-panel .risk-explainer{margin-top:20px;padding:14px}
+#tools-panel .risk-broker{padding:16px;margin-top:20px}
+#tools-panel .risk-budget-preview{margin-top:20px}
+.risk-field-guide{font-size:12px;line-height:1.6}.risk-field-guide dt{font-weight:600;color:#dedee3;margin-top:14px}.risk-field-guide dd{margin:4px 0 0;color:#a7a7b1}
+@media(max-width:650px){#tools-panel .plan-card,#tools-panel .risk-hero{padding:20px}#tools-panel .form-grid{grid-template-columns:1fr;gap:16px}}

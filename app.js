@@ -1,18 +1,18 @@
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=account-guide-20261013';
-import {startWorkspaceMotion} from './motion.js?v=account-guide-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=account-guide-20261013';
-import {guidanceState} from './guidance.js?v=account-guide-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=account-guide-20261013';
-import { createWorkbench } from './workbench.js?v=account-guide-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=account-guide-20261013';
-import { createRoadmap } from './roadmap.js?v=account-guide-20261013';
-import { createChartEditor } from './chart-editor.js?v=account-guide-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=account-guide-20261013';
-import { backend } from './cloud.js?v=account-guide-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=account-guide-20261013';
-import { monthSummary } from './calendar.js?v=account-guide-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=account-guide-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=account-guide-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=account-clean-20261013';
+import {startWorkspaceMotion} from './motion.js?v=account-clean-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=account-clean-20261013';
+import {guidanceState} from './guidance.js?v=account-clean-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=account-clean-20261013';
+import { createWorkbench } from './workbench.js?v=account-clean-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=account-clean-20261013';
+import { createRoadmap } from './roadmap.js?v=account-clean-20261013';
+import { createChartEditor } from './chart-editor.js?v=account-clean-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=account-clean-20261013';
+import { backend } from './cloud.js?v=account-clean-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=account-clean-20261013';
+import { monthSummary } from './calendar.js?v=account-clean-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=account-clean-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=account-clean-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);

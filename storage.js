@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=account-guide-20261013';
-import { validateRoadmap } from './roadmap.js?v=account-guide-20261013';
-import { validateAnnotations } from './annotations.js?v=account-guide-20261013';
-import { defaultSettings } from './model.js?v=account-guide-20261013';
-import { validateTrade, validateSettings } from './validation.js?v=account-guide-20261013';
+import {prepareBatch} from './insights.js?v=account-clean-20261013';
+import { validateRoadmap } from './roadmap.js?v=account-clean-20261013';
+import { validateAnnotations } from './annotations.js?v=account-clean-20261013';
+import { defaultSettings } from './model.js?v=account-clean-20261013';
+import { validateTrade, validateSettings } from './validation.js?v=account-clean-20261013';
 
-import { backend, signedUser } from './cloud.js?v=account-guide-20261013';
+import { backend, signedUser } from './cloud.js?v=account-clean-20261013';
 let snapshot = null;
 let revision = 0;
 let owner = null;
