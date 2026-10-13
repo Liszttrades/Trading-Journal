@@ -1,4 +1,4 @@
-import { net } from './model.js?v=slate-copper-20261014';
+import { net } from './model.js?v=large-type-calendar-20261014';
 
 // Use recorded closing dates directly: journal timestamps already use the chosen zone.
 export function monthSummary(entries, year, month) {

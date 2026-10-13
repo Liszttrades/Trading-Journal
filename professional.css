@@ -300,3 +300,48 @@ html body :is(.calendar-week,.calendar-day){border-color:var(--line-soft)}
 html body .chart-kind{background:#191919!important;border-color:#666663!important;color:#fafaf7!important}
 .swatch-neutral{background:linear-gradient(135deg,#191919 50%,#cc785c 50%);border-color:#91918d}
 .appearance-accents{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+
+/* Desktop readability: strong type and larger calendar boxes. */
+:root[data-theme=dark]{--paper:#191919;--surface:#262625;--surface-2:#20201f}
+html body .page-heading h1{font-family:Arial,Helvetica,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:800;font-size:clamp(38px,3.4vw,68px);letter-spacing:-.055em;line-height:1.08}
+html body .brand{font-size:20px;font-weight:750}
+html body nav button{font-size:16px;font-weight:600;min-height:49px}
+html body .nav-group-title{font-size:13px;font-weight:600}
+html body #advanced-analysis>summary{font-size:17px;font-weight:650;padding:10px 0 20px}
+html body #advanced-metrics .metric{padding:24px;min-height:136px}
+html body #advanced-metrics .metric>span{font-size:15px;font-weight:650}
+html body #advanced-metrics .metric strong{font-size:28px;font-weight:700;line-height:1.3;margin:9px 0}
+html body #advanced-metrics .metric small{font-size:14px;line-height:1.5}
+html body :is(.section-heading h2,.calendar-heading h2){font-size:22px;font-weight:700}
+html body :is(.filter-field>span,.filter-search>span){font-size:15px;font-weight:600}
+html body .filter-bar-title strong{font-size:16px;font-weight:700}
+html body :is(.filter-select-trigger,.entry-select-trigger){font-size:15px!important;font-weight:550;min-height:46px}
+html body #trade-search{font-size:15px!important;min-height:46px}
+html body .records th{font-size:14px;font-weight:600;padding:16px}
+html body .records td{font-size:16px;line-height:1.5;padding:20px 16px}
+html body .records td.positive,html body .records td.negative{font-weight:650;font-variant-numeric:tabular-nums}
+html body .trade-link{font-size:16px;font-weight:700}
+html body .trade-link small,html body .records .subtext{font-size:13px;font-weight:500}
+html body .tag{font-size:14px}
+html body #performance-breakdowns .section-heading h2{font-size:22px;font-weight:700}
+html body .breakdown-tabs button{font-size:15px;font-weight:600;padding:13px 18px}
+html body .breakdown-intro h3{font-size:20px;font-weight:650}
+html body .breakdown-intro p{font-size:14px}
+html body .breakdown-total strong{font-size:32px;font-weight:700}
+html body .breakdown-insight strong{font-size:16px}
+html body .breakdown-insight small{font-size:14px}
+html body #performance-analysis .breakdown-table thead th{font-size:14px;font-weight:600;padding:16px}
+html body #performance-analysis .breakdown-table tbody th,html body #performance-analysis .breakdown-table tbody td{font-size:16px;padding:20px 16px}
+html body .breakdown-money{font-weight:650}
+html body #pnl-calendar{padding:28px;border-radius:12px}
+html body #pnl-calendar .calendar-grid{grid-template-columns:repeat(7,minmax(140px,1fr)) minmax(160px,1fr);min-width:1180px;gap:10px}
+html body #pnl-calendar :is(.calendar-day,.calendar-week,.calendar-blank){min-height:166px;aspect-ratio:1.35/1;padding:18px 16px;border-radius:6px;gap:14px;box-sizing:border-box;min-width:0}
+html body #pnl-calendar .day-number,html body #pnl-calendar .calendar-week>span{font-size:17px;font-weight:650;line-height:1.3}
+html body #pnl-calendar .weekday{font-size:14px;font-weight:600;padding:0 10px 8px;color:var(--muted)}
+html body #pnl-calendar .calendar-day strong,html body #pnl-calendar .calendar-week strong{font-size:18px;font-weight:650;line-height:1.4;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+html body #pnl-calendar .calendar-day small,html body #pnl-calendar .calendar-week small{font-size:13px;font-weight:500}
+html body #pnl-calendar .calendar-nav strong{font-size:18px;font-weight:700}
+html body #pnl-calendar .calendar-total{font-size:14px;margin:24px 0 22px}
+html body #pnl-calendar .calendar-total strong{font-size:26px;font-weight:700}
+@media(max-width:1100px){html body .page-heading h1{font-size:44px}html body #advanced-metrics .metric strong{font-size:25px}}
+@media(max-width:700px){html body .page-heading h1{font-size:36px}html body nav button{font-size:15px}html body #advanced-metrics .metric{padding:18px}html body #pnl-calendar{padding:18px}html body #pnl-calendar .calendar-grid{min-width:1080px;grid-template-columns:repeat(7,minmax(125px,1fr)) minmax(135px,1fr)}html body #pnl-calendar :is(.calendar-day,.calendar-week,.calendar-blank){padding:14px;min-height:150px}html body #pnl-calendar .calendar-total strong{font-size:22px}}

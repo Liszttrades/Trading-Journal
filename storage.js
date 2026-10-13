@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=slate-copper-20261014';
-import { validateRoadmap } from './roadmap.js?v=slate-copper-20261014';
-import { validateAnnotations } from './annotations.js?v=slate-copper-20261014';
-import { defaultSettings } from './model.js?v=slate-copper-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=slate-copper-20261014';
+import {prepareBatch} from './insights.js?v=large-type-calendar-20261014';
+import { validateRoadmap } from './roadmap.js?v=large-type-calendar-20261014';
+import { validateAnnotations } from './annotations.js?v=large-type-calendar-20261014';
+import { defaultSettings } from './model.js?v=large-type-calendar-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=large-type-calendar-20261014';
 
-import { backend, signedUser } from './cloud.js?v=slate-copper-20261014';
+import { backend, signedUser } from './cloud.js?v=large-type-calendar-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

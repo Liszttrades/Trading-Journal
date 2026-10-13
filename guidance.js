@@ -1,4 +1,4 @@
-import {net} from './model.js?v=slate-copper-20261014';
+import {net} from './model.js?v=large-type-calendar-20261014';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[
