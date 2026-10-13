@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=wide-minimal-20261014';
-import { validateRoadmap } from './roadmap.js?v=wide-minimal-20261014';
-import { validateAnnotations } from './annotations.js?v=wide-minimal-20261014';
-import { defaultSettings } from './model.js?v=wide-minimal-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=wide-minimal-20261014';
+import {prepareBatch} from './insights.js?v=spacing-readability-20261014';
+import { validateRoadmap } from './roadmap.js?v=spacing-readability-20261014';
+import { validateAnnotations } from './annotations.js?v=spacing-readability-20261014';
+import { defaultSettings } from './model.js?v=spacing-readability-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=spacing-readability-20261014';
 
-import { backend, signedUser } from './cloud.js?v=wide-minimal-20261014';
+import { backend, signedUser } from './cloud.js?v=spacing-readability-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

@@ -1,4 +1,4 @@
-import {net} from './model.js?v=wide-minimal-20261014';
+import {net} from './model.js?v=spacing-readability-20261014';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[
