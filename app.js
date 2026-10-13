@@ -1,18 +1,18 @@
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=rules-routine-20261013';
-import {startWorkspaceMotion} from './motion.js?v=rules-routine-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=rules-routine-20261013';
-import {guidanceState} from './guidance.js?v=rules-routine-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=rules-routine-20261013';
-import { createWorkbench } from './workbench.js?v=rules-routine-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=rules-routine-20261013';
-import { createRoadmap } from './roadmap.js?v=rules-routine-20261013';
-import { createChartEditor } from './chart-editor.js?v=rules-routine-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=rules-routine-20261013';
-import { backend } from './cloud.js?v=rules-routine-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=rules-routine-20261013';
-import { monthSummary } from './calendar.js?v=rules-routine-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=rules-routine-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=rules-routine-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=account-guide-20261013';
+import {startWorkspaceMotion} from './motion.js?v=account-guide-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=account-guide-20261013';
+import {guidanceState} from './guidance.js?v=account-guide-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=account-guide-20261013';
+import { createWorkbench } from './workbench.js?v=account-guide-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=account-guide-20261013';
+import { createRoadmap } from './roadmap.js?v=account-guide-20261013';
+import { createChartEditor } from './chart-editor.js?v=account-guide-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=account-guide-20261013';
+import { backend } from './cloud.js?v=account-guide-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=account-guide-20261013';
+import { monthSummary } from './calendar.js?v=account-guide-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=account-guide-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=account-guide-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -86,7 +86,7 @@ function render() {
   if (view === 'live') workbench.daily();
   if (isTools) {
     $('#heading').textContent = $('#breadcrumb').textContent = 'Account & risk';
-    $('#subtitle').textContent = 'Recorded balance, risk budget, and position sizing.';
+    $('#subtitle').textContent = 'Set your balance, plan your risk, and calculate your trade size.';
     document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
     document.querySelector('.records').hidden = true; $('#new-entry').hidden = true; $('#rules-panel').hidden = true; $('#performance').hidden = true; $('#pnl-calendar').hidden = true;
     workbench.tools(); return;
