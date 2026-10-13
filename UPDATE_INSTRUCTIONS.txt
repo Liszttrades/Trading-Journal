@@ -1,7 +1,5 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep your existing config.js. Wait for GitHub Pages deployment and hard refresh (Ctrl+Shift+R). No database changes.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
 
-Visual update: charcoal/black base with muted violet navigation accents, stronger sidebar selection, refined typography, consistent panel borders and spacing. Keeps P&L first, solid calendar cells and panel-only gradients. Positive/negative result colors unchanged.
+Design: removes violet accents in favor of true charcoal, silver and white. Green/red result colors retained. Silver sidebar active marker, layered metric surfaces, pointer-following subtle card light, refined primary buttons and staggered card reveals. P&L drawing animation retained. Chart points respond to hover/focus; hovering a point shows the browser tooltip with pair, closing time, individual and cumulative P&L. P&L remains first; calendar cells remain solid with gradient only on outer panels. No animated background. Reduced-motion settings respected.
 
-Motion: short navigation and dialog transitions, card reveals on entering view, P&L line draw, menu openings, chart/card/calendar hover effects, button feedback and cloud-sync loading indicator. No animated background or blob. Respects reduced-motion preference. Financial values, saved records and calculations unchanged.
-
-All JavaScript syntax and local dependencies checked. Live signed-in layout and browser rendering were not tested here.
+All previous features included. JavaScript syntax and module dependencies checked. Live browser appearance not verified here.
