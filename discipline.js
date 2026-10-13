@@ -1,4 +1,4 @@
-import {dailyState} from './insights.js?v=provider-icons-20261013';
+import {dailyState} from './insights.js?v=daily-fx-icons-20261013';
 export function ruleRoutine(db,day){
  const state=dailyState(db,day),today=db.entries.filter(t=>t.kind==='live'&&t.entryTime.slice(0,10)===day);
  const reports=today.filter(t=>['Yes','No'].includes(t.rules));

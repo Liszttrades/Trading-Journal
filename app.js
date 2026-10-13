@@ -1,18 +1,19 @@
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=provider-icons-20261013';
-import {startWorkspaceMotion} from './motion.js?v=provider-icons-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=provider-icons-20261013';
-import {guidanceState} from './guidance.js?v=provider-icons-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=provider-icons-20261013';
-import { createWorkbench } from './workbench.js?v=provider-icons-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=provider-icons-20261013';
-import { createRoadmap } from './roadmap.js?v=provider-icons-20261013';
-import { createChartEditor } from './chart-editor.js?v=provider-icons-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=provider-icons-20261013';
-import { backend } from './cloud.js?v=provider-icons-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=provider-icons-20261013';
-import { monthSummary } from './calendar.js?v=provider-icons-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=provider-icons-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=provider-icons-20261013';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=daily-fx-icons-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=daily-fx-icons-20261013';
+import {startWorkspaceMotion} from './motion.js?v=daily-fx-icons-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=daily-fx-icons-20261013';
+import {guidanceState} from './guidance.js?v=daily-fx-icons-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=daily-fx-icons-20261013';
+import { createWorkbench } from './workbench.js?v=daily-fx-icons-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=daily-fx-icons-20261013';
+import { createRoadmap } from './roadmap.js?v=daily-fx-icons-20261013';
+import { createChartEditor } from './chart-editor.js?v=daily-fx-icons-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=daily-fx-icons-20261013';
+import { backend } from './cloud.js?v=daily-fx-icons-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=daily-fx-icons-20261013';
+import { monthSummary } from './calendar.js?v=daily-fx-icons-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=daily-fx-icons-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=daily-fx-icons-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -46,6 +47,7 @@ async function load() {
   try {
     database = await api('/api/journal');
     message('#load-error');
+    await refreshPesoRate(database.settings);
     render();
     $('#sync-status').textContent = `Synced ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   } catch (error) {
@@ -57,7 +59,7 @@ async function load() {
 function money(value) {
   const currency = database.settings.currency;
   const original = new Intl.NumberFormat('en', { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
-  const rate = database.settings.phpRates?.[currency];
+  const rate = pesoRate(database.settings)?.rate ?? database.settings.phpRates?.[currency];
   return currency !== 'PHP' && Number.isFinite(rate) && rate > 0
     ? `${original} · ${new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 2 }).format(value * rate)}`
     : original;
@@ -130,7 +132,8 @@ function render() {
   $('#pnl-calendar').hidden = view === 'gallery';
   if (view !== 'gallery') renderCalendar(selected);
   $('#records-title').textContent = `${view === 'gallery' ? 'Screenshots' : 'Entries'} (${selected.length})`;
-  $('#footnote').textContent = `${database.settings.currency} results. ${database.settings.currency !== 'PHP' && database.settings.phpRates?.[database.settings.currency] ? `PHP equivalents use your saved rate: 1 ${database.settings.currency} = ${database.settings.phpRates[database.settings.currency]} PHP. ` : 'Set a PHP conversion rate in Customize to show peso equivalents. '} Times entered in ${database.settings.timezone}. Private cloud journal. Automatically refreshes while this page is open; internet required to save.`;
+  const conversion=pesoRate(database.settings);
+  $('#footnote').textContent = `${database.settings.currency} results. ${conversion?`PHP conversion: 1 ${database.settings.currency} = ${conversion.rate} PHP · ${conversion.date} · Frankfurter daily reference. `:database.settings.currency==='PHP'?'':database.settings.phpRates?.[database.settings.currency]?'PHP conversion uses your saved manual fallback rate. ':'PHP conversion unavailable. '} Times use ${database.settings.timezone}. Private cloud journal.`;
   if (view === 'gallery') {
     const pairs = [...new Set([...database.settings.pairs, ...database.entries.map(entry => entry.pair)])];
     $('#pair-chips').innerHTML = ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
@@ -258,6 +261,7 @@ function openEntry(entry = null, draft = null) {
   renderTradeChecklist(trade);
   updateTradeWarnings();
   enhanceEntryMenus();
+  if(!entry&&!draft)attachAutoConversion($('#entry-form'),settings.currency,settings.autoFx!==false);
   $('#entry-dialog').showModal();
 }
 
@@ -346,7 +350,7 @@ $('#delete-entry').addEventListener('click', async () => {
 
 $('#customize').addEventListener('click', () => {
   const settings = database.settings;
-  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape((settings[key] || []).join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone) + `<label>PHP per 1 unit of result currency<input type="number" step="any" min="0.000001" name="phpRate" value="${settings.phpRates?.[settings.currency] ?? ''}" placeholder="Enter your exchange rate"></label><p class="helper">Manual display conversion. Enter the rate for the selected currency; leave blank to disable. For PHP results, conversion is unnecessary. Rates are saved separately for each currency; original trade amounts stay unchanged.</p>`;
+  $('#settings-fields').innerHTML = ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].map(key => `<label>${key[0].toUpperCase() + key.slice(1)}<textarea name="${key}" rows="5">${escape((settings[key] || []).join('\n'))}</textarea></label>`).join('') + select('Result currency', 'currency', ['USD', 'PHP', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD'], settings.currency) + select('Journal time zone', 'timezone', ['Asia/Manila', 'UTC', 'America/New_York', 'Europe/London', 'Asia/Tokyo'], settings.timezone) + `<label class="fx-mode"><input type="checkbox" name="autoFx" ${settings.autoFx!==false?'checked':''}> Automatically use daily conversion rates</label><label>Manual fallback: PHP per 1 unit of result currency<input type="number" step="any" min="0.000001" name="phpRate" value="${settings.phpRates?.[settings.currency] ?? ''}" placeholder="Enter your exchange rate"></label><p class="helper">Automatic mode uses Frankfurter daily fiat reference rates. A saved manual rate is used if the service is unavailable. Historical trade amounts and conversion snapshots stay unchanged.</p>`;
   $('#settings-form').elements.currency.addEventListener('change', event => {
     $('#settings-form').elements.phpRate.value = settings.phpRates?.[event.target.value] ?? '';
   });
@@ -362,6 +366,7 @@ $('#settings-form').addEventListener('submit', async event => {
   const form = new FormData(event.currentTarget);
   const settings = { ...database.settings, onboarding:{pairsReviewed:true} };
   ['pairs', 'setups', 'sessions', 'moods', 'mistakeTags'].forEach(key => settings[key] = String(form.get(key)).split('\n').map(x => x.trim()).filter(Boolean));
+  settings.autoFx = form.get('autoFx')==='on';
   settings.currency = form.get('currency');
   settings.phpRates = { ...database.settings.phpRates };
   if (form.get('phpRate') === '') delete settings.phpRates[settings.currency];
@@ -612,3 +617,6 @@ function ruleCockpit(){
  return `<section class="rules-cockpit"><div class="routine-card-heading"><div><span class="plan-kicker">TODAY’S ROUTINE · ${escape(day)}</span><h2>Make your plan part of every trade</h2><p>Across all live pairs · ${escape(database.settings.timezone)}</p></div><span class="routine-status">${routine.warnings.length?'Pause & review':'Review your plan'}</span></div><div class="routine-metrics">${tiles.map(([title,value,detail,progress])=>`<div class="routine-tile"><span>${title}</span><strong>${escape(value)}</strong><small>${escape(detail)}</small><div class="check-progress-track"><span style="width:${progress}%"></span></div></div>`).join('')}</div>${routine.warnings.length?`<div class="routine-alert">${routine.warnings.map(w=>`<span>${escape(w)}</span>`).join('')}<p>Review your limits before logging another live entry.</p></div>`:''}<div class="routine-flow"><span><b>01</b> Define your checklist</span><span><b>02</b> Check before entry</span><span><b>03</b> Record what happened</span><button class="secondary" type="button" data-routine-trade>Log a trade with checks ↗</button></div><p class="helper">Adherence uses your “Followed your rules?” reports. Progress uses recorded entries and realized net P&L, not broker activity. Checks are self-reported.</p></section>`;
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-routine-trade]')){document.querySelector('[data-view="live"]').click();openEntry();}});
+
+// Refresh display-only daily conversions while the journal is open.
+setInterval(async()=>{if(!currentUser||document.hidden)return;await refreshPesoRate(database.settings);if(!document.querySelector('dialog[open]')&&(view==='live'||view==='backtest'||view==='gallery'))render();},3600000);

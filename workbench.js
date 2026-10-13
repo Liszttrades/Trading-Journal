@@ -1,8 +1,9 @@
-import {brokerFields,tradeOutcome} from './broker-tools.js?v=provider-icons-20261013';
-import {enhanceRiskMenus} from './entry-menus.js?v=provider-icons-20261013';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=provider-icons-20261013';
-import {validateTrade} from './validation.js?v=provider-icons-20261013';
-import {journalNow} from './model.js?v=provider-icons-20261013';
+import {attachAutoConversion} from './exchange-rates.js?v=daily-fx-icons-20261013';
+import {brokerFields,tradeOutcome} from './broker-tools.js?v=daily-fx-icons-20261013';
+import {enhanceRiskMenus} from './entry-menus.js?v=daily-fx-icons-20261013';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=daily-fx-icons-20261013';
+import {validateTrade} from './validation.js?v=daily-fx-icons-20261013';
+import {journalNow} from './model.js?v=daily-fx-icons-20261013';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {
@@ -35,6 +36,7 @@ export function createWorkbench({getDB,api,reload,openTrade,getView}) {
  const contract=()=>{const gold=input('pair').value==='XAUUSD';input('multiplier').value=gold?100:'';input('fxRate').value=db.settings.currency===input('pair').value.replace('/','').slice(-3)?1:'';$('#contract-hint').textContent=gold?'Gold template: 100 oz per lot. Confirm your broker uses this contract size.':'Copy contract size from MT5 → Symbol → Specification.';};contract();
  input('pair').addEventListener('change',()=>{contract();for(const n of ['entry','stop','target'])input(n).value='';});
  $('#risk-example').onclick=()=>{if(db.settings.currency!=='USD')return;if(![...input('pair').options].some(o=>o.value==='XAUUSD'))input('pair').add(new Option('XAUUSD','XAUUSD'));input('pair').value='XAUUSD';input('pair').dispatchEvent(new Event('change',{bubbles:true}));for(const [n,v] of Object.entries({equity:100,quantity:.01,entry:4188,stop:4170,target:4220,multiplier:100,fxRate:1,fees:0}))input(n).value=v;form.requestSubmit();};
+ attachAutoConversion(form,db.settings.currency,db.settings.autoFx!==false);
  form.addEventListener('invalid',e=>{e.target.closest('details')?.setAttribute('open','');},true);
  }
  const invalidateRisk=event=>{if(!event.target.closest('#risk-calculator'))return;calculation=null;$('#use-risk-trade').hidden=true;$('#risk-result').innerHTML='<p class="risk-empty">Inputs changed. Calculate again.</p>';};

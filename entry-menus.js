@@ -4,7 +4,16 @@ const icons={pair:'<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c4 4 4 1
 // Local lettermark icons keep broker/platform choices distinct without remote images.
 const brokerMarks={Vantage:['V','#ec724d'], 'IC Markets':['IC','#91cc67'],Pepperstone:['P','#67a1e8'],Exness:['E','#eac758'],XM:['XM','#df727a'],OANDA:['O','#7dc1b1'],'FP Markets':['FP','#9b9deb'],Eightcap:['8','#7cc6df']};
 const platformMarks={MT5:['M5','#dda352'],MT4:['M4','#8fa9dd'],cTrader:['cT','#b9d282'],TradingView:['TV','#91b3ec']};
+const currencyMarks={USD:['$','#87bda2'],PHP:['₱','#dfb765'],EUR:['€','#899fe0'],GBP:['£','#b49ad4'],JPY:['¥','#dc939c'],AUD:['A$','#aaca88'],CAD:['C$','#dd9a88']};
+function assetIcon(name,value){
+ let letters,color;
+ if(name==='currency'&&currencyMarks[value])[letters,color]=currencyMarks[value];
+ else if(name==='pair'&&value){const code=String(value).toUpperCase().replace(/[^A-Z0-9]/g,'');letters=code.startsWith('BTC')?'₿':code.startsWith('ETH')?'Ξ':code.startsWith('XAU')?'Au':code.startsWith('XAG')?'Ag':code.slice(0,3);const hash=[...code].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,0);color=code.startsWith('XAU')?'#dfc273':code.startsWith('BTC')?'#dfa56b':`hsl(${hash%360} 38% 72%)`;}
+ else return null;
+ return `<svg class="provider-mark asset-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="${color}" fill-opacity=".13" stroke="${color}" stroke-opacity=".35"/><text x="16" y="17" text-anchor="middle" dominant-baseline="middle" fill="${color}" stroke="none" font-size="${letters.length>2?10:15}" font-weight="750" font-family="Arial, sans-serif">${letters}</text></svg>`;
+}
 function fieldIcon(name,value){
+ const asset=assetIcon(name,value);if(asset)return asset;
  const map=name==='broker'?brokerMarks:name==='platform'?platformMarks:null;
  if(!map)return svg(icons[name]||icons.kind);
  const mark=map[value];

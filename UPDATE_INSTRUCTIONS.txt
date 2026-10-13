@@ -1,7 +1,20 @@
-BROKER & PLATFORM ICONS
+PAIR/CURRENCY ICONS & AUTOMATIC DAILY FX
 
-Upload all extracted website files to your existing repository root, replacing matching files. Keep config.js (not included). After Pages deploys, hard refresh. No SQL changes.
+Upload ALL extracted files including exchange-rates.js to your existing GitHub repository root, replacing matching files. Keep config.js. No SQL migration needed. Wait for Pages deployment, then hard refresh.
 
-Each listed broker/platform now has a distinct local lettermark icon in dropdown options and the selected value. These are custom identification badges, not official company logos. Other/unselected choices use a broker building or platform screen icon. No external image requests or new dependencies. Previous manual calculator and layout updates are included.
+Pairs and currencies now have local custom lettermark icons in dropdowns and selected values. New pairs get a generated icon automatically, with familiar gold/silver/BTC/ETH glyphs and currency symbols for supported result currencies. These are not official company logos.
 
-JavaScript syntax and local imports checked. Live browser appearance not verified here.
+DAILY CONVERSION
+Automatic conversion is enabled by default and can be turned off in Customize. The service is Frankfurter v2, providing daily fiat reference rates without an API key. These are not live trading quotes. The returned rate date is shown; it may be the latest available business day.
+
+Peso equivalents use the latest daily conversion while original journal amounts remain unchanged. If the service fails, a saved manual PHP rate is used and labeled as a manual fallback. Without either, PHP equivalents are omitted. Rates refresh on journal load and hourly while open, with hourly request caching.
+
+Calculator and fresh new trade forms infer quote currency from common pair suffixes or separated codes. Example: USDJPY uses JPY -> account currency; XAUUSD and BTCUSD use USD -> account currency. Matching currencies use 1. Unknown symbols require a manual conversion rate. Custom broker suffixes may need manual conversion. Fiat conversion does not fetch gold/crypto prices or their contract sizes.
+
+You can type a manual broker conversion to override the form's reference rate. Changing pair starts a new reference-rate lookup. Existing trades and calculator-created trade drafts retain their recorded FX snapshot; no historical trade amount is rewritten.
+
+SOURCE
+https://frankfurter.dev/
+
+VALIDATION
+JavaScript syntax, imports, response validation, caching, quote-currency inference, automatic fills, manual override and offline fallback checks passed using simulated responses. The live endpoint returned HTTP 403 from this environment, so an actual browser fetch and signed-in appearance remain unverified. If blocked from your browser too, use the labeled manual fallback.

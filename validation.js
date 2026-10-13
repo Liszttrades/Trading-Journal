@@ -1,4 +1,4 @@
-import { net } from './model.js?v=provider-icons-20261013';
+import { net } from './model.js?v=daily-fx-icons-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
@@ -93,6 +93,7 @@ function validateSettings(value) {
   requireInput(Array.isArray(tags) && tags.length <= 80 && tags.every(t=>typeof t === 'string' && t.length <= 80), 'Check your mistake tags.');
   settings.mistakeTags = [...new Set(tags.map(t=>t.trim()).filter(Boolean))];
   settings.onboarding = { pairsReviewed: value.onboarding?.pairsReviewed === true };
+  settings.autoFx = value.autoFx !== false;
   settings.currency = value.currency;
   settings.timezone = value.timezone;
   return settings;

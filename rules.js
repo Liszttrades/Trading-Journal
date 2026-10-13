@@ -1,4 +1,4 @@
-import { net, risk } from './model.js?v=provider-icons-20261013';
+import { net, risk } from './model.js?v=daily-fx-icons-20261013';
 export const defaultRules = { notes: '', dailyMoney: null, dailyR: null, maxEntries: null };
 export function ruleFlags(entries, limit = null) {
   const counts = new Map();
