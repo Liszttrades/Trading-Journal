@@ -1,19 +1,19 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=spacing-readability-20261014';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=spacing-readability-20261014';
-import {startWorkspaceMotion} from './motion.js?v=spacing-readability-20261014';
-import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=spacing-readability-20261014';
-import {guidanceState} from './guidance.js?v=spacing-readability-20261014';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=spacing-readability-20261014';
-import { createWorkbench } from './workbench.js?v=spacing-readability-20261014';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=spacing-readability-20261014';
-import { createRoadmap } from './roadmap.js?v=spacing-readability-20261014';
-import { createChartEditor } from './chart-editor.js?v=spacing-readability-20261014';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=spacing-readability-20261014';
-import { backend } from './cloud.js?v=spacing-readability-20261014';
-import { resetCloudState, cloudChanged } from './storage.js?v=spacing-readability-20261014';
-import { monthSummary } from './calendar.js?v=spacing-readability-20261014';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=spacing-readability-20261014';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=spacing-readability-20261014';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=soft-light-badges-20261014';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=soft-light-badges-20261014';
+import {startWorkspaceMotion} from './motion.js?v=soft-light-badges-20261014';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=soft-light-badges-20261014';
+import {guidanceState} from './guidance.js?v=soft-light-badges-20261014';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=soft-light-badges-20261014';
+import { createWorkbench } from './workbench.js?v=soft-light-badges-20261014';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=soft-light-badges-20261014';
+import { createRoadmap } from './roadmap.js?v=soft-light-badges-20261014';
+import { createChartEditor } from './chart-editor.js?v=soft-light-badges-20261014';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=soft-light-badges-20261014';
+import { backend } from './cloud.js?v=soft-light-badges-20261014';
+import { resetCloudState, cloudChanged } from './storage.js?v=soft-light-badges-20261014';
+import { monthSummary } from './calendar.js?v=soft-light-badges-20261014';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=soft-light-badges-20261014';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=soft-light-badges-20261014';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -107,9 +107,9 @@ function render() {
     return;
   }
   const title = view === 'backtest' ? 'Backtesting lab' : view === 'gallery' ? 'Chart Library' : 'Trading journal';
-  $('#heading').textContent = title;
+  $('#heading').innerHTML = view === 'live' ? 'Every trade. <span class="heading-accent">One journal.</span>' : escape(title);
   $('#breadcrumb').textContent = title;
-  $('#subtitle').textContent = view === 'backtest' ? 'Test your setups. Keep the evidence.' : view === 'gallery' ? 'Your chart archive. Filter a pair, revisit a setup, and review the trade behind it.' : 'Every trade, its reasoning, and what comes next.';
+  $('#subtitle').textContent = view === 'backtest' ? 'BACKTEST WORKSPACE' : view === 'gallery' ? 'CHART ARCHIVE' : ['LIVE JOURNAL', database.settings.account?.broker === 'Other' ? database.settings.account?.brokerCustom : database.settings.account?.broker, database.settings.account?.platform].filter(Boolean).join(' · ');
   $('#new-entry').textContent = view === 'backtest' ? '+ New backtest' : '+ New trade';
   document.querySelectorAll('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === view));
   const currentPair = $('#pair-filter').value || 'All pairs';
@@ -140,7 +140,7 @@ function render() {
     $('#pair-chips').innerHTML = `<div class="gallery-kind-filter" role="group" aria-label="Chart entry type">${[['all','All charts'],['live','Live only'],['backtest','Backtest only']].map(([kind,label])=>`<button type="button" data-gallery-kind="${kind}" aria-pressed="${galleryKind===kind}" class="pair-chip ${galleryKind===kind?'selected':''}">${fieldIcon('kind',kind)}${label}</button>`).join('')}</div>` + ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${fieldIcon('pair',pair==='All pairs'?'':pair)}${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
     const cards = selected.flatMap(entry => entry.images.map(image => {
       const pnl = net(entry);
-      return `<article class="chart-card"><button type="button" class="chart-art" data-image="${escape(image.id)}" data-image-name="${escape(image.name)}" aria-label="View ${escape(entry.pair + ' ' + image.name)}"><img loading="lazy" src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><span class="chart-kind">${entry.kind === 'backtest' ? 'BACKTEST' : 'LIVE'}</span></button><div class="chart-copy"><div class="chart-title"><strong class="icon-label">${fieldIcon('pair',entry.pair)}${escape(entry.pair)}</strong><span class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${pnl === null ? 'Open' : escape(money(pnl))}</span></div><p>${escape(entry.setup || 'No setup')} · ${escape(entry.entryTime.replace('T', ' '))}</p><p class="chart-note">${escape(entry.notes || image.name)}</p><div class="chart-tags"><span>${fieldIcon('direction',entry.direction)}${escape(entry.direction)}</span><span>${fieldIcon('session',entry.session)}${escape(entry.session || 'No session')}</span><button type="button" data-entry="${escape(entry.id)}">Review trade ↗</button></div></div></article>`;
+      return `<article class="chart-card"><button type="button" class="chart-art" data-image="${escape(image.id)}" data-image-name="${escape(image.name)}" aria-label="View ${escape(entry.pair + ' ' + image.name)}"><img loading="lazy" src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><span class="chart-kind">${fieldIcon('kind',entry.kind)}${entry.kind === 'backtest' ? 'Backtest' : 'Live'}</span></button><div class="chart-copy"><div class="chart-title"><strong class="icon-label">${fieldIcon('pair',entry.pair)}${escape(entry.pair)}</strong><span class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${pnl === null ? 'Open' : escape(money(pnl))}</span></div><p>${escape(entry.setup || 'No setup')} · ${escape(entry.entryTime.replace('T', ' '))}</p><p class="chart-note">${escape(entry.notes || image.name)}</p><div class="chart-tags"><span>${fieldIcon('direction',entry.direction)}${escape(entry.direction)}</span><span>${fieldIcon('session',entry.session)}${escape(entry.session || 'No session')}</span><button type="button" data-entry="${escape(entry.id)}">Review trade ↗</button></div></div></article>`;
     }));
     $('#records-title').textContent = `Screenshots (${cards.length})`;
     $('#entries').innerHTML = `<div class="gallery">${cards.join('') || '<div class="empty"><h3>No charts for this selection</h3><p>Select another pair or attach screenshots to a trade or backtest.</p><button class="secondary" data-new-entry>Add a trade with charts</button></div>'}</div>`;
@@ -185,7 +185,7 @@ function renderCalendar(entries) {
   const signed = value => `${value > 0 ? '+' : ''}${money(value)}`;
   const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Week total'];
   const cells = summary.weeks.map((week, i) => week.cells.map(day => day ? `<button class="calendar-day ${day.entries.length ? (day.pnl > 0 ? 'profit-day' : day.pnl < 0 ? 'loss-day' : 'flat-day') : ''}" data-calendar-day="${day.date}" aria-label="${day.date}, ${escape(signed(day.pnl))}, ${day.entries.length} closed trades"><span class="day-number">${day.number}</span><strong class="${color(day.pnl)}">${day.entries.length ? escape(signed(day.pnl)) : '—'}</strong><small>${day.entries.length ? `${day.entries.length} trade${day.entries.length === 1 ? '' : 's'}` : 'No closed trades'}</small></button>` : '<div class="calendar-blank" aria-hidden="true"></div>').join('') + `<div class="calendar-week"><span>Week ${i + 1}</span><strong class="${color(week.pnl)}">${escape(signed(week.pnl))}</strong><small>${week.count} trades</small></div>`).join('');
-  $('#pnl-calendar').innerHTML = `<div class="calendar-heading"><div><h2>P&L calendar</h2><p>Closed ${view === 'backtest' ? 'backtests' : 'trades'} · closing date · ${escape(database.settings.timezone)}</p></div><div class="calendar-nav"><button class="secondary" data-month-step="-1" aria-label="Previous month">‹</button><strong aria-live="polite">${title}</strong><button class="secondary" data-month-step="1" aria-label="Next month">›</button><button class="secondary" data-calendar-today>This month</button></div></div><div class="calendar-total"><span>Monthly net P&L <strong class="${color(summary.pnl)}">${escape(signed(summary.pnl))}</strong></span><span>${summary.count} closed trades</span></div><div class="calendar-scroll"><div class="calendar-grid">${weekdays.map(day => `<div class="weekday">${day}</div>`).join('')}${cells}</div></div><p class="helper">Click a day to review its trades. Weekly totals include only days within this month. Open trades are excluded.</p>`;
+  $('#pnl-calendar').innerHTML = `<div class="calendar-heading"><div><h2>P&L calendar</h2><p>Closed ${view === 'backtest' ? 'backtests' : 'trades'} · closing date · ${escape(database.settings.timezone)}</p></div><div class="calendar-nav"><button class="secondary" data-month-step="-1" aria-label="Previous month">‹</button><strong aria-live="polite">${title}</strong><button class="secondary" data-month-step="1" aria-label="Next month">›</button><button class="secondary" data-calendar-today>This month</button></div></div><div class="calendar-total"><span>Monthly net P&L <strong class="${color(summary.pnl)}">${escape(signed(summary.pnl))}</strong></span><span>${summary.count} closed trades</span></div><div class="calendar-scroll"><div class="calendar-grid">${weekdays.map(day => `<div class="weekday">${day}</div>`).join('')}${cells}</div></div>`;
 }
 
 function renderCurve(entries) {
@@ -615,7 +615,7 @@ function ruleCockpit(){
  const day=journalNow(database.settings.timezone).slice(0,10),routine=ruleRoutine(database,day),s=routine.state;
  const bar=(v,max)=>max?Math.min(100,Math.max(0,v/max*100)):0;
  const tiles=[['Entries today',`${s.entries}${s.limit?' / '+s.limit:''}`,s.limit?`${s.remaining} remaining`:'Set an entry limit in your plan',bar(s.entries,s.limit)],['Daily target',money(s.pnl),s.target?`Target ${money(s.target)}`:'No profit target set',bar(s.pnl,s.target)],['Loss allowance',money(Math.max(0,-s.pnl)),s.lossLimit?`Limit ${money(s.lossLimit)}`:'No daily loss limit set',bar(-s.pnl,s.lossLimit)],['Reported rule adherence',routine.reported?`${Math.round(routine.followed/routine.reported*100)}%`:'—',`${routine.followed} Yes / ${routine.reported} reported · ${routine.unreported} unreported`,routine.reported?routine.followed/routine.reported*100:0]];
- return `<section class="rules-cockpit"><div class="routine-card-heading"><div><span class="plan-kicker">TODAY’S ROUTINE · ${escape(day)}</span><h2>Today’s progress</h2></div><span class="routine-status">${routine.warnings.length?'Pause & review':'Review your plan'}</span></div><div class="routine-metrics">${tiles.map(([title,value,detail,progress])=>`<div class="routine-tile"><span>${title}</span><strong>${escape(value)}</strong><small>${escape(detail)}</small><div class="check-progress-track"><span style="width:${progress}%"></span></div></div>`).join('')}</div>${routine.warnings.length?`<div class="routine-alert">${routine.warnings.map(w=>`<span>${escape(w)}</span>`).join('')}</div>`:''}<div class="routine-flow"><span>Check your plan before every entry.</span><button class="secondary" type="button" data-routine-trade>New trade ↗</button></div><p class="helper">Based on logged trades and self-reported rule checks.</p></section>`;
+ return `<section class="rules-cockpit"><div class="routine-card-heading"><div><span class="plan-kicker">TODAY’S ROUTINE · ${escape(day)}</span><h2>Today’s progress</h2></div><span class="routine-status">${routine.warnings.length?'Pause & review':'Review your plan'}</span></div><div class="routine-metrics">${tiles.map(([title,value,detail,progress])=>`<div class="routine-tile"><span>${title}</span><strong class="${title==='Daily target'?(s.pnl<0?'negative':s.pnl>0?'positive':''):title==='Loss allowance'&&s.pnl<0?'positive':''}">${escape(value)}</strong><small>${escape(detail)}</small><div class="check-progress-track"><span style="width:${progress}%"></span></div></div>`).join('')}</div>${routine.warnings.length?`<div class="routine-alert">${routine.warnings.map(w=>`<span>${escape(w)}</span>`).join('')}</div>`:''}<div class="routine-flow"><span>Check your plan before every entry.</span><button class="secondary" type="button" data-routine-trade>New trade ↗</button></div><p class="helper">Based on logged trades and self-reported rule checks.</p></section>`;
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-routine-trade]')){document.querySelector('[data-view="live"]').click();openEntry();}});
 

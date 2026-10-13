@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=spacing-readability-20261014';
-import { validateRoadmap } from './roadmap.js?v=spacing-readability-20261014';
-import { validateAnnotations } from './annotations.js?v=spacing-readability-20261014';
-import { defaultSettings } from './model.js?v=spacing-readability-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=spacing-readability-20261014';
+import {prepareBatch} from './insights.js?v=soft-light-badges-20261014';
+import { validateRoadmap } from './roadmap.js?v=soft-light-badges-20261014';
+import { validateAnnotations } from './annotations.js?v=soft-light-badges-20261014';
+import { defaultSettings } from './model.js?v=soft-light-badges-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=soft-light-badges-20261014';
 
-import { backend, signedUser } from './cloud.js?v=spacing-readability-20261014';
+import { backend, signedUser } from './cloud.js?v=soft-light-badges-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

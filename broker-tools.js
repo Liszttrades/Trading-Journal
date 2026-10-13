@@ -2,7 +2,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 export function brokerFields(account={}){
  const brokers=['Vantage','IC Markets','Pepperstone','Exness','XM','OANDA','FP Markets','Eightcap','Other'];
  const select=(label,name,items,value)=>`<label>${label}<select name="${name}"><option value="">Choose ${label.toLowerCase()}</option>${items.map(v=>`<option ${v===value?'selected':''}>${esc(v)}</option>`).join('')}</select></label>`;
- return `<div class="broker-profile form-grid">${select('Broker','broker',brokers,account.broker)}${select('Platform','platform',['MT5','MT4','cTrader','TradingView','Other'],account.platform)}<label>Other broker name<input name="brokerCustom" maxlength="80" value="${esc(account.brokerCustom)}" placeholder="If yours is not listed"></label><label>Account leverage · 1:<input type="number" name="accountLeverage" min="1" step="any" value="${esc(account.accountLeverage??'')}" placeholder="e.g. 2000"></label></div><p class="helper">Broker = your account provider. MT5 = your trading platform. Leverage is separate from lot size.</p>`;
+ return `<div class="broker-profile form-grid">${select('Broker','broker',brokers,account.broker)}${select('Platform','platform',['MT5','MT4','cTrader','TradingView','Other'],account.platform)}<label>Other broker name<input name="brokerCustom" maxlength="80" value="${esc(account.brokerCustom)}" placeholder="If yours is not listed"></label><label>Account leverage · 1:<input type="number" name="accountLeverage" min="1" step="any" value="${esc(account.accountLeverage??'')}" placeholder="e.g. 2000"></label></div><p class="helper">Leverage and lot size are different.</p>`;
 }
 export function tradeOutcome({equity,quantity,entry,stop,target,multiplier,fxRate,fees}){
  const values={equity,quantity,entry,stop,target,multiplier,fxRate,fees};
@@ -14,4 +14,11 @@ export function tradeOutcome({equity,quantity,entry,stop,target,multiplier,fxRat
  const loss=Math.abs(entry-stop)*quantity*multiplier*fxRate+fees;
  const profit=Math.abs(target-entry)*quantity*multiplier*fxRate-fees;
  return {direction,loss,profit,percent:loss/equity*100,rewardRisk:profit/loss,afterLoss:equity-loss,afterWin:equity+profit};
+}
+
+export function accountGuidance(account={}){
+ const platform=account.platform&&account.platform!=='Other'?account.platform:'your trading platform';
+ const broker=account.broker==='Other'?account.brokerCustom:account.broker;
+ const provider=broker?` for ${broker}`:'';
+ return {intro:`Enter the volume and prices you plan to use in ${platform}${provider}.`,volume:`Use the volume shown in ${platform}. Convert it to lots if your order uses units.`,contract:`Check the symbol’s contract size in ${platform}${provider}. Enter units per lot; do not use leverage as contract size.`};
 }

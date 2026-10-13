@@ -1,4 +1,4 @@
-import { net, risk } from './model.js?v=spacing-readability-20261014';
+import { net, risk } from './model.js?v=soft-light-badges-20261014';
 export const defaultRules = { notes: '', dailyMoney: null, dailyR: null, maxEntries: null };
 export function ruleFlags(entries, limit = null) {
   const counts = new Map();

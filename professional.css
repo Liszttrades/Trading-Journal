@@ -228,3 +228,25 @@ html body .calendar-panel small,html body .calendar-heading p{font-size:12px}
 @media(max-width:1100px){html body .routine-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:850px){html body #rules-panel .plan-columns{grid-template-columns:1fr}html body .risk-layout{grid-template-columns:1fr}}
 @media(max-width:600px){html body .routine-metrics{grid-template-columns:1fr}html body #rules-panel :is(.plan-card,.rules-cockpit){padding:18px}html body #rules-panel .plan-card .form-grid{grid-template-columns:1fr}}
+
+/* Softer light appearance and clear visual priorities. */
+:root[data-theme=light]{--paper:#eeece6;--surface:#f6f4ee;--surface-2:#e6e3dc;--surface-3:#dcd8cf;--ink:#20211f;--muted:#62645f;--line:#d4d0c6}
+html body .page-heading>div:first-child{display:flex;flex-direction:column;gap:12px;min-width:0}
+html body .page-heading #subtitle{order:-1;margin:0;font-size:12px;font-weight:650;letter-spacing:.065em;color:var(--muted)}
+html body .page-heading h1{font-size:clamp(32px,3.1vw,52px);font-weight:750;letter-spacing:-.05em;line-height:1.12}
+html body .heading-accent{color:var(--accent)}
+html body #daily-status{display:none!important}
+html body .risk-balance{background:transparent!important;background-image:none!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
+html body .risk-balance strong{font-size:34px;font-weight:700;line-height:1.25}
+html body .risk-balance>span{font-size:13px;font-weight:500}
+html body :is(.risk-step h2,.risk-summary h2,.plan-header h2){font-size:22px;font-weight:650;letter-spacing:-.025em}
+html body .risk-step p{font-size:14px;line-height:1.5}
+html body .chart-kind{display:inline-flex;align-items:center;gap:7px;position:absolute;top:12px;left:12px;z-index:2;background:#171b22!important;color:#f5f7fa!important;border:1px solid #ffffff40!important;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:650;line-height:1;box-shadow:0 1px 4px #0003}
+html body .chart-kind svg{width:19px;height:19px;flex:none}
+html[data-theme=light] body .chart-kind svg.semantic-mark g{filter:none}
+html body .chart-kind svg text{fill:#f5f7fa!important;filter:none!important}
+html body .chart-art{position:relative}
+html body .chart-title>span{font-size:15px;font-weight:650}
+html body .positive,html body .positive strong,html body strong.positive,html body b.positive{color:var(--positive)!important}
+html body .negative,html body .negative strong,html body strong.negative,html body b.negative{color:var(--negative)!important}
+@media(max-width:700px){html body .page-heading h1{font-size:32px}html body .page-heading #subtitle{font-size:11px;letter-spacing:.04em}}
