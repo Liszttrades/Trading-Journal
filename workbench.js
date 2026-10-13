@@ -1,9 +1,9 @@
-import {attachAutoConversion} from './exchange-rates.js?v=neutral-default-20261014';
-import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=neutral-default-20261014';
-import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=neutral-default-20261014';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=neutral-default-20261014';
-import {validateTrade} from './validation.js?v=neutral-default-20261014';
-import {journalNow} from './model.js?v=neutral-default-20261014';
+import {attachAutoConversion} from './exchange-rates.js?v=slate-copper-20261014';
+import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=slate-copper-20261014';
+import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=slate-copper-20261014';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=slate-copper-20261014';
+import {validateTrade} from './validation.js?v=slate-copper-20261014';
+import {journalNow} from './model.js?v=slate-copper-20261014';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 const moneyTone=v=>v<0?'negative':v>0?'positive':'';
