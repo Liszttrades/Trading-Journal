@@ -1652,3 +1652,6 @@ input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-ou
 .quote-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:#aaa}.quote-heading strong{color:#eee;font-size:22px;font-variant-numeric:tabular-nums}
 #tools-panel .quote-panel details{margin-top:16px;padding:12px}.quote-panel label{margin-top:12px!important}.quote-panel a{font-size:12px;color:#ccc}.quote-panel summary{font-size:12px;cursor:pointer}
 #tools-panel .risk-broker .contract-template button{margin:12px 0 0}#tools-panel #my-lot-result{font-size:12px;line-height:1.7}#tools-panel #my-lots{margin-top:8px}#tools-panel .risk-explainer>label{margin-top:16px}
+#tools-panel #risk-calculator .form-grid + label{margin-top:20px}
+.outcome-tile{padding:18px 0;border-bottom:1px solid #333;display:grid;gap:8px}.outcome-tile>span,.outcome-tile>small{font-size:12px;color:#aaa}.outcome-tile strong{font-size:30px;letter-spacing:-.035em}
+#tools-panel .risk-summary .risk-answer>p{margin:18px 0}

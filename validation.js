@@ -1,4 +1,4 @@
-import { net } from './model.js?v=broker-feed-20261013';
+import { net } from './model.js?v=simple-risk-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }

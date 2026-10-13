@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=broker-feed-20261013';
-import { validateRoadmap } from './roadmap.js?v=broker-feed-20261013';
-import { validateAnnotations } from './annotations.js?v=broker-feed-20261013';
-import { defaultSettings } from './model.js?v=broker-feed-20261013';
-import { validateTrade, validateSettings } from './validation.js?v=broker-feed-20261013';
+import {prepareBatch} from './insights.js?v=simple-risk-20261013';
+import { validateRoadmap } from './roadmap.js?v=simple-risk-20261013';
+import { validateAnnotations } from './annotations.js?v=simple-risk-20261013';
+import { defaultSettings } from './model.js?v=simple-risk-20261013';
+import { validateTrade, validateSettings } from './validation.js?v=simple-risk-20261013';
 
-import { backend, signedUser } from './cloud.js?v=broker-feed-20261013';
+import { backend, signedUser } from './cloud.js?v=simple-risk-20261013';
 let snapshot = null;
 let revision = 0;
 let owner = null;

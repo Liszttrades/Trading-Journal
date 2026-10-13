@@ -1,4 +1,4 @@
-import {net} from './model.js?v=broker-feed-20261013';
+import {net} from './model.js?v=simple-risk-20261013';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[

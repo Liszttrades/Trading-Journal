@@ -1,21 +1,15 @@
-BROKER SETUP, LOT CHECK & PRICE FEED
+SIMPLE MANUAL RISK CALCULATOR
 
-Upload ALL extracted files including broker-tools.js to your existing GitHub repository root. Replace matching files, keep config.js. No SQL migration. Wait for Pages deployment, then hard refresh.
+Upload all extracted files to the root of your GitHub repository, replacing the matching files. Keep config.js. No SQL changes needed. After Pages deploys, hard refresh.
 
-SETUP
-1. Account & risk: choose Vantage as Broker and MT5 as Platform. Enter 2000 for your reported 1:2000 account leverage, then Save account. Common brokers are listed, plus Other and a custom name; this is not an exhaustive or recommended-broker directory.
-2. Choose XAUUSD, then Use Vantage gold template. It fills 100 contract units and 0.01 lot steps. Confirm against your own MT5 Specification; contract settings vary by product/account/entity. Other brokers and symbols use manual specifications.
-3. Enter prices, equity, risk, conversion and fees. Use Check my own lot size for 0.04 lots. Contract units and lot increment are NOT your actual lot size. This check reports loss and limit warnings; it does not change your saved limits.
-4. Leverage is used only for the labeled simple margin estimate, not stop-loss risk. Symbol-specific leverage tiers can differ from account leverage. Check actual required margin with your broker.
+The price-feed UI and WebSocket code are removed. No API key is needed.
 
-STREAMING PRICES
-Open Connect price feed and enter your own Twelve Data API key with WebSocket entitlement for your symbol. Symbols map XAUUSD -> XAU/USD, BTCUSD -> BTC/USD, EURUSD -> EUR/USD. Custom symbols can be edited. Bare ZEC needs a provider-supported quoted symbol such as ZEC/USD if available on your plan.
-Connect, then use Use as entry price after a quote arrives. Subsequent ticks never replace your entry automatically. The feed displays source and timestamp; quotes older than 120 seconds cannot be copied. Closed markets or unavailable subscriptions may produce no ticks. Changing pair clears prices and contract size/conversion to avoid mixing symbols.
-Key stays only in the page's password field and is sent directly to Twelve Data; never put it in config.js or GitHub. Disconnect clears it. No shared key or subscription is included. Availability/coverage/rights depend on the provider plan. This is a reference feed, not a Vantage bid/ask execution feed.
+Enter account balance, lot size, pair, entry, stop loss, take profit and estimated fees. The calculator shows potential stop-loss amount, account-risk percentage, target profit, risk/reward and hypothetical resulting balances. It infers Buy when stop is below entry and Sell when stop is above. Targets must be on the profitable side.
 
-Sources:
-https://www.vantagemarkets.com/media/vantage-xauusd-trading-conditions-geo/
-https://support.twelvedata.com/en/articles/5620516-how-to-stream-the-data
+Gold uses a visible 100-ounce-per-lot template; verify Contract settings against your broker. Other symbols need their contract size. Currency conversion must match the quoted price currency and account currency. Leverage does not change price-move risk for the same lot size.
 
-VALIDATION
-JavaScript syntax, local imports, lot-loss and margin arithmetic, symbol mapping, and broker settings validation passed. Signed-in UI and an authenticated live subscription have not been tested here.
+The USD example button uses balance 100, 0.01 lots, entry 4188, stop 4170, target 4220, 100 units/lot and no fees. It gives $18 loss and $32 profit. At 0.04 lots, these become $72 and $128. The example does not save account changes or place a trade.
+
+Saved rules generate warnings rather than changing the lot size you enter. Use in new trade transfers the plan to the entry form; take profit is preserved in the trade notes.
+
+Arithmetic, direction/target checks, fees, invalid values, JS syntax and imports passed. The signed-in layout remains unverified.
