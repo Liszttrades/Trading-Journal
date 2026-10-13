@@ -250,3 +250,25 @@ html body .chart-title>span{font-size:15px;font-weight:650}
 html body .positive,html body .positive strong,html body strong.positive,html body b.positive{color:var(--positive)!important}
 html body .negative,html body .negative strong,html body strong.negative,html body b.negative{color:var(--negative)!important}
 @media(max-width:700px){html body .page-heading h1{font-size:32px}html body .page-heading #subtitle{font-size:11px;letter-spacing:.04em}}
+
+/* Tennis palette: green primary, blue secondary, yellow and clay accents. */
+:root[data-theme=light]{--paper:#f5f5f5;--surface:#fafaf8;--surface-2:#eeefeb;--surface-3:#e0e4de;--line:#d3d9d3;--positive:#115b3b;--positive-soft:#e5f0e9;--negative:#b52e3b;--negative-soft:#f8e8e9}
+:root[data-accent=tennis]{--accent:#115b3b;--accent-soft:#e1eee6;--on-accent:#fff;--secondary:#0e4c92;--energy:#cde43a;--clay:#e67e51;--clay-soft:#f7e7dc;--clay-ink:#813818}
+:root[data-theme=dark][data-accent=tennis]{--accent:#79cda4;--accent-soft:#173c2c;--on-accent:#10271a;--secondary:#8cbdff;--clay-soft:#40281f;--clay-ink:#f1a27d}
+html body .tag.long{background:var(--positive-soft)!important;color:var(--positive)!important;border-color:color-mix(in srgb,var(--positive) 40%,var(--line))!important;font-weight:650}
+html body .tag.short{background:var(--negative-soft)!important;color:var(--negative)!important;border-color:color-mix(in srgb,var(--negative) 40%,var(--line))!important;font-weight:650}
+html body .tag.long svg.semantic-mark g{stroke:var(--positive)!important;filter:none!important}
+html body .tag.short svg.semantic-mark g{stroke:var(--negative)!important;filter:none!important}
+html body .tag.long svg.semantic-mark rect{fill:var(--positive);stroke:var(--positive)}
+html body .tag.short svg.semantic-mark rect{fill:var(--negative);stroke:var(--negative)}
+html[data-accent=tennis] body button.primary{background:var(--accent)!important;color:var(--on-accent)!important;border-color:var(--accent)!important}
+html[data-accent=tennis] body button.primary:hover{background:var(--accent)!important}
+html[data-accent=tennis] body .appearance-launch,html[data-accent=tennis] body .review-link{color:var(--secondary)!important}
+html[data-accent=tennis] body .routine-alert{background:var(--clay-soft);border-color:var(--clay)}
+html[data-accent=tennis] body .routine-alert>span{color:var(--clay-ink)}
+html[data-accent=tennis] body .check-progress-track>span{background:var(--energy)}
+html[data-accent=tennis] body .risk-meter span{background:var(--accent)}
+html[data-accent=tennis] body .win-rate-track>span{background:var(--secondary)}
+html[data-accent=tennis] body .page-heading #subtitle::before{content:"";display:inline-block;width:8px;height:8px;background:var(--clay);border-radius:2px;margin-right:9px}
+.swatch-tennis{background:linear-gradient(135deg,#115b3b 50%,#0e4c92 50%)}
+.appearance-accents{grid-template-columns:repeat(5,minmax(0,1fr))}

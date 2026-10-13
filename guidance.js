@@ -1,4 +1,4 @@
-import {net} from './model.js?v=soft-light-badges-20261014';
+import {net} from './model.js?v=tennis-contrast-20261014';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[
