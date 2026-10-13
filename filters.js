@@ -1,5 +1,5 @@
-import {fieldIcon} from './entry-menus.js?v=workspace-icons-20261013';
-import {journalNow} from './model.js?v=workspace-icons-20261013';
+import {fieldIcon} from './entry-menus.js?v=professional-themes-20261013';
+import {journalNow} from './model.js?v=professional-themes-20261013';
 const chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
 const check='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
 const controls=new Map();

@@ -1,9 +1,1 @@
-WORKSPACE ICONS & CHART TYPE FILTER
-
-Upload all extracted files to your repository root, replacing matching files. Keep config.js. No SQL changes. Wait for Pages deployment and hard refresh.
-
-Adds matching colored vector badges for setup, session, entry type, direction, mood, outcome, status and rule choices. Shared icons appear in filters, journal pairs/directions, performance breakdown and chart pair chips/cards. Custom choices retain category icons.
-
-Chart Library now has All charts / Live only / Backtest only. This combines with existing pair, search, date, setup, session and outcome filters. Reset returns to all types. Journal and backtest workspaces retain their own entry types.
-
-JavaScript syntax/import checks and combined type/pair/setup filter checks passed. Signed-in browser appearance remains unverified.
+Upload all website files in this ZIP to your existing Trading-Journal repository, replacing matching files. Keep your existing config.js; it is intentionally excluded. No SQL changes needed. After publishing, hard-refresh the page. Appearance in the top bar (also on sign-in) offers System, Light, Dark and Blue, Graphite, Sage, Plum accents. Preferences are saved in this browser. Existing journal data is unchanged. JavaScript syntax verified; signed-in browser visual testing was not available.

@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=workspace-icons-20261013';
-import { validateRoadmap } from './roadmap.js?v=workspace-icons-20261013';
-import { validateAnnotations } from './annotations.js?v=workspace-icons-20261013';
-import { defaultSettings } from './model.js?v=workspace-icons-20261013';
-import { validateTrade, validateSettings } from './validation.js?v=workspace-icons-20261013';
+import {prepareBatch} from './insights.js?v=professional-themes-20261013';
+import { validateRoadmap } from './roadmap.js?v=professional-themes-20261013';
+import { validateAnnotations } from './annotations.js?v=professional-themes-20261013';
+import { defaultSettings } from './model.js?v=professional-themes-20261013';
+import { validateTrade, validateSettings } from './validation.js?v=professional-themes-20261013';
 
-import { backend, signedUser } from './cloud.js?v=workspace-icons-20261013';
+import { backend, signedUser } from './cloud.js?v=professional-themes-20261013';
 let snapshot = null;
 let revision = 0;
 let owner = null;

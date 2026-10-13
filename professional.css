@@ -1,0 +1,91 @@
+/* A single surface, typography and interaction system. */
+:root{--paper:#f5f5f7;--surface:#fff;--surface-2:#f0f0f3;--surface-3:#e6e6eb;--ink:#202124;--muted:#64666e;--line:#dedee4;--accent:#1267c4;--accent-soft:#e5effc;--on-accent:#fff;--positive:#267349;--negative:#b63e45;--positive-soft:#edf6f0;--negative-soft:#fcf0f0;--shadow:0 8px 36px #18203014}
+:root[data-theme=dark]{--paper:#19191b;--surface:#232326;--surface-2:#2b2b2e;--surface-3:#37373b;--ink:#f1f1f3;--muted:#a9a9b1;--line:#3c3c41;--accent:#82b7f5;--accent-soft:#263a52;--on-accent:#101b2a;--positive:#8bcaa5;--negative:#f1a0a4;--positive-soft:#25382c;--negative-soft:#412b2f;--shadow:0 8px 36px #0003}
+:root[data-accent=graphite]{--accent:#535760;--accent-soft:#e9e9ed;--on-accent:#fff}:root[data-theme=dark][data-accent=graphite]{--accent:#c5c8d0;--accent-soft:#383a40;--on-accent:#202124}
+:root[data-accent=sage]{--accent:#426a58;--accent-soft:#e6f0e9;--on-accent:#fff}:root[data-theme=dark][data-accent=sage]{--accent:#a1c5ae;--accent-soft:#2c3d33;--on-accent:#16291d}
+:root[data-accent=plum]{--accent:#785784;--accent-soft:#f1eaf4;--on-accent:#fff}:root[data-theme=dark][data-accent=plum]{--accent:#cfaddb;--accent-soft:#3b3042;--on-accent:#291a30}
+html body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+html body :is(h1,h2,h3,h4,strong,label,summary){color:var(--ink)}
+html body :is(.helper,.subtext,.fx-status,.nav-group-title,.metric small,.page-heading p,.section-heading>span,.chart-note,.chart-copy>p,.breakdown-note){color:var(--muted)}
+html body .workspace{background:var(--paper);grid-template-columns:224px minmax(0,1fr)}
+html body #journal-workspace>aside{background:var(--surface-2);border-right:1px solid var(--line);padding:24px 14px;box-shadow:none}
+html body #journal-workspace>main{background:var(--paper);border:0;margin:0;border-radius:0}
+html body .brand{font-family:inherit;font-size:17px;font-weight:650;letter-spacing:-.035em;border:0;padding:0 10px 22px;color:var(--ink)}
+html body .brand-icon,html body .brand small{display:none}
+html body .nav-group-title{font-size:10px;letter-spacing:.04em;text-transform:none;padding:14px 12px 4px}
+html body nav button{color:var(--muted);border:0;box-shadow:none;padding:10px 12px;font-size:13px;border-radius:8px;background:transparent;transform:none}
+html body nav button .nav-icon{color:inherit;width:18px;height:18px}
+html body nav button:hover{background:var(--surface-3);color:var(--ink);transform:none}
+html body nav button.active{background:var(--accent-soft);color:var(--accent);border:0;box-shadow:none}
+html body nav button.active::before{display:none}
+html body .sidebar-bottom{color:var(--muted);border-color:var(--line)}
+html body .topbar{background:var(--paper);border-bottom:1px solid var(--line);min-height:58px;padding:0 32px;color:var(--muted);display:flex;justify-content:space-between;gap:16px}
+.topbar-actions{display:flex;gap:18px;align-items:center}
+html body .page,html body.gallery-view .page{max-width:1440px!important;padding:32px clamp(20px,3vw,44px) 48px;margin:auto}
+html body .page-heading{margin-bottom:24px;align-items:center}
+html body .page-heading h1{font-size:28px;letter-spacing:-.045em;font-weight:650;line-height:1.25}
+html body .page-heading .eyebrow,html body .filter-bar-title span,html body .risk-eyebrow{display:none}
+html body .page-heading p{font-size:13px;line-height:1.5;margin-top:7px}
+html body :is(.metric,.chart-panel,.calendar-panel,.plan-card,.rules-cockpit,.chart-card,.journal-filters,.auth-card,.routine-tile){background:var(--surface)!important;background-image:none!important;border:1px solid var(--line)!important;box-shadow:none!important;border-radius:12px}
+html body :is(.metric,.chart-card,.calendar-day):hover{transform:none;box-shadow:none;border-color:var(--line)}
+html body .metric::after{display:none}
+html body .metrics{gap:0;border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+html body .metrics .metric{border:0!important;border-right:1px solid var(--line)!important;border-radius:0;min-height:120px;padding:20px 24px}
+html body .metrics .metric:last-child{border-right:0!important}
+html body .metric>span{font-size:12px;letter-spacing:0;text-transform:none;color:var(--muted)}
+html body .metric strong{font-size:26px;letter-spacing:-.045em;font-weight:600;line-height:1.35}
+html body .metric small{font-size:11px}
+html body #advanced-metrics .metric{min-height:100px;padding:16px 20px}
+html body #advanced-metrics strong{font-size:20px}
+html body :is(.chart-panel,.calendar-panel,.plan-card,.rules-cockpit){padding:24px}
+html body :is(.section-heading h2,.calendar-heading h2,.plan-card h2){font-size:17px;font-weight:600;letter-spacing:-.025em}
+html body .analytics-scope{background:transparent;border:0;padding:0 0 12px;color:var(--muted);font-size:11px}
+html body :is(button,input,textarea,select){font-family:inherit}
+html body :is(input,textarea,select,.filter-select-trigger,.entry-select-trigger){color:var(--ink)!important;background:var(--surface)!important;border:1px solid var(--line)!important;border-radius:8px!important;box-shadow:none!important;font-size:13px}
+html body :is(input,select){min-height:40px}html body input[type=checkbox]{min-height:0;accent-color:var(--accent)}
+html body input::placeholder,html body textarea::placeholder{color:var(--muted);opacity:.8}
+html body :is(button.secondary,.pair-chip,.tag,.chart-tags>span,.chart-tags>button){background:var(--surface-2);border:1px solid var(--line);color:var(--ink);border-radius:8px;box-shadow:none}
+html body button.primary{background:var(--accent);color:var(--on-accent);border-color:transparent;border-radius:8px;box-shadow:none;font-size:13px;font-weight:600;padding:10px 16px}
+html body button.primary:hover:not(:disabled){background:var(--accent);filter:brightness(.95);box-shadow:none}
+html body button:disabled{opacity:.45}
+html body :is(.filter-menu,.entry-select-menu,dialog){background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:12px}
+html body :is(.filter-menu,.entry-select-menu) button{background:transparent;color:var(--ink);border:0}
+html body :is(.filter-menu,.entry-select-menu) button:hover,html body :is(.filter-menu,.entry-select-menu) button:focus{background:var(--surface-2);color:var(--ink)}
+html body :is(.filter-menu,.entry-select-menu) button[aria-selected=true]{background:var(--accent-soft);color:var(--accent)}
+html body :is(.filter-menu,.entry-select-menu) small{color:var(--muted)}
+html body :is(.entry-menu-field,.filter-select-trigger,.entry-select-trigger){color:var(--ink)}
+html body :is(.pair-chip.selected,.breakdown-tabs button[aria-selected=true]){background:var(--accent-soft);color:var(--accent);border-color:transparent}
+html body :is(table,th,td,.gallery-kind-filter,.breakdown-tabs,.risk-limit-list,.outcome-tile){border-color:var(--line)}
+html body th{background:var(--surface-2);color:var(--muted);font-weight:500;font-size:11px;text-transform:none;letter-spacing:0}
+html body td{color:var(--ink);padding-top:16px;padding-bottom:16px}
+html body tr:hover td{background:var(--surface-2)}
+html body .trade-link{color:var(--ink);font-weight:600}
+html body .trade-link small{color:var(--muted);font-weight:400}
+html body .table-scroll{border:1px solid var(--line);border-radius:10px}
+html body .journal-filters{padding:16px 20px;margin-bottom:24px}
+html body .filter-bar-heading{margin-bottom:12px}
+html body :is(.filter-icon,.breakdown-icon){background:var(--surface-2);color:var(--muted);border-color:var(--line)}
+html body :is(.breakdown-overview,.breakdown-insight,.daily-monitor,.risk-budget-preview,.risk-balance,.scalp-day-panel,.checklist-row){background:var(--surface-2);border-color:var(--line);color:var(--ink);box-shadow:none}
+html body :is(.risk-summary,#tools-panel .risk-hero){background:var(--surface)!important}
+html body .risk-hero h2{font-size:22px!important}
+html body .risk-hero p,html body .risk-step p,html body .risk-summary p{color:var(--muted)}
+html body details{background:transparent;border-color:var(--line);border-radius:8px}
+html body .calendar-day{background:var(--surface);border-color:var(--line);color:var(--ink);border-radius:8px}
+html body .calendar-day.win{background:var(--positive-soft)}html body .calendar-day.loss{background:var(--negative-soft)}
+html body :is(.positive,.positive strong){color:var(--positive)!important}html body :is(.negative,.negative strong){color:var(--negative)!important}
+html body .warning-pill{background:var(--negative-soft);color:var(--negative);border-color:var(--line)}
+html body .chart-line{stroke:var(--accent)}html body .chart-grid{stroke:var(--line)}html body .chart-label{fill:var(--muted)}
+html body .chart-card{overflow:hidden}.chart-card .chart-copy{padding:16px}
+html body .chart-art{background:#141416}html body .chart-card:hover .chart-art img{transform:none}
+html body svg.provider-mark{width:22px;height:22px;flex-basis:22px}
+html[data-theme=light] svg.provider-mark text,html[data-theme=light] svg.semantic-mark g{filter:brightness(.62)}
+html body :is(.metric,.chart-card,.calendar-day,nav button){transition:background .15s,border-color .15s,color .15s}
+html body :focus-visible{outline:2px solid var(--accent)!important;outline-offset:3px}
+html body #footnote{color:var(--muted);font-size:11px;line-height:1.7;max-width:900px}
+html body .auth-screen{background:var(--paper)}html body .auth-card{max-width:420px;padding:32px}html body .auth-card h1{font-size:27px;letter-spacing:-.04em}
+.appearance-launch{display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:7px 11px;background:var(--surface)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:8px}.auth-appearance{position:absolute;right:24px;top:24px}
+html body #appearance-dialog{width:min(440px,calc(100vw - 32px));padding:24px}.appearance-heading{display:flex;justify-content:space-between;align-items:center;gap:20px}.appearance-heading h2{font-size:20px;margin:0}.appearance-heading button{background:transparent;border:0;color:var(--muted);font-size:25px;padding:0 8px}
+#appearance-dialog>p{font-size:13px;color:var(--muted)}#appearance-dialog fieldset{border:0;margin:24px 0;padding:0}#appearance-dialog legend{font-size:12px;font-weight:600;margin-bottom:10px}.appearance-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.appearance-modes button{display:grid;gap:5px;padding:14px 8px;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:9px;font-size:12px}.appearance-modes button>span{font-size:23px}.appearance-accents{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.appearance-accents button{display:grid;justify-items:center;gap:8px;padding:10px 4px;background:transparent;color:var(--ink);border:1px solid transparent;border-radius:8px;font-size:11px}
+#appearance-dialog button[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}.swatch{width:22px;height:22px;border-radius:50%;border:2px solid #ffffff70}.swatch-blue{background:#1267c4}.swatch-graphite{background:#60636c}.swatch-sage{background:#527d64}.swatch-plum{background:#876493}
+@media(max-width:1000px){html body .workspace{grid-template-columns:200px minmax(0,1fr)}html body .metrics .metric{padding:16px}html body .metric strong{font-size:22px}}
+@media(max-width:700px){html body .workspace{display:block}html body #journal-workspace>aside{position:static;height:auto;max-height:none;padding:16px;border-right:0;border-bottom:1px solid var(--line)}html body .sidebar-primary{display:flex;flex-wrap:wrap;margin-top:0}html body .nav-group-title{display:none}html body .brand{padding-bottom:10px}html body .sidebar-utilities{display:flex;flex-wrap:wrap;padding-top:8px}html body .sidebar-bottom{display:none}html body .topbar{padding:10px 16px;min-height:48px}html body .topbar .private{display:none}html body .page,html body.gallery-view .page{padding:24px 16px}html body .page-heading{align-items:flex-start;flex-wrap:wrap}html body .page-heading h1{font-size:25px}html body .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}html body .metrics .metric{border-bottom:1px solid var(--line)!important;min-height:100px}html body :is(.chart-panel,.calendar-panel,.plan-card,.rules-cockpit){padding:18px}}
