@@ -1,7 +1,7 @@
-CLEAN ACCOUNT & RISK LAYOUT
+PAIR MENU & NUMBER INPUT UPDATE
 
-Upload all extracted website files to your existing GitHub repository root, replacing matching files. Keep your existing config.js (not included). No SQL changes needed. After Pages deploys, hard refresh with Ctrl+Shift+R or Cmd+Shift+R.
+Upload all extracted website files to your existing GitHub repository root, replacing matching files. Keep config.js (not included). No SQL changes needed. After Pages deploys, hard refresh with Ctrl+Shift+R or Cmd+Shift+R.
 
-Changes: aligned input rows and spacing; shorter copy with optional Help & calculation details; corrected oversized results panel; square, flush outer workspace edge; dark-gray navigation sidebar. Existing calculations and previous features are retained.
+Removes number spinner arrows throughout the website. Numeric validation stays in place. Account & risk pair selector now uses a custom dark menu with icons, selected checkmark, keyboard navigation and outside-click dismissal. Changing pair clears the previous sizing result. Previous layout updates are included.
 
-JavaScript syntax and local imports checked. Signed-in browser layout has not been verified here.
+JavaScript syntax and local imports passed. Live browser appearance is not verified here.

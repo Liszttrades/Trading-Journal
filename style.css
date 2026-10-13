@@ -1633,3 +1633,15 @@ button.primary:active:not(:disabled) { transform:translateY(1px); }
 #tools-panel .risk-budget-preview{margin-top:20px}
 .risk-field-guide{font-size:12px;line-height:1.6}.risk-field-guide dt{font-weight:600;color:#dedee3;margin-top:14px}.risk-field-guide dd{margin:4px 0 0;color:#a7a7b1}
 @media(max-width:650px){#tools-panel .plan-card,#tools-panel .risk-hero{padding:20px}#tools-panel .form-grid{grid-template-columns:1fr;gap:16px}}
+
+/* Type numbers directly without native stepper arrows. */
+input[type="number"]{-moz-appearance:textfield;appearance:textfield}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+/* Match the account pair picker to the other custom menus. */
+#tools-panel .entry-menu-field{margin-bottom:20px;font-size:13px;color:#bbb}
+#tools-panel .entry-select button{margin:0}
+#tools-panel .entry-select-trigger{height:44px;background:#111;border-radius:10px}
+#tools-panel .entry-select-menu{max-height:280px}
+#tools-panel .entry-select-menu button{padding:12px}
+#tools-panel .entry-select-menu small{display:none}
+#tools-panel .entry-select-menu button:focus-visible{outline:1px solid #aaa;outline-offset:-2px}
