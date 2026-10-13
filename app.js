@@ -1,25 +1,26 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=daily-fx-icons-20261013';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=daily-fx-icons-20261013';
-import {startWorkspaceMotion} from './motion.js?v=daily-fx-icons-20261013';
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=daily-fx-icons-20261013';
-import {guidanceState} from './guidance.js?v=daily-fx-icons-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=daily-fx-icons-20261013';
-import { createWorkbench } from './workbench.js?v=daily-fx-icons-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=daily-fx-icons-20261013';
-import { createRoadmap } from './roadmap.js?v=daily-fx-icons-20261013';
-import { createChartEditor } from './chart-editor.js?v=daily-fx-icons-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=daily-fx-icons-20261013';
-import { backend } from './cloud.js?v=daily-fx-icons-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=daily-fx-icons-20261013';
-import { monthSummary } from './calendar.js?v=daily-fx-icons-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=daily-fx-icons-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=daily-fx-icons-20261013';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=workspace-icons-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=workspace-icons-20261013';
+import {startWorkspaceMotion} from './motion.js?v=workspace-icons-20261013';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=workspace-icons-20261013';
+import {guidanceState} from './guidance.js?v=workspace-icons-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=workspace-icons-20261013';
+import { createWorkbench } from './workbench.js?v=workspace-icons-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=workspace-icons-20261013';
+import { createRoadmap } from './roadmap.js?v=workspace-icons-20261013';
+import { createChartEditor } from './chart-editor.js?v=workspace-icons-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=workspace-icons-20261013';
+import { backend } from './cloud.js?v=workspace-icons-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=workspace-icons-20261013';
+import { monthSummary } from './calendar.js?v=workspace-icons-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=workspace-icons-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=workspace-icons-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
 const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 let database = { settings: { pairs: [], currency: 'USD', timezone: 'Asia/Manila' }, entries: [] };
 let view = 'live';
+let galleryKind = 'all';
 let editing = null;
 let files = [];
 let removedImages = [];
@@ -122,10 +123,10 @@ function render() {
   applyDatePreset(database.settings.timezone);
   syncFilterMenus();
   const pairPicker=document.querySelector('.pair-picker');if(pairPicker)pairPicker.hidden=view==='gallery';
-  const activeFilters=['#trade-search','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-range').value!=='all'?1:0) + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0);
+  const activeFilters=['#trade-search','#filter-setup','#filter-session'].filter(id=>$(id).value.trim()).length + ($('#filter-range').value!=='all'?1:0) + ($('#filter-outcome').value!=='all'?1:0) + (currentPair!=='All pairs'?1:0) + (view==='gallery'&&galleryKind!=='all'?1:0);
   $('#filter-state').textContent=activeFilters?`${activeFilters} active filter${activeFilters===1?'':'s'}`:'All trades';
   $('#filter-state').classList.toggle('has-filters',Boolean(activeFilters));
-  const selected = filterEntries(database.entries,{kind:view==='gallery'?'all':view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
+  const selected = filterEntries(database.entries,{kind:view==='gallery'?galleryKind:view,pair:currentPair,search:$('#trade-search').value,from:$('#filter-from').value,to:$('#filter-to').value,setup:$('#filter-setup').value,session:$('#filter-session').value,outcome:$('#filter-outcome').value});
   if (view !== 'gallery') workbench.analytics(selected);
   $('#analytics-scope').textContent=[view==='backtest'?'Backtests':'Live trades',$('#filter-range').selectedOptions[0].textContent,currentPair,$('#filter-setup').value||'All setups',$('#filter-session').value||'All sessions',$('#filter-outcome').selectedOptions[0].textContent,`${selected.length} matching entries`,$('#trade-search').value?`Search: ${$('#trade-search').value}`:''].filter(Boolean).join(' · ');
   $('#performance').hidden = view === 'gallery';
@@ -136,10 +137,10 @@ function render() {
   $('#footnote').textContent = `${database.settings.currency} results. ${conversion?`PHP conversion: 1 ${database.settings.currency} = ${conversion.rate} PHP · ${conversion.date} · Frankfurter daily reference. `:database.settings.currency==='PHP'?'':database.settings.phpRates?.[database.settings.currency]?'PHP conversion uses your saved manual fallback rate. ':'PHP conversion unavailable. '} Times use ${database.settings.timezone}. Private cloud journal.`;
   if (view === 'gallery') {
     const pairs = [...new Set([...database.settings.pairs, ...database.entries.map(entry => entry.pair)])];
-    $('#pair-chips').innerHTML = ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
+    $('#pair-chips').innerHTML = `<div class="gallery-kind-filter" role="group" aria-label="Chart entry type">${[['all','All charts'],['live','Live only'],['backtest','Backtest only']].map(([kind,label])=>`<button type="button" data-gallery-kind="${kind}" aria-pressed="${galleryKind===kind}" class="pair-chip ${galleryKind===kind?'selected':''}">${fieldIcon('kind',kind)}${label}</button>`).join('')}</div>` + ['All pairs', ...pairs].map(pair => `<button type="button" data-pair-filter="${escape(pair)}" class="pair-chip ${pair === currentPair ? 'selected' : ''}" aria-pressed="${pair === currentPair}">${fieldIcon('pair',pair==='All pairs'?'':pair)}${escape(pair === 'All pairs' ? 'All' : pair)}</button>`).join('');
     const cards = selected.flatMap(entry => entry.images.map(image => {
       const pnl = net(entry);
-      return `<article class="chart-card"><button type="button" class="chart-art" data-image="${escape(image.id)}" data-image-name="${escape(image.name)}" aria-label="View ${escape(entry.pair + ' ' + image.name)}"><img loading="lazy" src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><span class="chart-kind">${entry.kind === 'backtest' ? 'BACKTEST' : 'LIVE'}</span></button><div class="chart-copy"><div class="chart-title"><strong>${escape(entry.pair)}</strong><span class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${pnl === null ? 'Open' : escape(money(pnl))}</span></div><p>${escape(entry.setup || 'No setup')} · ${escape(entry.entryTime.replace('T', ' '))}</p><p class="chart-note">${escape(entry.notes || image.name)}</p><div class="chart-tags"><span>${escape(entry.direction)}</span><span>${escape(entry.session || 'No session')}</span><button type="button" data-entry="${escape(entry.id)}">Review trade ↗</button></div></div></article>`;
+      return `<article class="chart-card"><button type="button" class="chart-art" data-image="${escape(image.id)}" data-image-name="${escape(image.name)}" aria-label="View ${escape(entry.pair + ' ' + image.name)}"><img loading="lazy" src="${imageURL(image.id, database)}" alt="${escape(entry.pair + ' ' + image.name)}"><span class="chart-kind">${entry.kind === 'backtest' ? 'BACKTEST' : 'LIVE'}</span></button><div class="chart-copy"><div class="chart-title"><strong class="icon-label">${fieldIcon('pair',entry.pair)}${escape(entry.pair)}</strong><span class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${pnl === null ? 'Open' : escape(money(pnl))}</span></div><p>${escape(entry.setup || 'No setup')} · ${escape(entry.entryTime.replace('T', ' '))}</p><p class="chart-note">${escape(entry.notes || image.name)}</p><div class="chart-tags"><span>${fieldIcon('direction',entry.direction)}${escape(entry.direction)}</span><span>${fieldIcon('session',entry.session)}${escape(entry.session || 'No session')}</span><button type="button" data-entry="${escape(entry.id)}">Review trade ↗</button></div></div></article>`;
     }));
     $('#records-title').textContent = `Screenshots (${cards.length})`;
     $('#entries').innerHTML = `<div class="gallery">${cards.join('') || '<div class="empty"><h3>No charts for this selection</h3><p>Select another pair or attach screenshots to a trade or backtest.</p><button class="secondary" data-new-entry>Add a trade with charts</button></div>'}</div>`;
@@ -170,7 +171,7 @@ function render() {
     const pnl = net(entry);
     const r = risk(entry);
     const result = pnl === null ? '<span class="tag">Open</span>' : escape(money(pnl));
-    return `<tr><td><button class="trade-link" data-entry="${entry.id}">${escape(entry.pair)}<small>${escape(entry.setup || 'No setup')}</small>${flags.get(entry.id)?.overLimit ? '<small class="negative">FOMO · Rule breaker (daily limit)</small>' : ''}</button></td><td><span class="tag ${entry.direction.toLowerCase()}">${entry.direction}</span></td><td>${escape(entry.entryTime.replace('T', ' '))}<small class="subtext">${escape(entry.session || database.settings.timezone)}</small></td><td class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${result}<small class="subtext">${entry.status}</small></td><td>${pnl !== null && r > 0 ? `${(pnl / r).toFixed(2)}R` : '—'}</td><td>${entry.images.length ? `${entry.images.length} attached` : '—'}</td><td><button class="secondary compact" data-entry="${entry.id}">Open</button></td></tr>`;
+    return `<tr><td><button class="trade-link" data-entry="${entry.id}"><span class="icon-label">${fieldIcon('pair',entry.pair)}${escape(entry.pair)}</span><small>${escape(entry.setup || 'No setup')}</small>${flags.get(entry.id)?.overLimit ? '<small class="negative">FOMO · Rule breaker (daily limit)</small>' : ''}</button></td><td><span class="tag ${entry.direction.toLowerCase()}">${fieldIcon('direction',entry.direction)}${entry.direction}</span></td><td>${escape(entry.entryTime.replace('T', ' '))}<small class="subtext">${escape(entry.session || database.settings.timezone)}</small></td><td class="${pnl < 0 ? 'negative' : pnl > 0 ? 'positive' : ''}">${result}<small class="subtext">${entry.status}</small></td><td>${pnl !== null && r > 0 ? `${(pnl / r).toFixed(2)}R` : '—'}</td><td>${entry.images.length ? `${entry.images.length} attached` : '—'}</td><td><button class="secondary compact" data-entry="${entry.id}">Open</button></td></tr>`;
   });
   $('#entries').innerHTML = `<div class="table-scroll"><table><thead><tr>${['Pair / setup', 'Direction', 'Entry time', 'Result', 'R', 'Charts', ''].map(label => `<th>${label}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
 }
@@ -580,7 +581,7 @@ const workbench = createWorkbench({getDB:()=>database,api,reload:load,openTrade:
 for (const selector of ['#filter-range','#filter-setup','#filter-session','#filter-outcome']) $(selector).addEventListener('change',render);
 let searchTimer;
 $('#trade-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(render,180);});
-$('#clear-filters').addEventListener('click',()=>{for(const s of ['#filter-from','#filter-to','#filter-setup','#filter-session','#trade-search']) $(s).value='';$('#filter-outcome').value='all';$('#filter-range').value='all';$('#pair-filter').value='All pairs';render();});
+$('#clear-filters').addEventListener('click',()=>{galleryKind='all';for(const s of ['#filter-from','#filter-to','#filter-setup','#filter-session','#trade-search']) $(s).value='';$('#filter-outcome').value='all';$('#filter-range').value='all';$('#pair-filter').value='All pairs';render();});
 $('#entry-form').addEventListener('input',updateTradeWarnings);
 $('#entry-form').addEventListener('change',updateTradeWarnings);
 function updateTradeWarnings(){
@@ -620,3 +621,5 @@ document.addEventListener('click',e=>{if(e.target.closest('[data-routine-trade]'
 
 // Refresh display-only daily conversions while the journal is open.
 setInterval(async()=>{if(!currentUser||document.hidden)return;await refreshPesoRate(database.settings);if(!document.querySelector('dialog[open]')&&(view==='live'||view==='backtest'||view==='gallery'))render();},3600000);
+
+document.addEventListener('click',event=>{const button=event.target.closest('[data-gallery-kind]');if(button){galleryKind=button.dataset.galleryKind;render();document.querySelector(`[data-gallery-kind="${galleryKind}"]`)?.focus();}});

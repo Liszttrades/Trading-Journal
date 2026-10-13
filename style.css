@@ -1666,3 +1666,11 @@ input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-ou
 .fx-status{display:block;font-size:11px;line-height:1.5;color:#a5a5b0;margin-top:6px}
 #settings-fields .fx-mode{display:flex;flex-direction:row;align-items:center;gap:10px;font-size:12px;padding:12px 0}
 #settings-fields .fx-mode input{width:16px;height:16px;accent-color:#ccc;flex:0 0 16px}
+/* Shared option badges across menus, journal rows, and chart filters. */
+svg.provider-mark{width:26px;height:26px;flex:0 0 26px;vertical-align:middle}
+.filter-select svg.provider-mark{width:26px;height:26px;stroke-width:1}
+.icon-label,.chart-tags>span,.tag:has(svg){display:inline-flex;align-items:center;gap:8px}
+.icon-label svg,.chart-tags svg,.tag svg{width:22px;height:22px;flex-basis:22px}
+.pair-chip{display:inline-flex;align-items:center;gap:7px}.pair-chip svg{width:22px;height:22px;flex-basis:22px}
+.gallery-kind-filter{display:flex;gap:8px;flex-wrap:wrap;width:100%;margin-bottom:12px;padding-bottom:16px;border-bottom:1px solid #292929}
+.breakdown-tabs button{display:inline-flex;align-items:center;gap:8px}.breakdown-tabs svg{width:24px;height:24px}.breakdown-insight strong svg{margin-right:8px}

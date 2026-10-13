@@ -1,4 +1,5 @@
-import {journalNow} from './model.js?v=daily-fx-icons-20261013';
+import {fieldIcon} from './entry-menus.js?v=workspace-icons-20261013';
+import {journalNow} from './model.js?v=workspace-icons-20261013';
 const chevron='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
 const check='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg>';
 const controls=new Map();
@@ -20,12 +21,13 @@ export function syncFilterMenus(){
    document.addEventListener('pointerdown',e=>{if(!wrapper.contains(e.target))close();});wrapper.addEventListener('focusout',e=>{if(!wrapper.contains(e.relatedTarget))close();});
   }
   select.hidden=true;
-  c.trigger.replaceChildren();const text=document.createElement('span');text.textContent=select.selectedOptions[0]?.textContent||'All';c.trigger.insertAdjacentHTML('beforeend',menuIcon(id));c.trigger.append(text);c.trigger.insertAdjacentHTML('beforeend',chevron);
+  c.trigger.replaceChildren();const text=document.createElement('span');text.textContent=select.selectedOptions[0]?.textContent||'All';c.trigger.insertAdjacentHTML('beforeend',menuIcon(id,select.value));c.trigger.append(text);c.trigger.insertAdjacentHTML('beforeend',chevron);
   c.menu.replaceChildren();for(const option of select.options){const button=document.createElement('button');button.type='button';button.setAttribute('role','option');button.setAttribute('aria-selected',String(option.selected));button.tabIndex=-1;button.dataset.value=option.value;const text=document.createElement('span');text.textContent=option.textContent;const copy=document.createElement('span');copy.className='menu-option-copy';copy.append(text);const hint=document.createElement('small');hint.textContent=menuHint(id,option.value);copy.append(hint);button.insertAdjacentHTML('beforeend',menuIcon(id,option.value));button.append(copy);if(option.selected)button.insertAdjacentHTML('beforeend',check);c.menu.append(button);}
  }
 }
 
 function menuIcon(id,value='') {
+ const names={'filter-setup':'setup','filter-session':'session','filter-outcome':'outcome','pair-filter':'pair'};if(names[id])return fieldIcon(names[id],value==='All pairs'?'':value); 
  const paths=id==='filter-range'?'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4m8-4v4M4 10h16m-12 4h2m4 0h2"/>':id==='filter-session'?'<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>':id==='filter-setup'?'<path d="M4 17l5-5 4 3 7-10M15 5h5v5"/>':value==='win'?'<path d="m5 16 7-8 7 8M12 8v12"/>':value==='loss'?'<path d="m5 8 7 8 7-8M12 16V4"/>':'<path d="M4 7h16M4 12h12M4 17h8"/>';
  return '<svg class="menu-field-icon" viewBox="0 0 24 24" aria-hidden="true">'+paths+'</svg>';
 }

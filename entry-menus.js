@@ -12,7 +12,30 @@ function assetIcon(name,value){
  else return null;
  return `<svg class="provider-mark asset-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="${color}" fill-opacity=".13" stroke="${color}" stroke-opacity=".35"/><text x="16" y="17" text-anchor="middle" dominant-baseline="middle" fill="${color}" stroke="none" font-size="${letters.length>2?10:15}" font-weight="750" font-family="Arial, sans-serif">${letters}</text></svg>`;
 }
-function fieldIcon(name,value){
+function semanticIcon(name,value){
+ if(!['setup','session','kind','direction','mood','outcome','status','rules'].includes(name))return null;
+ const v=String(value||'').toLowerCase(),up='<path d="m8 17 8-9m-8 0h8v8"/>',down='<path d="m8 8 8 9m-8 0h8V9"/>',flat='<path d="M7 13h12m-12 4h12"/>',clock='<circle cx="13" cy="13" r="7"/><path d="M13 8v5l3 2"/>';
+ let path=flat,color='#aaaab8';
+ if(['long','win','wins'].includes(v)){path=up;color='#8fc7a9';}
+ else if(['short','loss','losses'].includes(v)){path=down;color='#db929c';}
+ else if(v==='live'){path='<path d="M5 14h4l3-7 4 13 3-6h3"/>';color='#83c7b2';}
+ else if(v==='backtest'){path='<path d="M10 5h6m-5 0v7l-5 9h14l-5-9V5M9 16h8"/>';color='#b5a3dc';}
+ else if(v==='breakout'){path='<path d="M5 17h16M6 21l6-7 3 2 6-11m-5 0h5v5"/>';color='#a2bddf';}
+ else if(v==='pullback'){path='<path d="m5 20 6-9 4 5 6-10m-5 0h5v5"/>';color='#cfb184';}
+ else if(v==='reversal'){path='<path d="M6 20V11a7 7 0 0 1 14 0v7m-4-4 4 4 4-4"/>';color='#bfa3d5';}
+ else if(v==='asia'||v==='asia/manila'){path='<circle cx="13" cy="13" r="4"/><path d="M13 3v3m0 14v3M3 13h3m14 0h3M6 6l2 2m10 10 2 2M6 20l2-2M18 8l2-2"/>';color='#d2b275';}
+ else if(v==='london'){path='<path d="M9 22V8h8v14M8 22h10M11 8V5h4v3m-2-6v3"/><circle cx="13" cy="13" r="3"/><path d="M13 11v2l1 1"/>';color='#a2b7d4';}
+ else if(v==='new york'){path='<path d="M5 22V12h6V5h5v17m0-12h5v12M4 22h18M13 2v3M7 15h1m5-7h1m-1 4h1m-1 4h1m5-2h1"/>';color='#af9fd3';}
+ else if(name==='mood'){const mouth=v==='anxious'?'<path d="M8 18q5-6 10 0"/>':v==='confident'?'<path d="M8 15q5 7 10 0"/>':'<path d="M9 17h8"/>';path='<circle cx="13" cy="13" r="9"/><path d="M9 10h1m6 0h1"/>'+mouth;color=v==='anxious'?'#d0aa7a':v==='confident'?'#93c1a8':'#9dbad0';}
+ else if(v==='open'){path=clock;color='#cfb87f';}
+ else if(['closed','yes'].includes(v)){path='<circle cx="13" cy="13" r="9"/><path d="m8 13 3 3 7-7"/>';color='#96bea7';}
+ else if(v==='no'){path='<circle cx="13" cy="13" r="9"/><path d="m9 9 8 8m-8 0 8-8"/>';color='#d19ca1';}
+ else if(name==='session')path=clock;
+ else if(name==='setup')path='<path d="m5 19 6-6 4 3 6-11"/>';
+ return `<svg class="provider-mark semantic-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8" fill="${color}" fill-opacity=".12" stroke="${color}" stroke-opacity=".25"/><g transform="translate(3 3)" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${path}</g></svg>`;
+}
+export function fieldIcon(name,value){
+ const semantic=semanticIcon(name,value);if(semantic)return semantic;
  const asset=assetIcon(name,value);if(asset)return asset;
  const map=name==='broker'?brokerMarks:name==='platform'?platformMarks:null;
  if(!map)return svg(icons[name]||icons.kind);

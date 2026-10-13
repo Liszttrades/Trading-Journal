@@ -1,4 +1,4 @@
-import { net } from './model.js?v=daily-fx-icons-20261013';
+import { net } from './model.js?v=workspace-icons-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
