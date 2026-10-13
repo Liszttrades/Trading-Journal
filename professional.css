@@ -369,3 +369,18 @@ html body #pnl-calendar .calendar-total{margin:18px 0 16px}
 html body #pnl-calendar .calendar-total strong{font-size:24px}
 html body #pnl-calendar .weekday{padding-bottom:4px}
 @media(max-width:700px){html body #pnl-calendar{padding:18px}html body #pnl-calendar :is(.calendar-day,.calendar-week,.calendar-blank){min-height:126px;padding:12px}}
+
+/* Semibold account/library text and an inverted dark-mode navigation item. */
+html body #tools-panel :is(label,.entry-menu-field,.risk-balance>span){font-weight:600;font-size:14px}
+html body #tools-panel :is(input,textarea,select,.entry-select-trigger){font-weight:600}
+html body #tools-panel :is(.helper,.risk-step p,.risk-hero p,.risk-empty,.risk-layout label small,.risk-account label small){font-weight:550;line-height:1.6}
+html body #tools-panel :is(h2,h3,summary){font-weight:650}
+html body #tools-panel .risk-balance strong{font-weight:750}
+html body .chart-copy>p{font-size:14px;font-weight:550;line-height:1.55}
+html body .chart-title strong{font-size:16px;font-weight:700}
+html body .chart-title>span{font-weight:650}
+html body :is(.chart-tags>span,.chart-tags>button,.pair-chip,.gallery-kind-filter button){font-size:14px;font-weight:600}
+html body .chart-kind{font-weight:650}
+html[data-theme=dark] body #journal-workspace nav button.active,
+html[data-theme=dark] body #journal-workspace nav button.active:hover{background:#fafaf7;color:#191919;box-shadow:0 1px 2px #0002}
+html[data-theme=dark] body #journal-workspace nav button.active :is(span,svg){color:#191919}

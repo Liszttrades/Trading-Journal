@@ -1,4 +1,4 @@
-import {net} from './model.js?v=peach-compact-calendar-20261014';
+import {net} from './model.js?v=semibold-white-selection-20261014';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[

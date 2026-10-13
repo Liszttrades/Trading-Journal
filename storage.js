@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=peach-compact-calendar-20261014';
-import { validateRoadmap } from './roadmap.js?v=peach-compact-calendar-20261014';
-import { validateAnnotations } from './annotations.js?v=peach-compact-calendar-20261014';
-import { defaultSettings } from './model.js?v=peach-compact-calendar-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=peach-compact-calendar-20261014';
+import {prepareBatch} from './insights.js?v=semibold-white-selection-20261014';
+import { validateRoadmap } from './roadmap.js?v=semibold-white-selection-20261014';
+import { validateAnnotations } from './annotations.js?v=semibold-white-selection-20261014';
+import { defaultSettings } from './model.js?v=semibold-white-selection-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=semibold-white-selection-20261014';
 
-import { backend, signedUser } from './cloud.js?v=peach-compact-calendar-20261014';
+import { backend, signedUser } from './cloud.js?v=semibold-white-selection-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

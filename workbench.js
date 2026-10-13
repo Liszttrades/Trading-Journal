@@ -1,9 +1,9 @@
-import {attachAutoConversion} from './exchange-rates.js?v=peach-compact-calendar-20261014';
-import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=peach-compact-calendar-20261014';
-import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=peach-compact-calendar-20261014';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=peach-compact-calendar-20261014';
-import {validateTrade} from './validation.js?v=peach-compact-calendar-20261014';
-import {journalNow} from './model.js?v=peach-compact-calendar-20261014';
+import {attachAutoConversion} from './exchange-rates.js?v=semibold-white-selection-20261014';
+import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=semibold-white-selection-20261014';
+import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=semibold-white-selection-20261014';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=semibold-white-selection-20261014';
+import {validateTrade} from './validation.js?v=semibold-white-selection-20261014';
+import {journalNow} from './model.js?v=semibold-white-selection-20261014';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 const moneyTone=v=>v<0?'negative':v>0?'positive':'';
