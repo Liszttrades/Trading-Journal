@@ -1,4 +1,4 @@
-import {net} from './model.js?v=customize-dropdowns-20261012';
+import {net} from './model.js?v=responsive-design-20261013';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[

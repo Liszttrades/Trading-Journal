@@ -1,16 +1,17 @@
-import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=customize-dropdowns-20261012';
-import {guidanceState} from './guidance.js?v=customize-dropdowns-20261012';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=customize-dropdowns-20261012';
-import { createWorkbench } from './workbench.js?v=customize-dropdowns-20261012';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=customize-dropdowns-20261012';
-import { createRoadmap } from './roadmap.js?v=customize-dropdowns-20261012';
-import { createChartEditor } from './chart-editor.js?v=customize-dropdowns-20261012';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=customize-dropdowns-20261012';
-import { backend } from './cloud.js?v=customize-dropdowns-20261012';
-import { resetCloudState, cloudChanged } from './storage.js?v=customize-dropdowns-20261012';
-import { monthSummary } from './calendar.js?v=customize-dropdowns-20261012';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=customize-dropdowns-20261012';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=customize-dropdowns-20261012';
+import {startWorkspaceMotion} from './motion.js?v=responsive-design-20261013';
+import {enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=responsive-design-20261013';
+import {guidanceState} from './guidance.js?v=responsive-design-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=responsive-design-20261013';
+import { createWorkbench } from './workbench.js?v=responsive-design-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=responsive-design-20261013';
+import { createRoadmap } from './roadmap.js?v=responsive-design-20261013';
+import { createChartEditor } from './chart-editor.js?v=responsive-design-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=responsive-design-20261013';
+import { backend } from './cloud.js?v=responsive-design-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=responsive-design-20261013';
+import { monthSummary } from './calendar.js?v=responsive-design-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=responsive-design-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=responsive-design-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -40,6 +41,7 @@ function message(selector, text = '') {
 }
 
 async function load() {
+  document.body.dataset.syncing='true';
   try {
     database = await api('/api/journal');
     message('#load-error');
@@ -48,7 +50,7 @@ async function load() {
   } catch (error) {
     $('#sync-status').textContent = 'Sync failed';
     message('#load-error', `${error.message} Check your connection and use Sync now. No empty journal has been saved over your cloud data.`);
-  }
+  } finally { document.body.dataset.syncing='false'; }
 }
 
 function money(value) {
@@ -587,3 +589,5 @@ function renderGuidance(){
  const saved=database.entries.find(t=>t.id===lastSavedId);if(!saved){lastSavedId=null;$('#save-followup').hidden=true;}else $('#save-followup').innerHTML=`<span>✓ Trade saved · ${escape(saved.pair)}</span><div><button class="secondary" type="button" data-followup-scalp>Add another scalp</button><button class="secondary" type="button" data-entry="${escape(saved.id)}">Review this trade</button><button type="button" class="followup-dismiss" aria-label="Dismiss saved trade message">×</button></div>`;
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-open-customize]'))$('#customize').click();if(e.target.closest('[data-followup-scalp]')){const saved=database.entries.find(t=>t.id===lastSavedId);if(saved)openEntry(null,nextScalp(saved));}if(e.target.closest('.followup-dismiss')){lastSavedId=null;$('#save-followup').hidden=true;}});
+
+startWorkspaceMotion();

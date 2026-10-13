@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=customize-dropdowns-20261012';
-import { validateRoadmap } from './roadmap.js?v=customize-dropdowns-20261012';
-import { validateAnnotations } from './annotations.js?v=customize-dropdowns-20261012';
-import { defaultSettings } from './model.js?v=customize-dropdowns-20261012';
-import { validateTrade, validateSettings } from './validation.js?v=customize-dropdowns-20261012';
+import {prepareBatch} from './insights.js?v=responsive-design-20261013';
+import { validateRoadmap } from './roadmap.js?v=responsive-design-20261013';
+import { validateAnnotations } from './annotations.js?v=responsive-design-20261013';
+import { defaultSettings } from './model.js?v=responsive-design-20261013';
+import { validateTrade, validateSettings } from './validation.js?v=responsive-design-20261013';
 
-import { backend, signedUser } from './cloud.js?v=customize-dropdowns-20261012';
+import { backend, signedUser } from './cloud.js?v=responsive-design-20261013';
 let snapshot = null;
 let revision = 0;
 let owner = null;

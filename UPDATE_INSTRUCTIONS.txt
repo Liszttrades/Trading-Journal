@@ -1,3 +1,7 @@
-Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep config.js. Wait for deployment and hard refresh (Ctrl+Shift+R). No database changes.
+Upload all extracted files to your Trading-Journal GitHub repository root, replacing matching files. Keep your existing config.js. Wait for GitHub Pages deployment and hard refresh (Ctrl+Shift+R). No database changes.
 
-Customize Result currency and Journal time zone now use matching dark menus with descriptions, icons, checkmarks and keyboard navigation. Currency change events still update the saved PHP rate field. Original select controls remain in the form, hidden, to preserve saving. All previous changes included. Syntax checked; browser appearance unverified.
+Visual update: charcoal/black base with muted violet navigation accents, stronger sidebar selection, refined typography, consistent panel borders and spacing. Keeps P&L first, solid calendar cells and panel-only gradients. Positive/negative result colors unchanged.
+
+Motion: short navigation and dialog transitions, card reveals on entering view, P&L line draw, menu openings, chart/card/calendar hover effects, button feedback and cloud-sync loading indicator. No animated background or blob. Respects reduced-motion preference. Financial values, saved records and calculations unchanged.
+
+All JavaScript syntax and local dependencies checked. Live signed-in layout and browser rendering were not tested here.

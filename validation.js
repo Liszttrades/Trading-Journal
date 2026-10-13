@@ -1,4 +1,4 @@
-import { net } from './model.js?v=customize-dropdowns-20261012';
+import { net } from './model.js?v=responsive-design-20261013';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }
