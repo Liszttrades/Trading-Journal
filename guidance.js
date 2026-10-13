@@ -1,4 +1,4 @@
-import {net} from './model.js?v=professional-themes-20261013';
+import {net} from './model.js?v=mac-refinement-20261013';
 export function guidanceState(db){
  const rules=db.settings.tradingRules||{},live=db.entries.filter(t=>t.kind==='live');
  const steps=[

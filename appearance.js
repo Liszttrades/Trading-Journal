@@ -1,6 +1,6 @@
 (()=>{
  const root=document.documentElement,media=matchMedia('(prefers-color-scheme: dark)');
- let preferences={mode:'system',accent:'blue'};
+ let preferences={mode:'system',accent:'graphite'};
  try{const saved=JSON.parse(localStorage.getItem('trade-notebook-appearance')||'null');if(saved){if(['system','light','dark'].includes(saved.mode))preferences.mode=saved.mode;if(['blue','graphite','sage','plum'].includes(saved.accent))preferences.accent=saved.accent;}}catch{}
  function apply(){root.dataset.theme=preferences.mode==='system'?(media.matches?'dark':'light'):preferences.mode;root.dataset.accent=preferences.accent;root.style.colorScheme=root.dataset.theme;document.querySelectorAll('[data-appearance-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.appearanceMode===preferences.mode)));document.querySelectorAll('[data-appearance-accent]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.appearanceAccent===preferences.accent)));}
  function save(){try{localStorage.setItem('trade-notebook-appearance',JSON.stringify(preferences));}catch{}apply();}

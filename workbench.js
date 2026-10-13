@@ -1,9 +1,9 @@
-import {attachAutoConversion} from './exchange-rates.js?v=professional-themes-20261013';
-import {brokerFields,tradeOutcome} from './broker-tools.js?v=professional-themes-20261013';
-import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=professional-themes-20261013';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=professional-themes-20261013';
-import {validateTrade} from './validation.js?v=professional-themes-20261013';
-import {journalNow} from './model.js?v=professional-themes-20261013';
+import {attachAutoConversion} from './exchange-rates.js?v=mac-refinement-20261013';
+import {brokerFields,tradeOutcome} from './broker-tools.js?v=mac-refinement-20261013';
+import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=mac-refinement-20261013';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=mac-refinement-20261013';
+import {validateTrade} from './validation.js?v=mac-refinement-20261013';
+import {journalNow} from './model.js?v=mac-refinement-20261013';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {

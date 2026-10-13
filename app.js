@@ -1,19 +1,19 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=professional-themes-20261013';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=professional-themes-20261013';
-import {startWorkspaceMotion} from './motion.js?v=professional-themes-20261013';
-import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=professional-themes-20261013';
-import {guidanceState} from './guidance.js?v=professional-themes-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=professional-themes-20261013';
-import { createWorkbench } from './workbench.js?v=professional-themes-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=professional-themes-20261013';
-import { createRoadmap } from './roadmap.js?v=professional-themes-20261013';
-import { createChartEditor } from './chart-editor.js?v=professional-themes-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=professional-themes-20261013';
-import { backend } from './cloud.js?v=professional-themes-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=professional-themes-20261013';
-import { monthSummary } from './calendar.js?v=professional-themes-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=professional-themes-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=professional-themes-20261013';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=mac-refinement-20261013';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=mac-refinement-20261013';
+import {startWorkspaceMotion} from './motion.js?v=mac-refinement-20261013';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=mac-refinement-20261013';
+import {guidanceState} from './guidance.js?v=mac-refinement-20261013';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=mac-refinement-20261013';
+import { createWorkbench } from './workbench.js?v=mac-refinement-20261013';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=mac-refinement-20261013';
+import { createRoadmap } from './roadmap.js?v=mac-refinement-20261013';
+import { createChartEditor } from './chart-editor.js?v=mac-refinement-20261013';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=mac-refinement-20261013';
+import { backend } from './cloud.js?v=mac-refinement-20261013';
+import { resetCloudState, cloudChanged } from './storage.js?v=mac-refinement-20261013';
+import { monthSummary } from './calendar.js?v=mac-refinement-20261013';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=mac-refinement-20261013';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=mac-refinement-20261013';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);

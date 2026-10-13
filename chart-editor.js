@@ -1,4 +1,4 @@
-import {validateAnnotations} from './annotations.js?v=professional-themes-20261013';
+import {validateAnnotations} from './annotations.js?v=mac-refinement-20261013';
 export function createChartEditor(save) {
  const dialog=document.querySelector('#image-dialog'), canvas=document.querySelector('#chart-canvas'), ctx=canvas.getContext('2d'), viewport=document.querySelector('#chart-viewport');
  const $=s=>dialog.querySelector(s);
