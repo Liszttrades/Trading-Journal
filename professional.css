@@ -132,3 +132,47 @@ html body dialog[open]{animation:surface-arrive .2s ease-out}
 @media(max-width:1000px){html body .metrics .metric{padding:18px;min-height:118px}html body .page-heading{flex-wrap:wrap}}
 @media(max-width:700px){html body #journal-workspace>aside{padding:16px}html body .brand{padding-bottom:12px}html body .topbar{min-height:52px}html body .page-heading h1{font-size:32px}html body .metrics{gap:8px}html body .metrics .metric{padding:16px;min-height:110px}html body #metrics .metric strong{font-size:26px}html body :is(.chart-panel,.calendar-panel,.plan-card,.rules-cockpit){padding:18px}}
 @media(prefers-reduced-motion:reduce){html body dialog[open]{animation:none}html body :is(button,.entry-select-trigger,.filter-select-trigger){transition:none!important}html body button.primary:hover:not(:disabled){transform:none}}
+
+/* Full-width journal canvas and consistent theme-aware analysis. */
+:root[data-theme=dark]{--paper:#101113;--surface:#191b1e;--surface-2:#202327;--surface-3:#2c3036;--line:#343940;--ink:#f2f4f7;--muted:#adb5c0;--positive:#66d59d;--negative:#ff858e;--positive-soft:#173529;--negative-soft:#3c2229}
+:root[data-theme=dark][data-accent=blue]{--accent:#79b4ff;--accent-soft:#1d334f}
+:root[data-theme=dark][data-accent=sage]{--accent:#7dd5a7;--accent-soft:#1a392c}
+:root[data-theme=dark][data-accent=plum]{--accent:#d3a1ed;--accent-soft:#392748}
+html body #journal-workspace.workspace{grid-template-columns:280px minmax(0,1fr)}
+html body #journal-workspace>aside{padding:28px 20px;background:var(--surface);width:auto;min-width:0}
+html body .page,html body.gallery-view .page{width:100%;max-width:none!important;margin:0;padding:32px clamp(24px,2.2vw,48px) 48px;box-sizing:border-box}
+html body .topbar{padding-inline:clamp(24px,2.2vw,48px)}
+html body #journal-workspace>main{min-width:0}
+html body .brand{font-weight:650;font-size:18px}
+html body :is(.page-heading h1,.metric strong,.breakdown-total strong){font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+html body .page-heading h1{font-size:clamp(30px,2.5vw,40px);font-weight:650;letter-spacing:-.045em}
+html body .page-heading p{font-size:13px}
+html body #metrics .metric strong{font-size:clamp(25px,2.2vw,34px);overflow-wrap:anywhere}
+html body .metrics .metric{min-width:0;min-height:124px}
+html body #advanced-analysis{margin:20px 0;border-block:1px solid var(--line);background:transparent;padding:0}
+html body #advanced-analysis>summary{padding:15px 0;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer}
+html body #advanced-analysis .advanced-metrics{margin:0 0 20px}
+html body #advanced-analysis .metric{min-height:96px}
+html body .analytics-scope{font-size:11px;line-height:1.6;margin-bottom:14px}
+html body #performance-breakdowns{padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+html body #breakdown-panel{min-width:0;border:0;background:transparent}
+html body .breakdown-overview{padding:0 0 20px;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;flex-wrap:wrap}
+html body .breakdown-intro{flex:1 1 260px;min-width:0}
+html body .breakdown-total{flex:0 1 auto;min-width:0;padding:0;border:0;background:transparent;overflow-wrap:anywhere}
+html body .breakdown-total strong{font-size:26px;line-height:1.3}
+html body .breakdown-tabs{flex-wrap:wrap}
+html body #breakdown-panel:focus-visible{outline-offset:6px}
+html body #curve .area-pnl-chart .chart-line{stroke:var(--accent)}
+html body #curve .area-pnl-chart .chart-grid{stroke:var(--line);opacity:.6}
+html body #curve .area-pnl-chart text{fill:var(--muted);font-family:inherit;font-size:12px}
+html body #curve .curve-point{fill:var(--accent);stroke:var(--surface)}
+html body #curve .curve-hit-area{fill:transparent;stroke:none}
+html body #curve .curve-hit:hover .curve-point,html body #curve .curve-hit:focus-visible .curve-point{fill:var(--accent);stroke:var(--ink)}
+html body #pnl-calendar .calendar-day.profit-day{background:var(--positive-soft);border-color:color-mix(in srgb,var(--positive) 30%,var(--line))}
+html body #pnl-calendar .calendar-day.loss-day{background:var(--negative-soft);border-color:color-mix(in srgb,var(--negative) 30%,var(--line))}
+html body #pnl-calendar .calendar-week{background:var(--surface-2)}
+html body nav button.active{background:var(--accent-soft);color:var(--accent)}
+html body nav button.active:hover{background:var(--accent-soft);color:var(--accent)}
+html body svg.provider-mark{filter:none}
+@media(max-width:1100px){html body #journal-workspace.workspace{grid-template-columns:250px minmax(0,1fr)}html body .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){html body #journal-workspace.workspace{display:block}html body #journal-workspace>aside{padding:16px}html body .page,html body.gallery-view .page{padding:24px 16px 36px}html body .topbar{padding-inline:16px}html body .breakdown-total{text-align:left}html body #performance-breakdowns{padding:18px}}

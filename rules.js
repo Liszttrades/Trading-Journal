@@ -1,4 +1,4 @@
-import { net, risk } from './model.js?v=mac-refinement-20261013';
+import { net, risk } from './model.js?v=wide-minimal-20261014';
 export const defaultRules = { notes: '', dailyMoney: null, dailyR: null, maxEntries: null };
 export function ruleFlags(entries, limit = null) {
   const counts = new Map();

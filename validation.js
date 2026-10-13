@@ -1,4 +1,4 @@
-import { net } from './model.js?v=mac-refinement-20261013';
+import { net } from './model.js?v=wide-minimal-20261014';
 function requireInput(condition, message) {
   if (!condition) throw Object.assign(Error(message), { status: 400 });
 }

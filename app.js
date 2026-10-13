@@ -1,19 +1,19 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=mac-refinement-20261013';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=mac-refinement-20261013';
-import {startWorkspaceMotion} from './motion.js?v=mac-refinement-20261013';
-import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=mac-refinement-20261013';
-import {guidanceState} from './guidance.js?v=mac-refinement-20261013';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=mac-refinement-20261013';
-import { createWorkbench } from './workbench.js?v=mac-refinement-20261013';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=mac-refinement-20261013';
-import { createRoadmap } from './roadmap.js?v=mac-refinement-20261013';
-import { createChartEditor } from './chart-editor.js?v=mac-refinement-20261013';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=mac-refinement-20261013';
-import { backend } from './cloud.js?v=mac-refinement-20261013';
-import { resetCloudState, cloudChanged } from './storage.js?v=mac-refinement-20261013';
-import { monthSummary } from './calendar.js?v=mac-refinement-20261013';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=mac-refinement-20261013';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=mac-refinement-20261013';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=wide-minimal-20261014';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=wide-minimal-20261014';
+import {startWorkspaceMotion} from './motion.js?v=wide-minimal-20261014';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=wide-minimal-20261014';
+import {guidanceState} from './guidance.js?v=wide-minimal-20261014';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=wide-minimal-20261014';
+import { createWorkbench } from './workbench.js?v=wide-minimal-20261014';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=wide-minimal-20261014';
+import { createRoadmap } from './roadmap.js?v=wide-minimal-20261014';
+import { createChartEditor } from './chart-editor.js?v=wide-minimal-20261014';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=wide-minimal-20261014';
+import { backend } from './cloud.js?v=wide-minimal-20261014';
+import { resetCloudState, cloudChanged } from './storage.js?v=wide-minimal-20261014';
+import { monthSummary } from './calendar.js?v=wide-minimal-20261014';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=wide-minimal-20261014';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=wide-minimal-20261014';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);
@@ -209,7 +209,7 @@ function renderCurve(entries) {
   const area = `${line} L${right} ${bottom} L${left} ${bottom} Z`;
   const grids = labels.map(value=>`<line x1="${left}" x2="${right}" y1="${y(value)}" y2="${y(value)}" class="chart-grid"/><text x="${right+12}" y="${y(value)+4}" text-anchor="start">${escape(format(value))}</text>`).join('');
   const points=values.map((value,i)=>`<g class="curve-hit" tabindex="0" role="img" aria-label="${escape(i?`${chronological[i-1].pair} · ${chronological[i-1].exitTime.replace('T',' ')} · Cumulative ${format(value)}`:`Start · ${format(value)}`)}"><title>${escape(i?`${chronological[i-1].pair} · ${chronological[i-1].exitTime.replace('T',' ')} · Trade ${format(net(chronological[i-1]))} · Cumulative ${format(value)}`:`Start · ${format(value)}`)}</title><circle class="curve-hit-area" cx="${x(i)}" cy="${y(value)}" r="12"/><circle class="curve-point" cx="${x(i)}" cy="${y(value)}" r="4"/></g>`).join('');
-  $('#curve').innerHTML = `<svg class="local-chart area-pnl-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Cumulative realized profit and loss across ${entries.length} closed entries"><defs><linearGradient id="pnl-white-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".12"/><stop offset="1" stop-color="#ffffff" stop-opacity=".025"/></linearGradient></defs>${grids}<path d="${area}" fill="url(#pnl-white-fill)"/><path d="${line}" class="chart-line"/><text x="${left}" y="254">Start</text><text x="${right}" y="254" text-anchor="end">${entries.length} closed entries</text>${points}</svg>`;
+  $('#curve').innerHTML = `<svg class="local-chart area-pnl-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="Cumulative realized profit and loss across ${entries.length} closed entries"><defs><linearGradient id="pnl-theme-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity=".12"/><stop offset="1" stop-color="var(--accent)" stop-opacity=".025"/></linearGradient></defs>${grids}<path d="${area}" fill="url(#pnl-theme-fill)"/><path d="${line}" class="chart-line"/><text x="${left}" y="254">Start</text><text x="${right}" y="254" text-anchor="end">${entries.length} closed entries</text>${points}</svg>`;
 
 }
 

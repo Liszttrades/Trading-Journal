@@ -1,9 +1,9 @@
-import {attachAutoConversion} from './exchange-rates.js?v=mac-refinement-20261013';
-import {brokerFields,tradeOutcome} from './broker-tools.js?v=mac-refinement-20261013';
-import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=mac-refinement-20261013';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=mac-refinement-20261013';
-import {validateTrade} from './validation.js?v=mac-refinement-20261013';
-import {journalNow} from './model.js?v=mac-refinement-20261013';
+import {attachAutoConversion} from './exchange-rates.js?v=wide-minimal-20261014';
+import {brokerFields,tradeOutcome} from './broker-tools.js?v=wide-minimal-20261014';
+import {fieldIcon,enhanceRiskMenus} from './entry-menus.js?v=wide-minimal-20261014';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=wide-minimal-20261014';
+import {validateTrade} from './validation.js?v=wide-minimal-20261014';
+import {journalNow} from './model.js?v=wide-minimal-20261014';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 export function createWorkbench({getDB,api,reload,openTrade,getView}) {
