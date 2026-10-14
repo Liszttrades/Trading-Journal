@@ -1,4 +1,4 @@
-import { net } from './model.js?v=semibold-white-selection-20261014';
+import { net } from './model.js?v=batch-icons-colors-20261014';
 
 // Use recorded closing dates directly: journal timestamps already use the chosen zone.
 export function monthSummary(entries, year, month) {

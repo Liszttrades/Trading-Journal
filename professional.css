@@ -384,3 +384,34 @@ html body .chart-kind{font-weight:650}
 html[data-theme=dark] body #journal-workspace nav button.active,
 html[data-theme=dark] body #journal-workspace nav button.active:hover{background:#fafaf7;color:#191919;box-shadow:0 1px 2px #0002}
 html[data-theme=dark] body #journal-workspace nav button.active :is(span,svg){color:#191919}
+
+/* Theme-aware batch entry with distinguishable row numbers. */
+html body .batch-heading h2{font-size:34px;font-weight:750;letter-spacing:-.04em;line-height:1.15}
+html body #batch-title{color:var(--accent-text,var(--accent))}
+html body .batch-heading-icon{background:var(--accent-soft);border-color:var(--line);width:60px;height:60px}
+html body .batch-heading-icon svg{stroke:var(--accent-text,var(--accent))}
+html body .batch-heading p{font-size:14px;font-weight:550;line-height:1.6}
+html body .batch-steps span{font-size:13px;font-weight:550}
+html body .batch-steps b{width:29px;height:29px;font-size:14px;font-weight:700;color:white;border:0}
+html body .batch-steps span:nth-child(1) b{background:#c8512d}
+html body .batch-steps span:nth-child(2) b{background:#2856d8}
+html body .batch-steps span:nth-child(3) b{background:#9b6e08}
+html body .scalp-number{display:grid;place-items:center;width:38px;height:38px;flex-shrink:0;padding:0;border:0;border-radius:10px;background:#c8512d;color:white;font-size:17px;font-weight:750}
+html body .scalp-row:nth-child(5n+2) .scalp-number{background:#2856d8}
+html body .scalp-row:nth-child(5n+3) .scalp-number{background:#9b6e08}
+html body .scalp-row:nth-child(5n+4) .scalp-number{background:#0d7b76}
+html body .scalp-row:nth-child(5n+5) .scalp-number{background:#8b356d}
+html body .scalp-card-heading strong{font-size:17px;font-weight:650}
+html body .batch-list-heading h3{font-size:19px;font-weight:650}
+html body .scalp-fields>label,html body .scalp-fields .entry-menu-field{font-size:14px;font-weight:600}
+html body .batch-dialog .scalp-fields :is(input,select,textarea){font-size:15px!important;font-weight:550;color-scheme:inherit}
+html body .batch-dialog .batch-day-panel :is(input,select){font-size:15px!important;font-weight:550;color-scheme:inherit}
+html body .scalp-fields .entry-menu-field{gap:10px}
+html body .batch-day-panel .entry-menu-field{display:flex;flex-direction:column;gap:9px;font-size:14px;font-weight:600;min-width:0}
+html body .batch-dialog .entry-select-trigger{height:46px;font-size:15px!important;font-weight:600}
+html body .batch-dialog .entry-select-menu strong{font-size:14px;font-weight:600}
+html body .batch-dialog .entry-select-menu small{font-size:12px}
+html body .batch-dialog .entry-select-menu{z-index:60}
+html body .batch-dialog .helper{font-size:13px;font-weight:550}
+html body .batch-dialog .scalp-row{background:var(--surface);border-color:var(--line)}
+@media(max-width:650px){html body .batch-heading h2{font-size:28px}html body .batch-heading-icon{width:48px;height:48px}}

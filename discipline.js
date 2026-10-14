@@ -1,4 +1,4 @@
-import {dailyState} from './insights.js?v=semibold-white-selection-20261014';
+import {dailyState} from './insights.js?v=batch-icons-colors-20261014';
 export function ruleRoutine(db,day){
  const state=dailyState(db,day),today=db.entries.filter(t=>t.kind==='live'&&t.entryTime.slice(0,10)===day);
  const reports=today.filter(t=>['Yes','No'].includes(t.rules));

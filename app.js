@@ -1,19 +1,19 @@
-import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=semibold-white-selection-20261014';
-import {ruleRoutine,checklistForTrade} from './discipline.js?v=semibold-white-selection-20261014';
-import {startWorkspaceMotion} from './motion.js?v=semibold-white-selection-20261014';
-import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=semibold-white-selection-20261014';
-import {guidanceState} from './guidance.js?v=semibold-white-selection-20261014';
-import {syncFilterMenus,applyDatePreset} from './filters.js?v=semibold-white-selection-20261014';
-import { createWorkbench } from './workbench.js?v=semibold-white-selection-20261014';
-import { equity, filterEntries, tradeWarnings } from './insights.js?v=semibold-white-selection-20261014';
-import { createRoadmap } from './roadmap.js?v=semibold-white-selection-20261014';
-import { createChartEditor } from './chart-editor.js?v=semibold-white-selection-20261014';
-import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=semibold-white-selection-20261014';
-import { backend } from './cloud.js?v=semibold-white-selection-20261014';
-import { resetCloudState, cloudChanged } from './storage.js?v=semibold-white-selection-20261014';
-import { monthSummary } from './calendar.js?v=semibold-white-selection-20261014';
-import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=semibold-white-selection-20261014';
-import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=semibold-white-selection-20261014';
+import {attachAutoConversion,pesoRate,refreshPesoRate} from './exchange-rates.js?v=batch-icons-colors-20261014';
+import {ruleRoutine,checklistForTrade} from './discipline.js?v=batch-icons-colors-20261014';
+import {startWorkspaceMotion} from './motion.js?v=batch-icons-colors-20261014';
+import {fieldIcon,enhanceEntryMenus,enhanceSettingsMenus} from './entry-menus.js?v=batch-icons-colors-20261014';
+import {guidanceState} from './guidance.js?v=batch-icons-colors-20261014';
+import {syncFilterMenus,applyDatePreset} from './filters.js?v=batch-icons-colors-20261014';
+import { createWorkbench } from './workbench.js?v=batch-icons-colors-20261014';
+import { equity, filterEntries, tradeWarnings } from './insights.js?v=batch-icons-colors-20261014';
+import { createRoadmap } from './roadmap.js?v=batch-icons-colors-20261014';
+import { createChartEditor } from './chart-editor.js?v=batch-icons-colors-20261014';
+import { defaultRules, ruleFlags, dailyProgress } from './rules.js?v=batch-icons-colors-20261014';
+import { backend } from './cloud.js?v=batch-icons-colors-20261014';
+import { resetCloudState, cloudChanged } from './storage.js?v=batch-icons-colors-20261014';
+import { monthSummary } from './calendar.js?v=batch-icons-colors-20261014';
+import { api, imageURL, exportBackup, restoreBackup } from './storage.js?v=batch-icons-colors-20261014';
+import { fresh, nextScalp, journalNow, net, risk } from './model.js?v=batch-icons-colors-20261014';
 
 // UI state only. The authenticated cloud database is the source of truth.
 const $ = selector => document.querySelector(selector);

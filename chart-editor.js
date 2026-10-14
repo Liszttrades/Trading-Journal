@@ -1,4 +1,4 @@
-import {validateAnnotations} from './annotations.js?v=semibold-white-selection-20261014';
+import {validateAnnotations} from './annotations.js?v=batch-icons-colors-20261014';
 export function createChartEditor(save) {
  const dialog=document.querySelector('#image-dialog'), canvas=document.querySelector('#chart-canvas'), ctx=canvas.getContext('2d'), viewport=document.querySelector('#chart-viewport');
  const $=s=>dialog.querySelector(s);
