@@ -1,10 +1,10 @@
-import {prepareBatch} from './insights.js?v=menu-runtime-fix-20261014';
-import { validateRoadmap } from './roadmap.js?v=menu-runtime-fix-20261014';
-import { validateAnnotations } from './annotations.js?v=menu-runtime-fix-20261014';
-import { defaultSettings } from './model.js?v=menu-runtime-fix-20261014';
-import { validateTrade, validateSettings } from './validation.js?v=menu-runtime-fix-20261014';
+import {prepareBatch} from './insights.js?v=full-workspace-themes-20261014';
+import { validateRoadmap } from './roadmap.js?v=full-workspace-themes-20261014';
+import { validateAnnotations } from './annotations.js?v=full-workspace-themes-20261014';
+import { defaultSettings } from './model.js?v=full-workspace-themes-20261014';
+import { validateTrade, validateSettings } from './validation.js?v=full-workspace-themes-20261014';
 
-import { backend, signedUser } from './cloud.js?v=menu-runtime-fix-20261014';
+import { backend, signedUser } from './cloud.js?v=full-workspace-themes-20261014';
 let snapshot = null;
 let revision = 0;
 let owner = null;

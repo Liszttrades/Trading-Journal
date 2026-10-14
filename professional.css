@@ -446,3 +446,22 @@ html body .pair-chip.selected{color:var(--accent-text,var(--accent));font-weight
 html body #trade-warnings{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent-text,var(--accent));font-size:14px;font-weight:600;line-height:1.6}
 html body #trade-warnings p{color:inherit;margin:0}
 html body #trade-warnings p+p{margin-top:8px}
+
+/* Complete workspace themes, including surfaces and result colors. */
+:root[data-palette=olive][data-theme=light]{--paper:#dfd4c3;--surface:#eeeae2;--surface-2:#d5c8b3;--surface-3:#c9bba4;--ink:#383a30;--muted:#5d5646;--tertiary:#665d4d;--line:#b8aa92;--line-soft:#d1c6b4;--accent:#5d5646;--accent-text:#514a3b;--accent-soft:#ddd7cb;--on-accent:#fff;--inverted:#5d5646;--on-inverted:#fff;--info:#3e5974;--success:#38734e;--danger:#b7483c;--warning:#a07d54;--positive:#287045;--negative:#a63b34;--positive-soft:#dce8d9;--negative-soft:#f0dcd3;--warning-soft:#eadac2;--warning-ink:#684923;--shadow:0 12px 36px #5d56461a}
+:root[data-palette=crimson][data-theme=light]{--paper:#f4e7df;--surface:#fff6ef;--surface-2:#ecd1c4;--surface-3:#e5bdab;--ink:#33312e;--muted:#6b4948;--tertiary:#765957;--line:#d7b4a6;--line-soft:#ead2c5;--accent:#c52f38;--accent-text:#921e29;--accent-soft:#f3d8d8;--on-accent:#fff;--inverted:#861b24;--on-inverted:#fff;--info:#8a1920;--success:#30724d;--danger:#c52f38;--warning:#d67d07;--positive:#287045;--negative:#b62836;--positive-soft:#e1ecdc;--negative-soft:#f5d9dc;--warning-soft:#f8e4bc;--warning-ink:#7a4308;--shadow:0 12px 36px #861b2414}
+:root[data-palette=ultraviolet][data-theme=dark]{--paper:#1c1a27;--surface:#282438;--surface-2:#211e2e;--surface-3:#37304b;--ink:#f5f1ff;--muted:#c4b9dc;--tertiary:#afa3c8;--line:#4a4062;--line-soft:#3b334e;--accent:#573cfa;--accent-text:#c5b9ff;--accent-soft:#392b67;--on-accent:#fff;--inverted:#f5f1ff;--on-inverted:#1c1a27;--info:#9989ff;--success:#02864a;--danger:#e8083e;--warning:#fb8d1a;--positive:#71dfa7;--negative:#ff849f;--positive-soft:#203a32;--negative-soft:#492334;--warning-soft:#463226;--warning-ink:#ffbc75;--shadow:0 12px 36px #0004}
+:root[data-palette=ember][data-theme=dark]{--paper:#000;--surface:#242423;--surface-2:#141413;--surface-3:#323231;--ink:#fff;--muted:#c9c6c1;--tertiary:#aaa7a1;--line:#48433d;--line-soft:#36322e;--accent:#cf4500;--accent-text:#ffa36e;--accent-soft:#40271b;--on-accent:#fff;--inverted:#fff;--on-inverted:#000;--info:#ff934f;--success:#69b991;--danger:#e57268;--warning:#cf4500;--positive:#7dd5a7;--negative:#fa938a;--positive-soft:#233a2d;--negative-soft:#432724;--warning-soft:#40271b;--warning-ink:#ffb58b;--shadow:0 12px 36px #0006}
+html body #appearance-dialog{width:min(560px,calc(100vw - 32px));max-height:90vh;overflow-y:auto}
+.appearance-themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.appearance-themes button{padding:12px;text-align:left;background:var(--surface-2);color:var(--ink);border:1px solid var(--line);border-radius:10px;display:grid;gap:7px}
+.appearance-themes button strong{font-size:14px;color:inherit}
+.appearance-themes button small{font-size:12px;color:var(--muted);line-height:1.4}
+.theme-preview{display:flex;gap:4px;padding:9px;border-radius:6px;background:#191919;height:38px;box-sizing:border-box}
+.theme-preview span{height:20px;width:28px;border-radius:4px;background:#262625}.theme-preview span:last-child{background:#de7356}
+.theme-preview-olive{background:#dfd4c3}.theme-preview-olive span{background:#eeeae2}.theme-preview-olive span:nth-child(2){background:#a07d54}.theme-preview-olive span:last-child{background:#5d5646}
+.theme-preview-crimson{background:#f4e7df}.theme-preview-crimson span{background:#fff6ef}.theme-preview-crimson span:nth-child(2){background:#861b24}.theme-preview-crimson span:last-child{background:#c52f38}
+.theme-preview-ultraviolet{background:#1c1a27}.theme-preview-ultraviolet span{background:#282438}.theme-preview-ultraviolet span:nth-child(2){background:#fb8d1a}.theme-preview-ultraviolet span:last-child{background:#573cfa}
+.theme-preview-ember{background:#000}.theme-preview-ember span{background:#323231}.theme-preview-ember span:nth-child(2){background:#fff}.theme-preview-ember span:last-child{background:#cf4500}
+html body .appearance-themes button[aria-pressed=true] strong{color:var(--accent-text,var(--accent))}
+@media(max-width:450px){.appearance-themes{gap:8px}.appearance-themes button{padding:10px}.appearance-themes button small{font-size:11px}}
