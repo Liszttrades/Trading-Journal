@@ -1,9 +1,6 @@
-Upload all SIX website files to your EXISTING Trading-Journal repository, replacing matching files. Keep config.js, journal files and .github/workflows/pages.yml.
+Upload all SEVEN website files to your existing Trading-Journal repository. Replace matching files. Keep config.js, journal files and .github/workflows/pages.yml.
+After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=book-journey-6
 
-After deployment:
-https://liszttrades.github.io/Trading-Journal/welcome.html?v=workflow-demos-5
+The gallery now begins with a colorful notebook. Scrolling opens its cover, zooms into the page and reveals the feature gallery. Reverse scrolling reverses the sequence. Feature labels offer short explanations on hover, focus or tap. Pause motion/reduced motion displays the gallery directly. Includes previous hero notebook and goal-led feature demos.
 
-The enlarged workflow section now asks what visitors want to improve and demonstrates rules, risk, batch entries and chart reviews. Scroll on desktop or select a goal. Previous/next buttons also work. Small/short screens use the selectable layout without sticky scrolling. Demos are illustrative and respect Pause motion / reduced motion. No visitor responses are collected or sent; these are product demonstrations, not audience analytics.
-
-Includes the previous interactive notebook logo and hero behavior.
-Checks passed: links, scripts, category controls, scroll chapters, demo navigation wrap and caption synchronization. Browser visual verification remains unavailable.
+Validation: opening/zoom/reveal/reverse states, feature tips, pause fallback, links, landing controls and workflow scroll tests passed. Browser visual comparison was unavailable; exact visual timing still needs checking on the deployed page.
