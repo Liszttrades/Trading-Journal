@@ -1,1 +1,20 @@
-Upload ALL website files, replacing matching files in Trading-Journal. Keep config.js and .github/workflows/pages.yml. No SQL changes. Wait for deployment and hard refresh. Appearance now includes Pearl Atelier (premium light) and Midnight Atelier (premium dark). Dashboard statistic colors in Appearance edits each individual metric number independently; Reset restores its theme color. Changes apply only to the dashboard metric cards, not calendar/trade results/chart. Saved in this browser and retained across re-renders. Statistic count-up and chart draw animations preserve final values; unchanged metric values do not repeatedly count. Reduced motion disables animations and smooth scrolling. Existing themes remain. Theme, editor scope/persistence/reset, numerical animation formatting and existing calculator/menu/batch checks passed. Signed-in visual testing unavailable.
+TRADE NOTEBOOK — PUBLIC LANDING PAGE
+
+Upload all website files in this ZIP to your existing Trading-Journal repository.
+Keep your existing config.js and .github/workflows/pages.yml. No database changes.
+
+After GitHub Pages finishes deployment:
+Public marketing page: https://liszttrades.github.io/Trading-Journal/welcome.html
+Existing journal/sign-in: https://liszttrades.github.io/Trading-Journal/
+
+The landing page links to the existing sign-in. Sign-in now links back to the landing page.
+The existing root entry point is preserved, including authentication callback URLs.
+Share welcome.html as your public product page. This package does not deploy automatically.
+
+Includes scroll reveals, a moving-perspective dashboard preview, animated sample P&L,
+feature sections, and a pointer-reactive canvas orbit footer. The sample data is illustrative.
+Pause motion and system reduced-motion support included. No added external libraries.
+
+Validation: syntax, internal links/assets, script initialization, motion toggling, premium
+appearance regression, and journal interaction regression passed. Browser visual QA
+was unavailable; check desktop/mobile layout and animation after deploying.
