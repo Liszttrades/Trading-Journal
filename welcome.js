@@ -61,8 +61,8 @@
     }
     if(pointer.inside&&!paused){const g=ctx.createRadialGradient(cx,cy,6,cx,cy,130);g.addColorStop(0,'#00000065');g.addColorStop(.4,'#00000025');g.addColorStop(.65,'#ffffff04');g.addColorStop(1,'#ffffff00');ctx.fillStyle=g;ctx.fillRect(cx-130,cy-130,260,260);}
   }
-  portal.addEventListener('pointermove',e=>{if(paused)return;const r=portal.getBoundingClientRect();pointer={x:(e.clientX-r.left)/width*2-1,y:(e.clientY-r.top)/height*2-1,inside:true};$('.petal-ring').style.translate=`${pointer.x*7}px ${pointer.y*7}px`;});
-  portal.addEventListener('pointerleave',()=>{pointer={x:0,y:0,inside:false};$('.petal-ring').style.translate='0 0';});
+  portal.addEventListener('pointermove',e=>{if(paused)return;const r=portal.getBoundingClientRect();pointer={x:(e.clientX-r.left)/width*2-1,y:(e.clientY-r.top)/height*2-1,inside:true};});
+  portal.addEventListener('pointerleave',()=>{pointer={x:0,y:0,inside:false};});
   function positionRing(progress,time){
     const w=gallery.clientWidth||innerWidth,h=$('.gallery-pin').clientHeight||innerHeight;
     const rx=Math.min(w*.36,570),ry=Math.min(h*.36,330);

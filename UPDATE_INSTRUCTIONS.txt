@@ -1,35 +1,7 @@
-VIDEO REFERENCE — LANDING PAGE REBUILD
+Replace welcome.html, welcome.css and welcome.js in your EXISTING Trading-Journal repository. These are the only files needed for this update.
+Keep config.js, your journal files and .github/workflows/pages.yml.
+After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=notebook-identity-3
 
-Upload to your EXISTING Trading-Journal repository.
-If the previous update is already installed, replace only these three files:
-  welcome.html
-  welcome.css
-  welcome.js
-The ZIP also includes the full current journal files if needed.
-KEEP config.js and .github/workflows/pages.yml. No database changes.
+Changes: removed hero arch, prompt-style box, rainbow arch section, gradient CTA banner, petal mark and decorative footer icons. Added original notebook mark, two-line hero with direct buttons, softer workflow panels, and a dark editorial footer with a note-to-self card. Retained scrolling, gallery, FAQ and interactive particle background.
 
-After GitHub Pages finishes deployment, open:
-https://liszttrades.github.io/Trading-Journal/welcome.html?v=video-scroll-2
-Hard refresh with Ctrl+Shift+R if needed.
-Your journal remains at its existing root URL.
-
-Rebuilt using the supplied 76-second recording:
-- Off-white page, fixed compact navigation, centered headline, floating sample previews
-- Opening preview spread and gentle movement
-- Journal / Review / Plan tabs
-- Pinned four-stage desktop walkthrough with synchronized text and visual changes
-- Clickable chapters; mobile uses tap controls
-- Orange/violet arch, scroll-responsive orbital preview gallery, changing central text
-- Animated sample P&L and scroll-progressive text reveal
-- Native FAQ accordions, gradient call-to-action, structured footer
-- Dark footer with rotating petal mark and pointer-reactive particle field
-- Pause motion, reduced-motion support and hidden-tab animation suspension
-
-Preview data is illustrative. Existing journal features, themes, accounts and records
-are preserved. No copied brand assets or invented user testimonials.
-
-Checks passed: JavaScript syntax, desktop/mobile/reduced-motion initialization,
-chapter selection by scroll and click, category keyboard navigation, links/assets,
-footer canvas execution, and existing journal interaction regression.
-Browser visual comparison was unavailable; this is a reference-based recreation,
-not a verified pixel-for-pixel copy. Check at desktop and mobile sizes after upload.
+Checks passed: script initialization, links/assets, mobile/reduced-motion logic, category keyboard controls, chapters by click and scroll, footer canvas execution. Visual browser QA remains unavailable. This design update is not a legal clearance or guarantee.
