@@ -1,5 +1,6 @@
-Upload all seven website files to your existing Trading-Journal repository. Keep config.js, journal files and .github/workflows/pages.yml.
-After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=depth-zoom-9
+Replace all seven website files in your existing Trading-Journal repository. Keep config.js, journal files and .github/workflows/pages.yml.
+After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=opening-book-10
 
-The gallery fills the viewport without the old top offset/height cap. Top navigation hides only during this scroll sequence and returns outside it (keyboard focus also reveals it). The actual footer remains at the end of the page. New muted graphite/sage frame with vector front/back layers, soft depth shadow and perspective tilt that straightens through the zoom. Existing gallery momentum and text/card stages retained.
-Functional tests passed. Browser visual verification remains unavailable.
+Chart frame replaced with an opening book: hinged cover, staggered page turns, spine, layered shadows and a perspective camera moving toward the right page. Vector page content stays sharp. The gallery exit now fades cards first, leaves text visible longer, and moves the scene/card layers at different speeds as the view releases upward. Existing scroll-responsive momentum, reverse scroll, hero logo, feature demos and motion controls retained.
+
+Validated: script initialization, landing controls, book opening state, image-before-text fade, parallax release, scroll momentum/idle and pause fallback. Browser visual verification remains unavailable.
