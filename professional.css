@@ -424,3 +424,11 @@ html body #risk-example strong{display:block;font-size:15px;font-weight:650;colo
 html body #risk-example small{display:block;margin-top:4px;font-size:12px;font-weight:500;color:var(--muted);line-height:1.5}
 html body #risk-example:hover:not(:disabled){border-color:var(--accent)}
 html body #risk-example:disabled{opacity:.55;cursor:not-allowed}
+
+/* Accent weekday headings and a matching calendar interaction ring. */
+html body #pnl-calendar .weekday{color:var(--accent-text,var(--accent));font-size:15px;font-weight:650;letter-spacing:.01em}
+html body #pnl-calendar .calendar-scroll{padding:3px;margin:-3px}
+html body #pnl-calendar .calendar-day{transition:outline-color .16s,border-color .16s;background-clip:padding-box}
+html body #pnl-calendar .calendar-day:hover,
+html body #pnl-calendar .calendar-day:focus-visible{outline:2px solid var(--accent)!important;outline-offset:2px!important;border-color:var(--accent);box-shadow:none;transform:none}
+@media(prefers-reduced-motion:reduce){html body #pnl-calendar .calendar-day{transition:none}}
