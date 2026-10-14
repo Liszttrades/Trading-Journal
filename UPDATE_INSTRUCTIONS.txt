@@ -1,7 +1,14 @@
-Replace welcome.html, welcome.css and welcome.js in your EXISTING Trading-Journal repository. These are the only files needed for this update.
-Keep config.js, your journal files and .github/workflows/pages.yml.
-After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=notebook-identity-3
+Upload ALL FIVE files in this ZIP into the root of your existing Trading-Journal repository, replacing matching files:
+welcome.html
+welcome.css
+welcome.js
+hero-book.js
+notebook-logo.svg
 
-Changes: removed hero arch, prompt-style box, rainbow arch section, gradient CTA banner, petal mark and decorative footer icons. Added original notebook mark, two-line hero with direct buttons, softer workflow panels, and a dark editorial footer with a note-to-self card. Retained scrolling, gallery, FAQ and interactive particle background.
+Keep config.js, all journal files and .github/workflows/pages.yml.
+After Pages deployment open:
+https://liszttrades.github.io/Trading-Journal/welcome.html?v=interactive-book-4
 
-Checks passed: script initialization, links/assets, mobile/reduced-motion logic, category keyboard controls, chapters by click and scroll, footer canvas execution. Visual browser QA remains unavailable. This design update is not a legal clearance or guarantee.
+The center notebook opens on mouse hover and closes on leave. Each opening selects one of six shuffled trading scenes, with no consecutive repeats. Keyboard focus and touch tap are supported; Escape closes it. A new notebook/candlestick SVG logo appears in navigation, footer and the landing-page favicon. The hero text and floating previews gently respond to the mouse. Reloading the landing page returns to its hero instead of the previous scroll position. Reduced motion and Pause motion disable animated movement.
+
+Validation: existing landing controls and scroll logic, scene shuffle, hover, tap, Escape, and reload-to-top behavior passed. Browser visual verification remains unavailable. This package changes only the public landing page; the journal UI is unchanged.
