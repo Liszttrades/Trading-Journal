@@ -13,7 +13,7 @@
   const dt=lastTime?Math.min(50,Math.max(1,now-lastTime)):16;lastTime=now;
   const calm=reduced.matches||root.classList.contains('motion-paused');
   const rect=section.getBoundingClientRect(),h=pin.clientHeight||innerHeight,w=pin.clientWidth||innerWidth;
-  const offset=innerWidth<=700?60:70;
+  const offset=0;
   const target=clamp((offset-rect.top)/Math.max(1,section.offsetHeight-h));
   if(smoothProgress===null||calm)smoothProgress=target;
   else smoothProgress+=(target-smoothProgress)*(1-Math.exp(-dt/85));
@@ -27,13 +27,15 @@
   const maxScale=Math.max(w/(bookWidth*.7),h/(bookHeight*.65))*1.16;
   section.classList.add('journey-ready');
   section.classList.toggle('journey-calm',calm);
+  const immersive=!calm&&rect.top<=1&&rect.bottom>=h-1;
+  if(root.classList.contains('in-market-journey')!==immersive)root.classList.toggle('in-market-journey',immersive);
   intro.style.opacity=calm?'0':String(1-ease(clamp((p-.4)/.06)));
   intro.style.visibility=calm||p>=.47?'hidden':'visible';
   const introInteractive=!calm&&p<.15;
   features.inert=!introInteractive;features.style.pointerEvents=introInteractive?'auto':'none';
   heading.style.opacity=features.style.opacity=String(1-ease(clamp((p-.07)/.12)));
 
-  book.style.transform=`translate(-50%,-50%) scale(${1+zoom*(maxScale-1)}) rotate(${(1-opening)*-3}deg)`;
+  book.style.transform=`translate(-50%,-50%) perspective(1600px) rotateX(${(1-zoom)*12}deg) rotateY(${(1-zoom)*-18}deg) scale(${1+zoom*(maxScale-1)}) rotate(${(1-opening)*-2}deg)`;
   book.style.setProperty('--page-ink',String(1-ease(clamp((p-.31)/.12))));
   book.style.setProperty('--page-progress',String(ease(clamp((p-.1)/.24))));
   ring.style.opacity=calm?'1':String(arrival*(1-departure));

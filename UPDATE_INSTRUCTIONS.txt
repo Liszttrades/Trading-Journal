@@ -1,6 +1,5 @@
-Upload all seven website files to the root of your existing Trading-Journal repository, replacing matching files. Keep config.js, the journal files and .github/workflows/pages.yml.
-After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=market-zoom-8
+Upload all seven website files to your existing Trading-Journal repository. Keep config.js, journal files and .github/workflows/pages.yml.
+After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=depth-zoom-9
 
-The gallery entrance now uses a large inline SVG candlestick chart frame instead of the notebook. Scroll zooms through its chart window. All chart elements are vector; no raster graphic is enlarged. The small interactive notebook logo in the hero stays.
-Longer scroll sequence: text first, oversized cards settle, then cards expand and fade. Rotation responds to scroll speed with bounded acceleration and a decaying coast. Scroll progress eases briefly toward the input without changing native wheel scrolling. Reverse scroll, Pause motion, reduced motion and hidden-tab suspension supported.
-Checks passed: asset/links and landing controls; SVG presence; reveal/exit/reverse stages; faster-scroll acceleration; momentum decay to idle; pause fallback. Browser visual verification remains unavailable.
+The gallery fills the viewport without the old top offset/height cap. Top navigation hides only during this scroll sequence and returns outside it (keyboard focus also reveals it). The actual footer remains at the end of the page. New muted graphite/sage frame with vector front/back layers, soft depth shadow and perspective tilt that straightens through the zoom. Existing gallery momentum and text/card stages retained.
+Functional tests passed. Browser visual verification remains unavailable.
