@@ -415,3 +415,12 @@ html body .batch-dialog .entry-select-menu{z-index:60}
 html body .batch-dialog .helper{font-size:13px;font-weight:550}
 html body .batch-dialog .scalp-row{background:var(--surface);border-color:var(--line)}
 @media(max-width:650px){html body .batch-heading h2{font-size:28px}html body .batch-heading-icon{width:48px;height:48px}}
+
+/* Discoverable calculator example with clear light/dark contrast. */
+html body #risk-example.risk-example-button{display:flex;align-items:center;gap:12px;width:100%;margin-top:18px;padding:15px 16px;border:1px solid var(--line);border-radius:10px;background:var(--accent-soft);color:var(--accent-text,var(--ink));text-align:left;transition:background .16s,border-color .16s}
+html body #risk-example .risk-example-icon{display:grid;place-items:center;width:36px;height:36px;background:var(--surface);border-radius:8px;flex:none}
+html body #risk-example>span:nth-child(2){flex:1;min-width:0}
+html body #risk-example strong{display:block;font-size:15px;font-weight:650;color:inherit}
+html body #risk-example small{display:block;margin-top:4px;font-size:12px;font-weight:500;color:var(--muted);line-height:1.5}
+html body #risk-example:hover:not(:disabled){border-color:var(--accent)}
+html body #risk-example:disabled{opacity:.55;cursor:not-allowed}
