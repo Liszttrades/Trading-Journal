@@ -1,14 +1,9 @@
-Upload ALL FIVE files in this ZIP into the root of your existing Trading-Journal repository, replacing matching files:
-welcome.html
-welcome.css
-welcome.js
-hero-book.js
-notebook-logo.svg
+Upload all SIX website files to your EXISTING Trading-Journal repository, replacing matching files. Keep config.js, journal files and .github/workflows/pages.yml.
 
-Keep config.js, all journal files and .github/workflows/pages.yml.
-After Pages deployment open:
-https://liszttrades.github.io/Trading-Journal/welcome.html?v=interactive-book-4
+After deployment:
+https://liszttrades.github.io/Trading-Journal/welcome.html?v=workflow-demos-5
 
-The center notebook opens on mouse hover and closes on leave. Each opening selects one of six shuffled trading scenes, with no consecutive repeats. Keyboard focus and touch tap are supported; Escape closes it. A new notebook/candlestick SVG logo appears in navigation, footer and the landing-page favicon. The hero text and floating previews gently respond to the mouse. Reloading the landing page returns to its hero instead of the previous scroll position. Reduced motion and Pause motion disable animated movement.
+The enlarged workflow section now asks what visitors want to improve and demonstrates rules, risk, batch entries and chart reviews. Scroll on desktop or select a goal. Previous/next buttons also work. Small/short screens use the selectable layout without sticky scrolling. Demos are illustrative and respect Pause motion / reduced motion. No visitor responses are collected or sent; these are product demonstrations, not audience analytics.
 
-Validation: existing landing controls and scroll logic, scene shuffle, hover, tap, Escape, and reload-to-top behavior passed. Browser visual verification remains unavailable. This package changes only the public landing page; the journal UI is unchanged.
+Includes the previous interactive notebook logo and hero behavior.
+Checks passed: links, scripts, category controls, scroll chapters, demo navigation wrap and caption synchronization. Browser visual verification remains unavailable.

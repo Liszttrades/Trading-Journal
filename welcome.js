@@ -28,7 +28,7 @@
   chapters.forEach(b=>b.addEventListener('click',()=>{
     const index=Number(b.dataset.step);
     setChapter(index);
-    if(!mobile.matches&&!paused){
+    if(!mobile.matches&&innerHeight>650&&!paused){
       const top=workflow.getBoundingClientRect().top+scrollY;
       const distance=Math.max(1,workflow.offsetHeight-(innerHeight-70));
       window.scrollTo({top:top-70+distance*((index+.35)/4),behavior:'instant'});
@@ -76,7 +76,7 @@
     raf=0;if(paused||document.hidden)return;
     const t=now*.001,hr=hero.getBoundingClientRect();
     if(hr.bottom>0){const progress=clamp(-hr.top/Math.max(hr.height,1));floats.forEach((card,i)=>{const dir=i%2?1:-1;const intro=1-Math.pow(1-clamp((now-born)/1600),3);const fromX=(hero.clientWidth*.5-card.offsetLeft-card.offsetWidth*.5)*(1-intro),fromY=(hero.clientHeight*.5-card.offsetTop-card.offsetHeight*.5)*(1-intro);card.style.translate=`${fromX+Math.sin(t*.35+i)*5+dir*progress*90}px ${fromY+Math.cos(t*.27+i)*6-progress*(i%3+1)*45}px`;card.style.opacity=String((.15+intro*.85)*(1-progress*.55));});}
-    if(!mobile.matches){const wr=workflow.getBoundingClientRect(),distance=workflow.offsetHeight-(innerHeight-70);if(wr.top<innerHeight&&wr.bottom>0){const p=clamp((70-wr.top)/Math.max(1,distance));const next=Math.min(3,Math.floor(p*4));if(next!==active)setChapter(next);}}
+    if(!mobile.matches&&innerHeight>650){const wr=workflow.getBoundingClientRect(),distance=workflow.offsetHeight-(innerHeight-70);if(wr.top<innerHeight&&wr.bottom>0){const p=clamp((70-wr.top)/Math.max(1,distance));const next=Math.min(3,Math.floor(p*4));if(next!==active)setChapter(next);}}
     const gr=gallery.getBoundingClientRect();if(gr.top<innerHeight&&gr.bottom>0){const p=clamp((innerHeight*.5-gr.top)/Math.max(1,gr.height));positionRing(p,(now-born)*.001);const index=Math.min(3,Math.floor(p*4));if(index!==lastWord){$('#changing-word').textContent=['every trade','your risk','each setup','your progress'][index];lastWord=index;}}
     const mr=words.getBoundingClientRect();if(mr.top<innerHeight&&mr.bottom>0){const p=clamp((innerHeight*.85-mr.top)/(innerHeight*.6+mr.height));spans.forEach((span,i)=>span.classList.toggle('read',i<Math.ceil(p*spans.length)));}
     if(!counterDone){const pr=$('.dashboard').getBoundingClientRect();if(counterStart===null&&pr.top<innerHeight*.85&&pr.bottom>0)counterStart=now;if(counterStart!==null){const p=clamp((now-counterStart)/1400),e=1-Math.pow(1-p,3);counter.textContent=`+$${(248*e).toFixed(2)}`;curve.style.strokeDasharray=String(curveLength);curve.style.strokeDashoffset=String(curveLength*(1-e));if(p===1)counterDone=true;}}
