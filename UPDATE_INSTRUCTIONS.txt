@@ -1,20 +1,35 @@
-TRADE NOTEBOOK — PUBLIC LANDING PAGE
+VIDEO REFERENCE — LANDING PAGE REBUILD
 
-Upload all website files in this ZIP to your existing Trading-Journal repository.
-Keep your existing config.js and .github/workflows/pages.yml. No database changes.
+Upload to your EXISTING Trading-Journal repository.
+If the previous update is already installed, replace only these three files:
+  welcome.html
+  welcome.css
+  welcome.js
+The ZIP also includes the full current journal files if needed.
+KEEP config.js and .github/workflows/pages.yml. No database changes.
 
-After GitHub Pages finishes deployment:
-Public marketing page: https://liszttrades.github.io/Trading-Journal/welcome.html
-Existing journal/sign-in: https://liszttrades.github.io/Trading-Journal/
+After GitHub Pages finishes deployment, open:
+https://liszttrades.github.io/Trading-Journal/welcome.html?v=video-scroll-2
+Hard refresh with Ctrl+Shift+R if needed.
+Your journal remains at its existing root URL.
 
-The landing page links to the existing sign-in. Sign-in now links back to the landing page.
-The existing root entry point is preserved, including authentication callback URLs.
-Share welcome.html as your public product page. This package does not deploy automatically.
+Rebuilt using the supplied 76-second recording:
+- Off-white page, fixed compact navigation, centered headline, floating sample previews
+- Opening preview spread and gentle movement
+- Journal / Review / Plan tabs
+- Pinned four-stage desktop walkthrough with synchronized text and visual changes
+- Clickable chapters; mobile uses tap controls
+- Orange/violet arch, scroll-responsive orbital preview gallery, changing central text
+- Animated sample P&L and scroll-progressive text reveal
+- Native FAQ accordions, gradient call-to-action, structured footer
+- Dark footer with rotating petal mark and pointer-reactive particle field
+- Pause motion, reduced-motion support and hidden-tab animation suspension
 
-Includes scroll reveals, a moving-perspective dashboard preview, animated sample P&L,
-feature sections, and a pointer-reactive canvas orbit footer. The sample data is illustrative.
-Pause motion and system reduced-motion support included. No added external libraries.
+Preview data is illustrative. Existing journal features, themes, accounts and records
+are preserved. No copied brand assets or invented user testimonials.
 
-Validation: syntax, internal links/assets, script initialization, motion toggling, premium
-appearance regression, and journal interaction regression passed. Browser visual QA
-was unavailable; check desktop/mobile layout and animation after deploying.
+Checks passed: JavaScript syntax, desktop/mobile/reduced-motion initialization,
+chapter selection by scroll and click, category keyboard navigation, links/assets,
+footer canvas execution, and existing journal interaction regression.
+Browser visual comparison was unavailable; this is a reference-based recreation,
+not a verified pixel-for-pixel copy. Check at desktop and mobile sizes after upload.
