@@ -1,6 +1,6 @@
-Upload all SEVEN website files to your existing Trading-Journal repository. Replace matching files. Keep config.js, journal files and .github/workflows/pages.yml.
-After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=book-journey-6
+Upload all seven website files to your existing Trading-Journal repository, replacing matching files. Keep config.js and .github/workflows/pages.yml.
+After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=book-cinema-7
 
-The gallery now begins with a colorful notebook. Scrolling opens its cover, zooms into the page and reveals the feature gallery. Reverse scrolling reverses the sequence. Feature labels offer short explanations on hover, focus or tap. Pause motion/reduced motion displays the gallery directly. Includes previous hero notebook and goal-led feature demos.
+Larger notebook with bookmark ribbon, cover border and inner-page chart, bars and review labels. Scroll phases: open book; zoom inside; reveal text alone; oversized cards settle into a circle; circle expands and fades as scrolling continues. Reverse scroll reverses all stages. Reduced-motion/Pause motion show the static gallery.
 
-Validation: opening/zoom/reveal/reverse states, feature tips, pause fallback, links, landing controls and workflow scroll tests passed. Browser visual comparison was unavailable; exact visual timing still needs checking on the deployed page.
+Verified: script initialization, landing controls, text-only stage, card arrival, settled circle, expanding fade-out, reverse scroll and pause fallback. Browser visual verification remains unavailable.
