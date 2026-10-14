@@ -432,3 +432,17 @@ html body #pnl-calendar .calendar-day{transition:outline-color .16s,border-color
 html body #pnl-calendar .calendar-day:hover,
 html body #pnl-calendar .calendar-day:focus-visible{outline:2px solid var(--accent)!important;outline-offset:2px!important;border-color:var(--accent);box-shadow:none;transform:none}
 @media(prefers-reduced-motion:reduce){html body #pnl-calendar .calendar-day{transition:none}}
+
+/* Theme-colored filter selections and readable journal warnings. */
+html body .filter-select-trigger{background:var(--accent-soft)!important;color:var(--accent-text,var(--accent))!important;border-color:color-mix(in srgb,var(--accent) 28%,var(--line))!important;font-weight:600}
+html body .filter-select-trigger:hover,html body .filter-select-trigger[aria-expanded=true]{border-color:var(--accent)!important}
+html body .filter-select-trigger>span{color:inherit}
+html body .filter-select-trigger>svg{color:inherit}
+html body .filter-select-trigger svg.semantic-mark g{stroke:var(--accent-text,var(--accent));filter:none!important}
+html body .filter-select-trigger svg.semantic-mark rect{fill:var(--accent);stroke:var(--accent)}
+html body .filter-menu button[aria-selected=true]{background:var(--accent-soft);color:var(--accent-text,var(--accent))}
+html body .filter-menu button[aria-selected=true] .menu-option-copy>span{color:inherit;font-weight:650}
+html body .pair-chip.selected{color:var(--accent-text,var(--accent));font-weight:650}
+html body #trade-warnings{background:var(--accent-soft);border:1px solid var(--accent);color:var(--accent-text,var(--accent));font-size:14px;font-weight:600;line-height:1.6}
+html body #trade-warnings p{color:inherit;margin:0}
+html body #trade-warnings p+p{margin-top:8px}
