@@ -1,6 +1,6 @@
-Replace all seven website files in your existing Trading-Journal repository. Keep config.js, journal files and .github/workflows/pages.yml.
-After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=opening-book-10
+Upload all seven website files to your existing Trading-Journal repository, replacing matching files. Keep config.js and .github/workflows/pages.yml.
+After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=continuous-reveal-11
 
-Chart frame replaced with an opening book: hinged cover, staggered page turns, spine, layered shadows and a perspective camera moving toward the right page. Vector page content stays sharp. The gallery exit now fades cards first, leaves text visible longer, and moves the scene/card layers at different speeds as the view releases upward. Existing scroll-responsive momentum, reverse scroll, hero logo, feature demos and motion controls retained.
+The workspace preview now overlaps the final viewport of the gallery sequence. It rises into view during the card fade instead of waiting below an empty screen. Cards fade first, text moves upward and fades last. Removed the whole-pinned-scene translation that exposed an empty strip. Reduced-motion/Pause motion retain standard non-overlapping layout.
 
-Validated: script initialization, landing controls, book opening state, image-before-text fade, parallax release, scroll momentum/idle and pause fallback. Browser visual verification remains unavailable.
+Landing and gallery behavior tests passed. Browser visual verification remains unavailable.

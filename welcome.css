@@ -173,3 +173,8 @@
 @media(min-width:701px) and (max-height:850px){.depth-book{width:min(570px,70vw)}.depth-front-outside{padding:25px}.depth-front-outside svg{width:65px;height:65px;margin:17px auto}.depth-front-outside strong{font-size:27px}.depth-front-outside small{margin-top:15px;font-size:6px}}
 @media(max-width:700px){.depth-book{width:90vw;top:51%}.depth-front-outside{padding:17px 15px}.depth-front-outside:before{inset:8px}.depth-front-outside>span{font-size:5px;letter-spacing:1px}.depth-front-outside svg{width:42px;height:42px;margin:10px auto}.depth-front-outside strong{font-size:18px}.depth-front-outside small{font-size:4px;margin-top:10px}}
 @media(prefers-reduced-motion:reduce){#gallery .gallery-pin{transform:none!important}}
+/* The workspace enters during the outgoing gallery, consuming the former empty viewport. */
+#gallery{z-index:0}
+#gallery + .product-section{position:relative;z-index:2;margin-top:-100svh;background:var(--paper);padding-top:clamp(42px,7svh,90px);border-radius:24px 24px 0 0}
+#gallery.journey-calm + .product-section,.motion-paused #gallery + .product-section{margin-top:0;border-radius:0}
+@media(prefers-reduced-motion:reduce){#gallery + .product-section{margin-top:0;border-radius:0}}
