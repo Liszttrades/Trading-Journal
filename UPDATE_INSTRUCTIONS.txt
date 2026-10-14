@@ -1,6 +1,6 @@
-Upload all seven website files to your existing Trading-Journal repository, replacing matching files. Keep config.js and .github/workflows/pages.yml.
-After deployment open https://liszttrades.github.io/Trading-Journal/welcome.html?v=book-cinema-7
+Upload all seven website files to the root of your existing Trading-Journal repository, replacing matching files. Keep config.js, the journal files and .github/workflows/pages.yml.
+After deployment: https://liszttrades.github.io/Trading-Journal/welcome.html?v=market-zoom-8
 
-Larger notebook with bookmark ribbon, cover border and inner-page chart, bars and review labels. Scroll phases: open book; zoom inside; reveal text alone; oversized cards settle into a circle; circle expands and fades as scrolling continues. Reverse scroll reverses all stages. Reduced-motion/Pause motion show the static gallery.
-
-Verified: script initialization, landing controls, text-only stage, card arrival, settled circle, expanding fade-out, reverse scroll and pause fallback. Browser visual verification remains unavailable.
+The gallery entrance now uses a large inline SVG candlestick chart frame instead of the notebook. Scroll zooms through its chart window. All chart elements are vector; no raster graphic is enlarged. The small interactive notebook logo in the hero stays.
+Longer scroll sequence: text first, oversized cards settle, then cards expand and fade. Rotation responds to scroll speed with bounded acceleration and a decaying coast. Scroll progress eases briefly toward the input without changing native wheel scrolling. Reverse scroll, Pause motion, reduced motion and hidden-tab suspension supported.
+Checks passed: asset/links and landing controls; SVG presence; reveal/exit/reverse stages; faster-scroll acceleration; momentum decay to idle; pause fallback. Browser visual verification remains unavailable.

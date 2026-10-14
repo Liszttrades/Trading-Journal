@@ -129,3 +129,13 @@
 @media(min-width:701px) and (max-height:850px){.journey-book{width:240px;height:315px;top:53%}.cover-outside{padding:27px}.cover-outside svg{width:78px;height:78px;margin:24px auto 18px}.cover-outside strong{font-size:26px}.cover-outside small{font-size:8px}.cover-outside>span{font-size:7px;margin-top:16px}.page-detail{transform:scale(.775);transform-origin:top left;width:310px;height:405px}.journey-paper>svg{width:175px;left:30px;top:56px}.page-caption{font-size:7px;left:27px;top:24px}.journey-heading h2{font-size:30px}.journey-heading{top:4%}.journey-features{bottom:3%}}
 @media(max-width:700px){#gallery{height:420vh}.journey-book{width:205px;height:270px;top:51%}.cover-outside{padding:24px}.cover-outside svg{width:68px;height:68px;margin:20px auto 15px}.cover-outside strong{font-size:23px}.cover-outside small{font-size:6px}.cover-outside>span{font-size:6px;margin-top:15px}.cover-outside:before{inset:12px}.cover-outside:after{right:18px;width:12px;height:34px}.page-detail{transform:scale(.66);transform-origin:top left;width:310px;height:405px}.journey-paper>svg{width:150px;left:27px;top:48px}.page-caption{left:23px;top:21px;font-size:6px}.journey-heading{top:5%}.journey-heading h2{font-size:30px}.journey-features{bottom:5%}}
 @media(prefers-reduced-motion:reduce){#gallery{height:850px}#gallery .gallery-copy{transform:none!important}} 
+/* SVG market frame: all artwork stays vector throughout the zoom. */
+#gallery{height:560vh}.market-portal{width:min(680px,62vw);height:auto;aspect-ratio:3/2;top:53%;perspective:none;filter:none}
+.market-vector{display:block;width:100%;height:100%;overflow:visible;shape-rendering:geometricPrecision}
+.market-ink{opacity:var(--page-ink,1)}.market-trend{stroke-dasharray:440;stroke-dashoffset:calc(440 * (1 - var(--page-progress,0)))}
+#gallery .journey-heading{top:5%}#gallery .journey-heading h2{font-size:clamp(32px,3.4vw,56px)}
+#gallery .ring-card{backface-visibility:visible}.market-portal .market-vector>rect:first-of-type{stroke:#aa9fb7;stroke-width:.5}
+@media(min-width:701px) and (max-height:850px){.market-portal{width:min(530px,55vw);height:auto;top:53%}#gallery .journey-heading h2{font-size:34px}}
+@media(max-width:700px){#gallery{height:490vh}.market-portal{width:88vw;height:auto;top:51%}#gallery .journey-heading h2{font-size:32px}}
+#gallery.journey-calm{height:850px}@media(max-width:700px){#gallery.journey-calm{height:650px}}
+@media(prefers-reduced-motion:reduce){#gallery{height:850px}}
