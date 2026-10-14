@@ -465,3 +465,26 @@ html body #appearance-dialog{width:min(560px,calc(100vw - 32px));max-height:90vh
 .theme-preview-ember{background:#000}.theme-preview-ember span{background:#323231}.theme-preview-ember span:nth-child(2){background:#fff}.theme-preview-ember span:last-child{background:#cf4500}
 html body .appearance-themes button[aria-pressed=true] strong{color:var(--accent-text,var(--accent))}
 @media(max-width:450px){.appearance-themes{gap:8px}.appearance-themes button{padding:10px}.appearance-themes button small{font-size:11px}}
+
+/* Atelier editions: quiet contrast with bronze/champagne details. */
+:root[data-palette=premiumlight][data-theme=light]{--paper:#f1efea;--surface:#fcfbf8;--surface-2:#e9e5de;--surface-3:#ded8ce;--ink:#262b2d;--muted:#616967;--tertiary:#717873;--line:#d6d2c8;--line-soft:#e4e0d7;--accent:#997447;--accent-text:#79552d;--accent-soft:#eee3d2;--on-accent:#fff;--inverted:#262b2d;--on-inverted:#fcfbf8;--info:#456982;--success:#3b775f;--danger:#b65858;--warning:#a07743;--positive:#2f7557;--negative:#b34d4d;--positive-soft:#e6efe8;--negative-soft:#f5e7e3;--warning-soft:#f2e8d7;--warning-ink:#765127;--shadow:0 14px 42px #252b2d10}
+:root[data-palette=premiumdark][data-theme=dark]{--paper:#111719;--surface:#1c2427;--surface-2:#161e21;--surface-3:#293438;--ink:#f1eee6;--muted:#b6c0bc;--tertiary:#9ca9a4;--line:#3b4646;--line-soft:#2e393c;--accent:#d1b487;--accent-text:#e0c69e;--accent-soft:#383329;--on-accent:#192023;--inverted:#f1eee6;--on-inverted:#111719;--info:#91b1c4;--success:#87bc9b;--danger:#db8b85;--warning:#d1b487;--positive:#89c9a7;--negative:#e1978e;--positive-soft:#23392f;--negative-soft:#402e2e;--warning-soft:#39332a;--warning-ink:#e0c69e;--shadow:0 14px 42px #0004}
+html[data-palette^=premium] body .metrics .metric,html[data-palette^=premium] body :is(.chart-panel,.calendar-panel,.plan-card,.chart-card){border-color:var(--line-soft)!important;box-shadow:0 2px 10px #00000005!important}
+html[data-palette^=premium] body .page-heading h1{font-weight:750;letter-spacing:-.055em}
+html[data-palette^=premium] body #journal-workspace>aside{background:var(--surface-2)}
+html[data-palette^=premium] body #journal-workspace nav button.active,html[data-palette^=premium] body #journal-workspace nav button.active:hover{background:var(--accent-soft);color:var(--accent-text);box-shadow:none}
+html[data-palette^=premium] body #journal-workspace nav button.active :is(span,svg){color:var(--accent-text)}
+.theme-preview-premiumlight{background:#f1efea}.theme-preview-premiumlight span{background:#fcfbf8}.theme-preview-premiumlight span:nth-child(2){background:#262b2d}.theme-preview-premiumlight span:last-child{background:#997447}
+.theme-preview-premiumdark{background:#111719}.theme-preview-premiumdark span{background:#1c2427}.theme-preview-premiumdark span:nth-child(2){background:#f1eee6}.theme-preview-premiumdark span:last-child{background:#d1b487}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+html body,html body :is(#journal-workspace>aside,#journal-workspace>main,.topbar,.metric,.chart-panel,.calendar-panel,.plan-card,.chart-card,.filter-select-trigger,.entry-select-trigger,dialog){transition:background-color .24s ease,color .2s ease,border-color .24s ease,box-shadow .24s ease}
+html body .stat-colors-editor{margin:24px 0 0;padding:18px;border:1px solid var(--line);border-radius:10px}
+.stat-colors-editor summary{font-size:14px;font-weight:650;cursor:pointer}
+.stat-colors-editor>p{font-size:12px;color:var(--muted);margin:12px 0 16px;line-height:1.6}
+.stat-color-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.stat-color-row{display:grid;grid-template-columns:1fr 32px auto;gap:8px;align-items:center;min-width:0}
+.stat-color-row label{font-size:12px;font-weight:550}
+html body .stat-color-row input[type=color]{width:32px;height:32px;min-height:32px;padding:3px;border-radius:7px!important;cursor:pointer}
+.stat-color-row button{padding:5px 6px;font-size:11px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:5px}
+@media(max-width:450px){.stat-color-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}html body,html body :is(#journal-workspace>aside,#journal-workspace>main,.topbar,.metric,.chart-panel,.calendar-panel,.plan-card,.chart-card,.filter-select-trigger,.entry-select-trigger,dialog){transition:none!important}}

@@ -1,9 +1,9 @@
-import {attachAutoConversion} from './exchange-rates.js?v=full-workspace-themes-20261014';
-import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=full-workspace-themes-20261014';
-import {fieldIcon,enhanceRiskMenus,enhanceBatchMenus} from './entry-menus.js?v=full-workspace-themes-20261014';
-import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=full-workspace-themes-20261014';
-import {validateTrade} from './validation.js?v=full-workspace-themes-20261014';
-import {journalNow} from './model.js?v=full-workspace-themes-20261014';
+import {attachAutoConversion} from './exchange-rates.js?v=premium-stat-editor-20261014';
+import {brokerFields,tradeOutcome,accountGuidance} from './broker-tools.js?v=premium-stat-editor-20261014';
+import {fieldIcon,enhanceRiskMenus,enhanceBatchMenus} from './entry-menus.js?v=premium-stat-editor-20261014';
+import {equity,performance,groupPerformance,positionSize,dailyState,prepareBatch,tradeWarnings} from './insights.js?v=premium-stat-editor-20261014';
+import {validateTrade} from './validation.js?v=premium-stat-editor-20261014';
+import {journalNow} from './model.js?v=premium-stat-editor-20261014';
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
 const moneyTone=v=>v<0?'negative':v>0?'positive':'';
@@ -22,7 +22,7 @@ export function createWorkbench({getDB,api,reload,openTrade,getView}) {
  }
  document.addEventListener('click',e=>{const tab=e.target.closest('[data-breakdown]');if(tab){analysisKey=tab.dataset.breakdown;breakdown();document.getElementById('breakdown-tab-'+analysisKey)?.focus();}});
  document.addEventListener('keydown',e=>{const tab=e.target.closest('[data-breakdown]');if(!tab||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let i=breakdowns.findIndex(item=>item[1]===analysisKey);i=e.key==='Home'?0:e.key==='End'?2:(i+(e.key==='ArrowRight'?1:2))%3;analysisKey=breakdowns[i][1];breakdown();document.getElementById('breakdown-tab-'+analysisKey)?.focus();});
- function analytics(entries){const stats=performance(entries);$('#advanced-metrics').innerHTML=[['Max drawdown',amount(stats.drawdown),'Peak-to-trough cumulative closed P&L'],['Average win',amount(stats.avgWin),'Profitable trades only'],['Average loss',amount(stats.avgLoss),'Losing trades only'],['Expectancy',amount(stats.expectancy),'Mean net P&L per closed trade'],['Longest win streak',stats.maxWinStreak,'Consecutive closed wins'],['Longest loss streak',stats.maxLossStreak,'Flat trades reset streaks']].map(([title,value,detail])=>`<div class="metric"><span>${title}</span><strong class="${title==='Average win'?moneyTone(stats.avgWin):title==='Average loss'?moneyTone(stats.avgLoss):title==='Expectancy'?moneyTone(stats.expectancy):title==='Max drawdown'?moneyTone(stats.drawdown):''}">${esc(value)}</strong><small>${detail}</small></div>`).join('');analysisEntries=entries;breakdown();}
+ function analytics(entries){const stats=performance(entries);$('#advanced-metrics').innerHTML=[['Max drawdown',amount(stats.drawdown),'Peak-to-trough cumulative closed P&L'],['Average win',amount(stats.avgWin),'Profitable trades only'],['Average loss',amount(stats.avgLoss),'Losing trades only'],['Expectancy',amount(stats.expectancy),'Mean net P&L per closed trade'],['Longest win streak',stats.maxWinStreak,'Consecutive closed wins'],['Longest loss streak',stats.maxLossStreak,'Flat trades reset streaks']].map(([title,value,detail])=>`<div class="metric" data-stat="${({'Max drawdown':'drawdown','Average win':'averageWin','Average loss':'averageLoss','Expectancy':'expectancy','Longest win streak':'winStreak','Longest loss streak':'lossStreak'})[title]}"><span>${title}</span><strong class="${title==='Average win'?moneyTone(stats.avgWin):title==='Average loss'?moneyTone(stats.avgLoss):title==='Expectancy'?moneyTone(stats.expectancy):title==='Max drawdown'?moneyTone(stats.drawdown):''}">${esc(value)}</strong><small>${detail}</small></div>`).join('');analysisEntries=entries;breakdown();}
  function daily(){$('#daily-status').replaceChildren();}
 
  function tools(){
